@@ -133,7 +133,7 @@ plugin boundary instead of an OpenCV dependency in the core package.
 ## Development
 
 ```bash
-dart format --output=none --set-exit-if-changed .
+dart format --output=none --set-exit-if-changed bin example lib test tool
 dart analyze --fatal-infos --fatal-warnings
 dart test
 dart test -p chrome

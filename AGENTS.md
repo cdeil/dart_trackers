@@ -20,7 +20,7 @@ Run from the repository root unless noted:
 
 ```bash
 dart pub get
-dart format --output=none --set-exit-if-changed .
+dart format --output=none --set-exit-if-changed bin example lib test tool
 dart analyze --fatal-infos --fatal-warnings
 dart test
 dart test -p chrome
