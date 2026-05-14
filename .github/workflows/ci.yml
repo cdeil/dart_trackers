@@ -1,0 +1,103 @@
+name: Dart Trackers CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dart:
+    name: Dart package checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Check formatting
+        run: dart format --output=none --set-exit-if-changed bin example lib test tool
+
+      - name: Analyze
+        run: dart analyze --fatal-infos --fatal-warnings
+
+      - name: Test on Dart VM
+        run: dart test
+
+      - name: Test in Chrome
+        run: dart test -p chrome
+
+      - name: Compile example to JavaScript
+        run: mkdir -p build && dart compile js example/dart_trackers_example.dart -o build/example.js
+
+      - name: Run JSONL tracking CLI smoke test
+        run: |
+          mkdir -p build
+          printf '{"frame":0,"xyxy":[[0,0,10,10]],"confidence":[0.9],"class_id":[0]}\n' > build/detections.jsonl
+          dart run bin/track_json.dart --tracker bytetrack --detections build/detections.jsonl --output build/tracks.jsonl
+          test -s build/tracks.jsonl
+
+      - name: Compile benchmark to native executable
+        run: mkdir -p build && dart compile exe tool/benchmark.dart -o build/benchmark
+
+      - name: Benchmark smoke test
+        run: ./build/benchmark --frames 50 --objects 10 --repeats 2
+
+      - name: Build API docs
+        run: dart doc
+
+      - name: Pub publish dry run
+        run: dart pub publish --dry-run
+
+  python-conformance:
+    name: Python conformance tooling
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: conformance/python
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup uv and Python
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
+        with:
+          python-version: "3.14"
+          activate-environment: true
+
+      - name: Install Python dependencies
+        run: uv sync --frozen --group dev
+
+      - name: Check Python formatting
+        run: uv run ruff format --check .
+
+      - name: Lint Python
+        run: uv run ruff check .
+
+      - name: Type check Python
+        continue-on-error: true
+        run: uv run ty check .
+
+      - name: Regenerate fixtures
+        run: uv run python generate_fixtures.py
+
+      - name: Ensure generated fixtures are checked in
+        working-directory: .
+        run: git diff --exit-code -- conformance/fixtures test/fixtures.g.dart
+
+      - name: Python benchmark smoke test
+        run: uv run python benchmark_reference.py --frames 50 --objects 10 --repeats 2

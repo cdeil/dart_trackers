@@ -1,0 +1,393 @@
+[
+    {
+        "expected_output_indices": [
+            [],
+            []
+        ],
+        "expected_tracker_id": [
+            [],
+            []
+        ],
+        "frames": [
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            }
+        ],
+        "name": "empty_frames",
+        "params": {
+            "minimum_consecutive_frames": 1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "frames": [
+            {
+                "class_id": [
+                    0
+                ],
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "class_id": [
+                    0
+                ],
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        1.0,
+                        0.0,
+                        11.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "class_id": [
+                    0
+                ],
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        2.0,
+                        0.0,
+                        12.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "single_object_default",
+        "params": {
+            "minimum_iou_threshold": 0.1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                -1
+            ]
+        ],
+        "frames": [
+            {
+                "class_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        10.0,
+                        10.0,
+                        20.0,
+                        20.0
+                    ]
+                ]
+            },
+            {
+                "class_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        11.0,
+                        10.0,
+                        21.0,
+                        20.0
+                    ]
+                ]
+            }
+        ],
+        "name": "missing_confidence_is_low_confidence",
+        "params": {
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": 0.1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ]
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        50.0,
+                        50.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.3
+                ],
+                "xyxy": [
+                    [
+                        2.0,
+                        2.0,
+                        52.0,
+                        52.0
+                    ]
+                ]
+            }
+        ],
+        "name": "low_confidence_second_stage_recovery",
+        "params": {
+            "high_conf_det_threshold": 0.6,
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": 0.1,
+            "track_activation_threshold": 0.5
+        }
+    },
+    {
+        "expected_output_indices": [
+            []
+        ],
+        "expected_tracker_id": [
+            []
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.65
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "high_below_activation_is_dropped",
+        "params": {
+            "high_conf_det_threshold": 0.6,
+            "minimum_consecutive_frames": 1,
+            "track_activation_threshold": 0.7
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0,
+                1
+            ],
+            [
+                1,
+                0
+            ]
+        ],
+        "expected_tracker_id": [
+            [
+                -1,
+                -1
+            ],
+            [
+                0,
+                1
+            ]
+        ],
+        "frames": [
+            {
+                "class_id": [
+                    0,
+                    1
+                ],
+                "confidence": [
+                    0.95,
+                    0.95
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        40.0,
+                        40.0
+                    ],
+                    [
+                        100.0,
+                        100.0,
+                        140.0,
+                        140.0
+                    ]
+                ]
+            },
+            {
+                "class_id": [
+                    1,
+                    0
+                ],
+                "confidence": [
+                    0.3,
+                    0.95
+                ],
+                "xyxy": [
+                    [
+                        102.0,
+                        100.0,
+                        142.0,
+                        140.0
+                    ],
+                    [
+                        2.0,
+                        0.0,
+                        42.0,
+                        40.0
+                    ]
+                ]
+            }
+        ],
+        "name": "mixed_high_low_output_order",
+        "params": {
+            "high_conf_det_threshold": 0.6,
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": 0.1,
+            "track_activation_threshold": 0.5
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ]
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ]
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.95
+                ],
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        70.0,
+                        70.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.95
+                ],
+                "xyxy": [
+                    [
+                        51.0,
+                        50.0,
+                        71.0,
+                        70.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.95
+                ],
+                "xyxy": [
+                    [
+                        53.0,
+                        50.0,
+                        73.0,
+                        70.0
+                    ]
+                ]
+            }
+        ],
+        "name": "confirmed_track_survives_short_gap",
+        "params": {
+            "lost_track_buffer": 5,
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": 0.1
+        }
+    }
+]

@@ -1,0 +1,19 @@
+{
+    "numpy": "2.4.4",
+    "policy": {
+        "floats": {
+            "atol": 1e-07,
+            "rtol": 1e-07
+        },
+        "kalman_state": {
+            "atol": 1e-09,
+            "rtol": 1e-07
+        },
+        "tracker_ids": "exact"
+    },
+    "psutil": "7.2.2",
+    "python": "3.14",
+    "scipy": "1.17.1",
+    "supervision": "0.28.0",
+    "trackers": "editable"
+}

@@ -1,0 +1,136 @@
+[
+    {
+        "col_indices": [
+            1,
+            0,
+            2
+        ],
+        "cost_matrix": [
+            [
+                4.0,
+                1.0,
+                3.0
+            ],
+            [
+                2.0,
+                0.0,
+                5.0
+            ],
+            [
+                3.0,
+                2.0,
+                2.0
+            ]
+        ],
+        "maximize": false,
+        "name": "scipy_doc_square_minimize",
+        "row_indices": [
+            0,
+            1,
+            2
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                2.0
+            ],
+            [
+                3.0,
+                4.0
+            ],
+            [
+                5.0,
+                6.0
+            ]
+        ],
+        "maximize": false,
+        "name": "rectangular_more_rows_minimize",
+        "row_indices": [
+            0,
+            1
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                2.0,
+                3.0
+            ],
+            [
+                4.0,
+                5.0,
+                6.0
+            ]
+        ],
+        "maximize": false,
+        "name": "rectangular_more_cols_minimize",
+        "row_indices": [
+            0,
+            1
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            2,
+            1
+        ],
+        "cost_matrix": [
+            [
+                4.0,
+                1.0,
+                3.0
+            ],
+            [
+                2.0,
+                0.0,
+                5.0
+            ],
+            [
+                3.0,
+                2.0,
+                2.0
+            ]
+        ],
+        "maximize": true,
+        "name": "square_maximize",
+        "row_indices": [
+            0,
+            1,
+            2
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                1000.0
+            ],
+            [
+                1000.0,
+                1.0
+            ]
+        ],
+        "maximize": false,
+        "name": "unique_large_differences",
+        "row_indices": [
+            0,
+            1
+        ]
+    }
+]

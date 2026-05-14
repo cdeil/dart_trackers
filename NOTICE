@@ -1,0 +1,10 @@
+dart_trackers
+Copyright 2026
+
+This package is a Dart clone of the Roboflow trackers package:
+https://github.com/roboflow/trackers
+
+Roboflow trackers is licensed under the Apache License, Version 2.0. The Dart
+implementation was written as a clean-room port using the public Python package
+API, source code, documentation, and generated conformance fixtures as a
+reference.

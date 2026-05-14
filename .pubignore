@@ -1,0 +1,11 @@
+conformance/python/.venv/
+.github/
+flutter_example/
+build/
+doc/api/
+doc/demo/artifacts/
+doc/videos/
+*.mp4
+*.mov
+*.avi
+*.webm
