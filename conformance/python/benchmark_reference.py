@@ -14,7 +14,7 @@ from typing import Any
 import numpy as np
 import psutil
 import supervision as sv
-from trackers import BoTSORTTracker, ByteTrackTracker, OCSORTTracker, SORTTracker
+from trackers import BoTSORTTracker, ByteTrackTracker, CBIoUTracker, OCSORTTracker, SORTTracker
 
 
 def make_frames(n_frames: int, n_objects: int) -> list[sv.Detections]:
@@ -118,6 +118,16 @@ def main() -> None:
                 minimum_iou_threshold_first_assoc=0.1,
                 minimum_iou_threshold_second_assoc=0.1,
                 enable_cmc=False,
+            ),
+            frames,
+            args.repeats,
+        ),
+        run_benchmark(
+            "cbiou",
+            lambda: CBIoUTracker(
+                minimum_consecutive_frames=1,
+                minimum_iou_threshold_first_assoc=0.1,
+                minimum_iou_threshold_second_assoc=0.1,
             ),
             frames,
             args.repeats,

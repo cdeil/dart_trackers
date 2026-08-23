@@ -1,0 +1,87 @@
+[
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracker_id": [
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        11.0,
+                        0.0,
+                        21.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "buffer_recovers_small_localization_gap",
+        "params": {
+            "buffer_ratio_first": 0.3,
+            "buffer_ratio_second": 0.5,
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold_first_assoc": 0.01
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ]
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ]
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.65
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "unmatched_high_is_returned",
+        "params": {
+            "high_conf_det_threshold": 0.6,
+            "track_activation_threshold": 0.7
+        }
+    }
+]

@@ -15,7 +15,20 @@ class YoloCameraTrackingPage extends StatefulWidget {
 
 class _YoloCameraTrackingPageState extends State<YoloCameraTrackingPage> {
   final Tracker _tracker = ByteTrackTracker(minimumConsecutiveFrames: 1);
+  final YOLOViewController _yoloController = YOLOViewController();
   List<TrackedDetection> _tracked = const [];
+
+  @override
+  void initState() {
+    super.initState();
+    _yoloController.setShowOverlays(false);
+  }
+
+  @override
+  void dispose() {
+    _yoloController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +39,7 @@ class _YoloCameraTrackingPageState extends State<YoloCameraTrackingPage> {
         YOLOView(
           modelPath: modelPath,
           task: YOLOTask.detect,
-          showOverlays: false,
+          controller: _yoloController,
           confidenceThreshold: 0.3,
           onResult: _onYoloResults,
         ),

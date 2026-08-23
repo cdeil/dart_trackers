@@ -43,6 +43,16 @@ void main(List<String> args) {
       benchmarkFrames,
       repeats,
     ),
+    _runBenchmark(
+      'cbiou',
+      () => CBIoUTracker(
+        minimumConsecutiveFrames: 1,
+        minimumIouThresholdFirstAssoc: 0.1,
+        minimumIouThresholdSecondAssoc: 0.1,
+      ),
+      benchmarkFrames,
+      repeats,
+    ),
   ];
 
   stdout.writeln(

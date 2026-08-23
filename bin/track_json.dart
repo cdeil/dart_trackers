@@ -30,10 +30,11 @@ Tracker _tracker(String name) {
     'bytetrack' => ByteTrackTracker(),
     'ocsort' => OCSORTTracker(),
     'botsort' => BoTSORTTracker(),
+    'cbiou' => CBIoUTracker(),
     _ => throw ArgumentError.value(
       name,
       '--tracker',
-      'Expected sort, bytetrack, ocsort, or botsort',
+      'Expected sort, bytetrack, ocsort, botsort, or cbiou',
     ),
   };
 }

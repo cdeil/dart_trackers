@@ -1,6 +1,6 @@
 name: dart_trackers
 description: Pure Dart multi-object tracking for Flutter and Dart apps, cloned from Roboflow trackers.
-version: 0.1.0
+version: 0.2.0
 repository: https://github.com/cdeil/dart_trackers
 issue_tracker: https://github.com/cdeil/dart_trackers/issues
 topics:

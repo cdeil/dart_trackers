@@ -2,17 +2,21 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'assignment.dart';
+import 'cmc.dart';
+import 'converters.dart';
 import 'detections.dart';
 import 'iou.dart';
 import 'kalman_filter.dart';
 import 'matrix.dart';
+import 'motion_model.dart';
+import 'timing.dart';
 import 'tracker.dart';
 
-/// BoT-SORT tracker without runtime camera-motion compensation.
+/// BoT-SORT tracker with an optional external camera-motion adapter.
 ///
-/// This pure-Dart port implements the no-CMC BoT-SORT path: XCYCWH state,
-/// scale-aware Kalman noise, score-fused association, and high/low confidence
-/// matching. Passing a video [frame] to [update] is intentionally unsupported.
+/// The portable core owns XCYCWH state, scale-aware Kalman noise, score-fused
+/// association, and affine state application. Image-based motion estimation is
+/// supplied through [cameraMotionCompensator] to avoid an OpenCV dependency.
 class BoTSORTTracker implements Tracker {
   final int lostTrackBuffer;
   final double frameRate;
@@ -24,12 +28,18 @@ class BoTSORTTracker implements Tracker {
   final double highConfDetThreshold;
   final bool instantFirstFrameActivation;
   final int maximumFramesWithoutUpdate;
+  final double maximumTimeWithoutUpdate;
+  final BaseIoU iouFirst;
+  final BaseIoU iouSecond;
+  final TrackerClock _clock;
+  final TrackerWarningHandler? _onWarning;
+  final CameraMotionCompensator? cameraMotionCompensator;
 
   final List<BoTSORTTracklet> tracks = [];
   int _frameId = 0;
   int _nextTrackId = 0;
 
-  /// Creates a no-CMC BoT-SORT tracker.
+  /// Creates a BoT-SORT tracker.
   BoTSORTTracker({
     this.lostTrackBuffer = 30,
     this.frameRate = 30.0,
@@ -40,15 +50,19 @@ class BoTSORTTracker implements Tracker {
     this.minimumIouThresholdUnconfirmedAssoc = 0.3,
     this.highConfDetThreshold = 0.6,
     this.instantFirstFrameActivation = true,
-  }) : maximumFramesWithoutUpdate = math
-           .max(1, (frameRate / 30.0 * lostTrackBuffer).floor())
-           .toInt() {
-    if (lostTrackBuffer < 1) {
-      throw ArgumentError.value(lostTrackBuffer, 'lostTrackBuffer');
-    }
-    if (frameRate <= 0) {
-      throw ArgumentError.value(frameRate, 'frameRate');
-    }
+    BaseIoU? firstIou,
+    BaseIoU? secondIou,
+    this.cameraMotionCompensator,
+    TrackerWarningHandler? onWarning,
+  }) : maximumFramesWithoutUpdate = computeMaximumFramesWithoutUpdate(
+         lostTrackBuffer,
+         frameRate,
+       ),
+       maximumTimeWithoutUpdate = lostTrackBuffer / 30.0,
+       iouFirst = firstIou ?? const IoU(),
+       iouSecond = secondIou ?? firstIou ?? const IoU(),
+       _clock = TrackerClock(frameRate, onWarning: onWarning),
+       _onWarning = onWarning {
     if (minimumConsecutiveFrames < 1) {
       throw ArgumentError.value(
         minimumConsecutiveFrames,
@@ -58,9 +72,17 @@ class BoTSORTTracker implements Tracker {
   }
 
   @override
-  Detections update(Detections detections, {Object? frame}) {
-    if (frame != null) {
-      throw UnsupportedError('BoTSORTTracker pure-Dart spike does not use CMC');
+  Detections update(Detections detections, {Object? frame, double? timestamp}) {
+    if (frame != null && cameraMotionCompensator == null) {
+      _onWarning?.call(
+        'BoTSORTTracker ignores frame input without a CMC adapter.',
+      );
+    }
+    final timing = _clock.timing(timestamp);
+    if (timing.skipUpdate) {
+      return detections.copyWithTrackerId(
+        Int32List.fromList(List.filled(detections.length, -1)),
+      );
     }
     _frameId++;
     if (tracks.isEmpty && detections.isEmpty) {
@@ -70,8 +92,31 @@ class BoTSORTTracker implements Tracker {
     final outDetIndices = <int>[];
     final outTrackerIds = <int>[];
 
-    for (final track in tracks) {
-      track.predict();
+    if (!timing.skipPredict) {
+      for (final track in tracks) {
+        track.predict(timing);
+      }
+    }
+    if (frame != null && cameraMotionCompensator != null) {
+      final transform = cameraMotionCompensator!.estimateAffine2x3(
+        frame,
+        maskBoxes: detections.xyxyRows(),
+      );
+      if (transform != null) {
+        for (final track in tracks) {
+          track.applyCameraMotion(transform);
+        }
+      }
+    }
+    if (timing.usesElapsedTime) {
+      tracks.removeWhere(
+        (track) => !withinLostTrackBudget(
+          timeSinceUpdate: track.timeSinceUpdate,
+          timeSinceUpdateSeconds: track.timeSinceUpdateSeconds,
+          maximumFrames: maximumFramesWithoutUpdate,
+          maximumSeconds: maximumTimeWithoutUpdate,
+        ),
+      );
     }
 
     final detectionBoxes = detections.xyxyRows();
@@ -99,7 +144,8 @@ class BoTSORTTracker implements Tracker {
     for (final track in tracks) {
       if (track.timeSinceUpdate > 1) {
         lostTracks.add(track);
-      } else if (track.numberOfSuccessfulUpdates >= minimumConsecutiveFrames) {
+      } else if (track.trackerId != -1 ||
+          track.numberOfSuccessfulUpdates >= minimumConsecutiveFrames) {
         confirmedTracks.add(track);
       } else {
         unconfirmedTracks.add(track);
@@ -108,7 +154,11 @@ class BoTSORTTracker implements Tracker {
 
     final strackPool = [...confirmedTracks, ...lostTracks];
     final stage1 = _getAssociatedIndices(
-      _fuseScore(_getIouMatrix(strackPool, highBoxes), highScores),
+      _fuseScore(
+        _getIouMatrix(strackPool, highBoxes, iouFirst),
+        highScores,
+        iouFirst,
+      ),
       minimumIouThresholdFirstAssoc,
       strackPool.length,
       highBoxes.length,
@@ -126,7 +176,7 @@ class BoTSORTTracker implements Tracker {
         if (strackPool[index].timeSinceUpdate == 1) strackPool[index],
     ];
     final stage2 = _getAssociatedIndices(
-      _getIouMatrix(remainingTracked, lowBoxes),
+      _getIouMatrix(remainingTracked, lowBoxes, iouSecond),
       minimumIouThresholdSecondAssoc,
       remainingTracked.length,
       lowBoxes.length,
@@ -157,8 +207,9 @@ class BoTSORTTracker implements Tracker {
       ];
       final unconfirmed = _getAssociatedIndices(
         _fuseScore(
-          _getIouMatrix(unconfirmedTracks, unmatchedHighBoxes),
+          _getIouMatrix(unconfirmedTracks, unmatchedHighBoxes, iouFirst),
           unmatchedHighScores,
+          iouFirst,
         ),
         minimumIouThresholdUnconfirmedAssoc,
         unconfirmedTracks.length,
@@ -190,23 +241,32 @@ class BoTSORTTracker implements Tracker {
 
     for (final detLocalIndex in unmatchedHigh) {
       final globalIndex = highIndices[detLocalIndex];
+      outDetIndices.add(globalIndex);
+      outTrackerIds.add(-1);
       if (confidences[globalIndex] >= trackActivationThreshold) {
         final track = BoTSORTTracklet(detectionBoxes[globalIndex]);
         if (_frameId == 1 && instantFirstFrameActivation) {
           track.trackerId = _nextTrackId++;
+          outTrackerIds[outTrackerIds.length - 1] = track.trackerId;
         }
         tracks.add(track);
-        outDetIndices.add(globalIndex);
-        outTrackerIds.add(track.trackerId);
       }
     }
 
     tracks.removeWhere((track) {
       final isMature =
+          track.trackerId != -1 ||
           track.numberOfSuccessfulUpdates >= minimumConsecutiveFrames;
       final isActive = track.timeSinceUpdate == 0;
-      return !(track.timeSinceUpdate < maximumFramesWithoutUpdate &&
-          (isMature || isActive));
+      final withinBudget = withinLostTrackBudget(
+        timeSinceUpdate: track.timeSinceUpdate,
+        timeSinceUpdateSeconds: track.timeSinceUpdateSeconds,
+        maximumFrames: maximumFramesWithoutUpdate,
+        maximumSeconds: timing.usesElapsedTime
+            ? maximumTimeWithoutUpdate
+            : null,
+      );
+      return !(withinBudget && (isMature || isActive));
     });
 
     if (outDetIndices.isEmpty) {
@@ -222,6 +282,17 @@ class BoTSORTTracker implements Tracker {
     tracks.clear();
     _frameId = 0;
     _nextTrackId = 0;
+    _clock.reset();
+    cameraMotionCompensator?.reset();
+  }
+
+  @override
+  Detections get trackedObjects {
+    final confirmed = tracks.where((track) => track.trackerId >= 0).toList();
+    return Detections.fromRows(
+      [for (final track in confirmed) track.getStateBbox()],
+      trackerId: [for (final track in confirmed) track.trackerId],
+    );
   }
 
   void _assignIdIfMature(BoTSORTTracklet track) {
@@ -234,14 +305,15 @@ class BoTSORTTracker implements Tracker {
   Matrix _getIouMatrix(
     List<BoTSORTTracklet> tracklets,
     List<List<double>> boxes,
+    BaseIoU metric,
   ) {
-    return boxIouBatch([
+    return metric.compute([
       for (final track in tracklets) track.getStateBbox(),
     ], boxes);
   }
 
-  Matrix _fuseScore(Matrix iouSimilarity, List<double> scores) {
-    final result = iouSimilarity.copy();
+  Matrix _fuseScore(Matrix iouSimilarity, List<double> scores, BaseIoU metric) {
+    final result = metric.normalizeForFusion(iouSimilarity).copy();
     for (var row = 0; row < result.rows; row++) {
       for (var col = 0; col < result.cols; col++) {
         result[row][col] *= scores[col];
@@ -287,35 +359,80 @@ class BoTSORTTracklet {
   static const _sigmaM = 0.05;
 
   final KalmanFilter kf;
+  late final KalmanMotionModel motionModel;
   int trackerId = -1;
   int timeSinceUpdate = 0;
+  double timeSinceUpdateSeconds = 0.0;
   int age = 0;
   int numberOfSuccessfulUpdates = 1;
 
   BoTSORTTracklet(List<double> initialBbox) : kf = _createFilter(initialBbox) {
-    final measurement = _xyxyToXcycwh(initialBbox);
+    final measurement = xyxyToXcycwh(initialBbox);
     _setScaleAwareNoise(measurement[2], measurement[3], initial: true);
+    motionModel = KalmanMotionModel.fromFilter(
+      kf,
+      positionIndices: const [0, 1, 2, 3],
+      velocityIndices: const [4, 5, 6, 7],
+    );
   }
 
   void update(List<double> bbox) {
     _refreshNoiseFromState();
-    kf.update(_xyxyToXcycwh(bbox));
+    kf.update(xyxyToXcycwh(bbox));
     _clampStateBbox();
     timeSinceUpdate = 0;
+    timeSinceUpdateSeconds = 0.0;
     numberOfSuccessfulUpdates++;
   }
 
-  List<double> predict() {
+  List<double> predict([PredictTiming timing = fixedRateTiming]) {
     _refreshNoiseFromState();
+    motionModel.calibrate(kf.q);
+    motionModel.apply(kf, timing.frameStep, frameRate: timing.frameRate);
     kf.predict();
     _clampStateBbox();
     age++;
     timeSinceUpdate++;
+    if (timing.elapsedSeconds != null) {
+      timeSinceUpdateSeconds += timing.elapsedSeconds!;
+    } else {
+      timeSinceUpdateSeconds = 0.0;
+    }
     return getStateBbox();
   }
 
   List<double> getStateBbox() =>
-      _xcycwhToXyxy([kf.x[0][0], kf.x[1][0], kf.x[2][0], kf.x[3][0]]);
+      xcycwhToXyxy([kf.x[0][0], kf.x[1][0], kf.x[2][0], kf.x[3][0]]);
+
+  /// Applies an externally estimated 2x3 affine transform to center state.
+  void applyCameraMotion(Matrix affine) {
+    if (affine.rows != 2 || affine.cols != 3) {
+      throw ArgumentError('Camera motion transform must be 2x3');
+    }
+    final a00 = affine[0][0];
+    final a01 = affine[0][1];
+    final a10 = affine[1][0];
+    final a11 = affine[1][1];
+    final centerX = kf.x[0][0];
+    final centerY = kf.x[1][0];
+    final velocityX = kf.x[4][0];
+    final velocityY = kf.x[5][0];
+    kf.x[0][0] = a00 * centerX + a01 * centerY + affine[0][2];
+    kf.x[1][0] = a10 * centerX + a11 * centerY + affine[1][2];
+    kf.x[4][0] = a00 * velocityX + a01 * velocityY;
+    kf.x[5][0] = a10 * velocityX + a11 * velocityY;
+
+    final transform = Matrix.identity(8);
+    transform[0][0] = a00;
+    transform[0][1] = a01;
+    transform[1][0] = a10;
+    transform[1][1] = a11;
+    transform[4][4] = a00;
+    transform[4][5] = a01;
+    transform[5][4] = a10;
+    transform[5][5] = a11;
+    kf.p = transform * kf.p * transform.transpose();
+  }
 
   void _refreshNoiseFromState() {
     final bbox = getStateBbox();
@@ -368,7 +485,7 @@ class BoTSORTTracklet {
       kf.f[i][i + 4] = 1.0;
       kf.h[i][i] = 1.0;
     }
-    final measurement = _xyxyToXcycwh(bbox);
+    final measurement = xyxyToXcycwh(bbox);
     for (var i = 0; i < 4; i++) {
       kf.x[i][0] = measurement[i];
     }
@@ -382,21 +499,6 @@ class BoTSORTTracklet {
     }
     return result;
   }
-}
-
-List<double> _xyxyToXcycwh(List<double> xyxy) {
-  final w = xyxy[2] - xyxy[0];
-  final h = xyxy[3] - xyxy[1];
-  return [xyxy[0] + w * 0.5, xyxy[1] + h * 0.5, w, h];
-}
-
-List<double> _xcycwhToXyxy(List<double> xcycwh) {
-  return [
-    xcycwh[0] - xcycwh[2] * 0.5,
-    xcycwh[1] - xcycwh[3] * 0.5,
-    xcycwh[0] + xcycwh[2] * 0.5,
-    xcycwh[1] + xcycwh[3] * 0.5,
-  ];
 }
 
 class _BoTSORTAssociation {

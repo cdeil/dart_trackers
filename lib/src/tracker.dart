@@ -1,18 +1,17 @@
 import 'detections.dart';
 
 /// Common interface implemented by all trackers in this package.
-///
-/// Trackers consume a batch of detections in `xyxy` format and return a new
-/// detection batch with `trackerId` populated. Implementations do not mutate
-/// the input detections.
 abstract interface class Tracker {
   /// Updates tracker state with detections from one frame.
   ///
-  /// The optional [frame] argument is reserved for future camera-motion
-  /// compensation integrations. Current pure-Dart trackers either ignore it or
-  /// reject it when they cannot process image data portably.
-  Detections update(Detections detections, {Object? frame});
+  /// [timestamp] is the absolute capture time in seconds. Omit it for the
+  /// original fixed-rate behaviour. Implementations that do not use [frame]
+  /// ignore it so callers can share one pipeline across tracker types.
+  Detections update(Detections detections, {Object? frame, double? timestamp});
 
-  /// Clears all live tracks and resets the per-instance track ID counter.
+  /// Confirmed tracks that remain alive, including temporarily missed ones.
+  Detections get trackedObjects;
+
+  /// Clears live tracks, timestamp state, and the per-instance ID allocator.
   void reset();
 }

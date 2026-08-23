@@ -1,4 +1,19 @@
-# Dart trackers spike plan
+# Dart trackers implementation record
+
+> The original 2.4 spike described below was completed and superseded by the
+> 0.2 parity update. Current design and validation live in `design.md` and
+> `validation.md`.
+
+## 0.2 completion
+
+- Upgraded the oracle to `trackers==2.6.0` and `supervision==0.29.0`.
+- Added the complete portable IoU family and C-BIoU.
+- Added timestamp-aware Kalman prediction and wall-clock lifecycle handling.
+- Added `trackedObjects`, strict validation, output-contract fixes, and the
+  post-2.6 OC-SORT low-confidence result behavior.
+- Implemented affine state application behind the portable CMC seam.
+- Retained McByte's Torch/SAM/Cutie mask stack as the documented GPU-runtime
+  boundary.
 
 ## Goal
 

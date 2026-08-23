@@ -17,16 +17,18 @@ this package mirrors the tracker APIs and notes Dart-specific differences.
 - Zero runtime Dart dependencies.
 - Works with Dart VM, Dart AOT, Flutter mobile/desktop, and browser tests.
 - `Detections` container with `xyxy`, confidence, class IDs, and tracker IDs.
-- `SORTTracker`, `ByteTrackTracker`, `OCSORTTracker`, and no-CMC
-    `BoTSORTTracker`.
-- Python-generated conformance fixtures against `trackers==2.4.0`.
+- `SORTTracker`, `ByteTrackTracker`, `OCSORTTracker`, `BoTSORTTracker`, and
+    `CBIoUTracker`.
+- IoU, BIoU, GIoU, DIoU, and CIoU association metrics.
+- Timestamp-aware Kalman prediction and wall-clock lost-track pruning.
+- Python-generated conformance fixtures against `trackers==2.6.0`.
 - Benchmark and validation docs for comparing Dart and Python behavior.
 
 ## Install
 
 ```yaml
 dependencies:
-  dart_trackers: ^0.1.0
+  dart_trackers: ^0.2.0
 ```
 
 For local development in this repository:
@@ -81,6 +83,7 @@ Unconfirmed or unmatched detections use `trackerId = -1`.
 | `ByteTrackTracker` | You have crowded scenes and useful low-confidence detections.     | [ByteTrack](https://trackers.roboflow.com/latest/trackers/bytetrack/) |
 | `OCSORTTracker`    | Motion is non-linear or temporarily missing observations matter.  | [OC-SORT](https://trackers.roboflow.com/latest/trackers/ocsort/)      |
 | `BoTSORTTracker`   | You want BoT-SORT association without camera-motion compensation. | [BoT-SORT](https://trackers.roboflow.com/latest/trackers/botsort/)    |
+| `CBIoUTracker`     | Irregular motion benefits from cascaded buffered matching.        | [C-BIoU](https://trackers.roboflow.com/latest/trackers/cbiou/)       |
 
 ## Detection format
 
@@ -116,9 +119,15 @@ Most users only need:
 advanced users, tests, and validation tooling. They are small support utilities,
 not a general NumPy/SciPy replacement, and their surface may change before 1.0.
 
-`BoTSORTTracker` intentionally does not implement runtime CMC. Passing `frame` to
-`update()` raises `UnsupportedError`; future CMC support should be a portable
-plugin boundary instead of an OpenCV dependency in the core package.
+All trackers accept an optional absolute `timestamp` in seconds. BoT-SORT also
+accepts a `CameraMotionCompensator` adapter: frame analysis stays outside the
+zero-dependency core, while the returned 2x3 affine transform is applied to
+Kalman state and covariance in Dart.
+
+McByte's mask association is intentionally not part of the portable package. It
+requires Torch plus SAM/Cutie model runtimes in Python; Flutter apps should keep
+segmentation inference in their selected on-device model runtime and pass boxes
+to these trackers.
 
 ## Documentation
 
