@@ -51,3 +51,12 @@ uv run python benchmark_reference.py --frames 500 --objects 20 --repeats 5
     applies its 2x3 affine result and must stay image-runtime agnostic.
 - McByte mask association remains out of scope unless a portable app-owned
     SAM/Cutie runtime is available.
+
+## Public repository hygiene
+
+- Keep commits, pull requests, issues, changelogs, and documentation
+    self-contained within this public project.
+- Never reference private repositories, internal issue numbers, customer or
+    project names, infrastructure, credentials, or private URLs.
+- Before publishing, inspect titles, descriptions, comments, commit messages,
+    and diffs for private identifiers.
