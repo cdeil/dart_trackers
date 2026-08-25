@@ -7,7 +7,7 @@ import 'tracking_overlay.dart';
 Widget buildYoloCameraPage() => const YoloCameraTrackingPage();
 
 class YoloCameraTrackingPage extends StatefulWidget {
-  const YoloCameraTrackingPage({super.key});
+  const new({super.key});
 
   @override
   State<YoloCameraTrackingPage> createState() => _YoloCameraTrackingPageState();

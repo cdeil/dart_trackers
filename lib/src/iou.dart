@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'matrix.dart';
 
 abstract class BaseIoU {
-  const BaseIoU();
+  const new();
 
   Matrix compute(List<List<double>> boxesA, List<List<double>> boxesB) {
     _validateBoxes(boxesA, 'boxesA');
@@ -20,7 +20,7 @@ abstract class BaseIoU {
 }
 
 class IoU extends BaseIoU {
-  const IoU();
+  const new();
 
   @override
   Matrix computeNonEmpty(List<List<double>> boxesA, List<List<double>> boxesB) {
@@ -31,7 +31,7 @@ class IoU extends BaseIoU {
 class BIoU extends BaseIoU {
   final double bufferRatio;
 
-  BIoU({this.bufferRatio = 0.1}) {
+  new({this.bufferRatio = 0.1}) {
     if (bufferRatio < 0.0 || !bufferRatio.isFinite) {
       throw ArgumentError.value(bufferRatio, 'bufferRatio');
     }
@@ -59,7 +59,7 @@ class BIoU extends BaseIoU {
 }
 
 abstract class _SignedIoU extends BaseIoU {
-  const _SignedIoU();
+  const new();
 
   @override
   Matrix normalizeForFusion(Matrix similarity) {
@@ -72,7 +72,7 @@ abstract class _SignedIoU extends BaseIoU {
 }
 
 class GIoU extends _SignedIoU {
-  const GIoU();
+  const new();
 
   @override
   Matrix computeNonEmpty(List<List<double>> boxesA, List<List<double>> boxesB) {
@@ -89,7 +89,7 @@ class GIoU extends _SignedIoU {
 
 class DIoU extends _SignedIoU {
   static const _epsilon = 1e-7;
-  const DIoU();
+  const new();
 
   @override
   Matrix computeNonEmpty(List<List<double>> boxesA, List<List<double>> boxesB) {
@@ -115,7 +115,7 @@ class DIoU extends _SignedIoU {
 
 class CIoU extends _SignedIoU {
   static const _epsilon = 1e-7;
-  const CIoU();
+  const new();
 
   @override
   Matrix computeNonEmpty(List<List<double>> boxesA, List<List<double>> boxesB) {
@@ -202,7 +202,7 @@ class _Geometry {
   final Matrix enclosingArea;
   final Matrix enclosingDiagonalSquared;
 
-  const _Geometry(
+  const new(
     this.iou,
     this.union,
     this.enclosingArea,

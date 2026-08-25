@@ -8,7 +8,7 @@ class TrackedDetection {
   final double confidence;
   final String label;
 
-  const TrackedDetection({
+  const new({
     required this.box,
     required this.trackerId,
     required this.confidence,
@@ -19,7 +19,7 @@ class TrackedDetection {
 class TrackingOverlayPainter extends CustomPainter {
   final List<TrackedDetection> detections;
 
-  const TrackingOverlayPainter(this.detections);
+  const new(this.detections);
 
   @override
   void paint(Canvas canvas, Size size) {

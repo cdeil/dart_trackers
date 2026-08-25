@@ -15,11 +15,7 @@ class TrackersFlutterExampleApp extends StatelessWidget {
   final Widget? demoVideoPage;
   final Widget? yoloCameraPage;
 
-  const TrackersFlutterExampleApp({
-    super.key,
-    this.demoVideoPage,
-    this.yoloCameraPage,
-  });
+  const new({super.key, this.demoVideoPage, this.yoloCameraPage});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +34,7 @@ class ExampleHomePage extends StatelessWidget {
   final Widget? demoVideoPage;
   final Widget? yoloCameraPage;
 
-  const ExampleHomePage({super.key, this.demoVideoPage, this.yoloCameraPage});
+  const new({super.key, this.demoVideoPage, this.yoloCameraPage});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +66,7 @@ class DemoClip {
   final Uri uri;
   final String detectorNote;
 
-  const DemoClip({
+  const new({
     required this.title,
     required this.uri,
     required this.detectorNote,
@@ -102,7 +98,7 @@ final _clips = [
 ];
 
 class DemoVideoTrackingPage extends StatefulWidget {
-  const DemoVideoTrackingPage({super.key});
+  const new({super.key});
 
   @override
   State<DemoVideoTrackingPage> createState() => _DemoVideoTrackingPageState();

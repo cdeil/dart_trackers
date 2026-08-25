@@ -11,7 +11,7 @@ class Detections {
   final Int32List? classId;
   final Int32List? trackerId;
 
-  Detections({
+  new({
     required Float64List xyxy,
     this.confidence,
     this.classId,
@@ -48,9 +48,9 @@ class Detections {
     }
   }
 
-  factory Detections.empty() => Detections(xyxy: Float64List(0));
+  factory empty() => Detections(xyxy: Float64List(0));
 
-  factory Detections.fromRows(
+  factory fromRows(
     List<List<num>> boxes, {
     List<num>? confidence,
     List<int>? classId,

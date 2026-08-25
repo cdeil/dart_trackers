@@ -34,7 +34,7 @@ class OCSORTTracker implements Tracker {
   int _nextTrackId = 0;
 
   /// Creates an OC-SORT tracker.
-  OCSORTTracker({
+  new({
     this.lostTrackBuffer = 30,
     this.frameRate = 30.0,
     this.minimumConsecutiveFrames = 3,
@@ -303,7 +303,7 @@ class OCSORTTracklet {
   _OCSORTFrozenState? _frozenState;
   bool _observed = true;
 
-  OCSORTTracklet(List<double> initialBbox, {required this.deltaT})
+  new(List<double> initialBbox, {required this.deltaT})
     : kf = _createFilter(initialBbox) {
     _configureNoise();
     motionModel = KalmanMotionModel.fromFilter(
@@ -482,7 +482,7 @@ class _OCSORTAssociation {
   final List<int> unmatchedTracks;
   final List<int> unmatchedDetections;
 
-  const _OCSORTAssociation({
+  const new({
     required this.matched,
     required this.unmatchedTracks,
     required this.unmatchedDetections,
@@ -497,7 +497,7 @@ class _OCSORTFrozenState {
   final Matrix q;
   final Matrix r;
 
-  const _OCSORTFrozenState({
+  const new({
     required this.x,
     required this.p,
     required this.f,

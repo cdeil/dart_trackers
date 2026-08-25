@@ -7,9 +7,9 @@ import 'fixtures.dart';
 
 void main() {
   test('SORT XYXY Kalman state matches Python fixture', () {
-    final fixture =
-        jsonDecode(fixtureJson('kalman_sort_xyxy.json'))
-            as Map<String, dynamic>;
+    final fixture = jsonDecode(
+      fixtureJson('kalman_sort_xyxy.json'),
+    ) as Map<String, dynamic>;
     final initial = (fixture['initial_bbox'] as List<dynamic>)
         .map((v) => (v as num).toDouble())
         .toList();

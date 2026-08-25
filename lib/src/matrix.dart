@@ -7,7 +7,7 @@ class Matrix {
   final int cols;
   final Float64List data;
 
-  Matrix(this.rows, this.cols, [Float64List? data])
+  new(this.rows, this.cols, [Float64List? data])
     : data = data == null
           ? Float64List(rows * cols)
           : Float64List.fromList(data) {
@@ -23,7 +23,7 @@ class Matrix {
     }
   }
 
-  factory Matrix.identity(int size) {
+  factory identity(int size) {
     final result = Matrix(size, size);
     for (var i = 0; i < size; i++) {
       result[i][i] = 1.0;
@@ -31,7 +31,7 @@ class Matrix {
     return result;
   }
 
-  factory Matrix.fromRows(List<List<num>> rows) {
+  factory fromRows(List<List<num>> rows) {
     if (rows.isEmpty) {
       return Matrix(0, 0);
     }
@@ -48,7 +48,7 @@ class Matrix {
     return Matrix(rows.length, cols, flat);
   }
 
-  factory Matrix.column(List<num> values) {
+  factory column(List<num> values) {
     return Matrix(
       values.length,
       1,
@@ -221,7 +221,7 @@ class MatrixRow {
   final Matrix matrix;
   final int row;
 
-  MatrixRow(this.matrix, this.row);
+  new(this.matrix, this.row);
 
   double operator [](int col) {
     if (col < 0 || col >= matrix.cols) {

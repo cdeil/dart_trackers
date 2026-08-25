@@ -4,10 +4,7 @@ class LinearAssignmentResult {
   final List<int> rowIndices;
   final List<int> colIndices;
 
-  const LinearAssignmentResult({
-    required this.rowIndices,
-    required this.colIndices,
-  });
+  const new({required this.rowIndices, required this.colIndices});
 
   double totalCost(Matrix costMatrix) {
     var result = 0.0;

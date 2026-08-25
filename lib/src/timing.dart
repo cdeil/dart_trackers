@@ -5,7 +5,7 @@ class PredictTiming {
   final bool skipUpdate;
   final double? frameRate;
 
-  const PredictTiming({
+  const new({
     required this.frameStep,
     required this.elapsedSeconds,
     this.skipUpdate = false,
@@ -26,7 +26,7 @@ class TrackerClock {
   final TrackerWarningHandler? onWarning;
   double? _lastTimestamp;
 
-  TrackerClock(this.frameRate, {this.onWarning});
+  new(this.frameRate, {this.onWarning});
 
   PredictTiming timing(double? timestamp) {
     if (timestamp == null) {
