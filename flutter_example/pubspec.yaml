@@ -32,8 +32,8 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
-  video_player: ^2.11.1
-  ultralytics_yolo: ^0.3.4
+  video_player: ^2.14.0
+  ultralytics_yolo: ^0.6.13
   dart_trackers:
     path: ..
 

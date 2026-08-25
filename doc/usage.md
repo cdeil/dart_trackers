@@ -47,7 +47,19 @@ Available trackers:
 - `SORTTracker`
 - `ByteTrackTracker`
 - `OCSORTTracker`
-- `BoTSORTTracker` without camera-motion compensation
+- `BoTSORTTracker`
+- `CBIoUTracker`
+
+Pass absolute capture times when frame delivery is irregular:
+
+```dart
+final tracked = tracker.update(detections, timestamp: captureTimeSeconds);
+final aliveIncludingMisses = tracker.trackedObjects;
+```
+
+For BoT-SORT camera compensation, provide a `CameraMotionCompensator` that
+estimates a 2x3 affine transform in your native or Flutter image stack. The
+portable package applies the transform but does not ship an image runtime.
 
 The Python tracker comparison is a useful conceptual guide:
 https://trackers.roboflow.com/latest/trackers/comparison/
@@ -71,6 +83,7 @@ See the Python docs for deeper algorithm explanations:
 - ByteTrack: https://trackers.roboflow.com/latest/trackers/bytetrack/
 - OC-SORT: https://trackers.roboflow.com/latest/trackers/ocsort/
 - BoT-SORT: https://trackers.roboflow.com/latest/trackers/botsort/
+- C-BIoU: https://trackers.roboflow.com/latest/trackers/cbiou/
 - State estimators: https://trackers.roboflow.com/latest/learn/state-estimators/
 
 ## Flutter integration pattern
@@ -96,7 +109,7 @@ Call `reset()` when switching videos, camera streams, or scenes.
 
 ## Advanced exports
 
-`Matrix`, `KalmanFilter`, `linearSumAssignment`, and IoU helpers are exported so
-tests, validation tooling, and advanced users can inspect or reuse the tracker
-math. Normal app code should not need them. They are small support utilities, not
-a general numerical-computing API.
+`Matrix`, `KalmanFilter`, `PredictTiming`, converters,
+`linearSumAssignment`, and the IoU metric family are exported for tests,
+validation tooling, and advanced integrations. They are small tracker support
+utilities, not a general numerical-computing API.

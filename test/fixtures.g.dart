@@ -657,7 +657,7 @@ const fixtureJsonByName = <String, String>{
                 -1
             ],
             [
-                -1
+                0
             ]
         ],
         "frames": [
@@ -688,7 +688,7 @@ const fixtureJsonByName = <String, String>{
                 ]
             }
         ],
-        "name": "missing_confidence_is_low_confidence",
+        "name": "missing_confidence_defaults_to_one",
         "params": {
             "minimum_consecutive_frames": 1,
             "minimum_iou_threshold": 0.1
@@ -749,10 +749,14 @@ const fixtureJsonByName = <String, String>{
     },
     {
         "expected_output_indices": [
-            []
+            [
+                0
+            ]
         ],
         "expected_tracker_id": [
-            []
+            [
+                -1
+            ]
         ],
         "frames": [
             {
@@ -769,7 +773,7 @@ const fixtureJsonByName = <String, String>{
                 ]
             }
         ],
-        "name": "high_below_activation_is_dropped",
+        "name": "high_below_activation_is_returned_untracked",
         "params": {
             "high_conf_det_threshold": 0.6,
             "minimum_consecutive_frames": 1,
@@ -934,6 +938,94 @@ const fixtureJsonByName = <String, String>{
     }
 ]
 ''',
+  'cbiou_cases.json': r'''[
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracker_id": [
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        11.0,
+                        0.0,
+                        21.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "buffer_recovers_small_localization_gap",
+        "params": {
+            "buffer_ratio_first": 0.3,
+            "buffer_ratio_second": 0.5,
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold_first_assoc": 0.01
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ]
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ]
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.65
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "unmatched_high_is_returned",
+        "params": {
+            "high_conf_det_threshold": 0.6,
+            "track_activation_threshold": 0.7
+        }
+    }
+]
+''',
   'iou_cases.json': r'''{
     "boxes_a": [
         [
@@ -991,7 +1083,94 @@ const fixtureJsonByName = <String, String>{
             0.0,
             0.0
         ]
-    ]
+    ],
+    "matrices": {
+        "biou_0_3": [
+            [
+                0.30946290493011475,
+                0.0,
+                0.0
+            ],
+            [
+                0.001956947147846222,
+                0.30946290493011475,
+                0.0
+            ],
+            [
+                0.0,
+                0.0,
+                0.0
+            ]
+        ],
+        "ciou": [
+            [
+                0.031746031770723104,
+                -0.5102040816118284,
+                -0.8264462809883204
+            ],
+            [
+                -0.35999999997119997,
+                0.031746031770723104,
+                -0.7901234567852461
+            ],
+            [
+                -0.3277777777160494,
+                -0.6724489795664307,
+                -0.9188016528889719
+            ]
+        ],
+        "diou": [
+            [
+                0.031746031770723104,
+                -0.5102040816118284,
+                -0.8264462809883204
+            ],
+            [
+                -0.35999999997119997,
+                0.031746031770723104,
+                -0.7901234567852461
+            ],
+            [
+                -0.2777777777160494,
+                -0.6224489795664306,
+                -0.8688016528889718
+            ]
+        ],
+        "giou": [
+            [
+                -0.07936507936507936,
+                -0.8367346938775511,
+                -0.9834710743801653
+            ],
+            [
+                -0.68,
+                -0.07936507936507936,
+                -0.9753086419753086
+            ],
+            [
+                -0.5555555555555556,
+                -0.9183673469387755,
+                -0.9917355371900827
+            ]
+        ],
+        "iou": [
+            [
+                0.1428571492433548,
+                0.0,
+                0.0
+            ],
+            [
+                0.0,
+                0.1428571492433548,
+                0.0
+            ],
+            [
+                0.0,
+                0.0,
+                0.0
+            ]
+        ]
+    }
 }
 ''',
   'kalman_sort_xyxy.json': r'''{
@@ -1093,8 +1272,8 @@ const fixtureJsonByName = <String, String>{
     "psutil": "7.2.2",
     "python": "3.14",
     "scipy": "1.17.1",
-    "supervision": "0.28.0",
-    "trackers": "editable"
+    "supervision": "0.29.0",
+    "trackers": "2.6.0"
 }
 ''',
   'ocsort_cases.json': r'''[
@@ -1254,18 +1433,22 @@ const fixtureJsonByName = <String, String>{
     {
         "expected_output_indices": [
             [
-                0
+                0,
+                1
             ],
             [
-                0
+                0,
+                1
             ]
         ],
         "expected_tracker_id": [
             [
+                -1,
                 -1
             ],
             [
-                0
+                0,
+                -1
             ]
         ],
         "frames": [

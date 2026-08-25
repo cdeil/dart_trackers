@@ -52,14 +52,14 @@ on macOS and short runs.
 
 Local median update time in microseconds per frame, 500 frames, 5 repeats:
 
-| Runtime     | Objects |   SORT | ByteTrack | OC-SORT | BoT-SORT |
-| ----------- | ------: | -----: | --------: | ------: | -------: |
-| Dart VM     |      10 |   35.6 |      36.6 |    36.8 |     35.1 |
-| Dart VM     |     100 |  881.6 |     890.0 |  1211.4 |    978.0 |
-| Dart AOT    |      10 |   38.7 |      41.5 |    45.7 |     45.9 |
-| Dart AOT    |     100 | 1041.1 |    1098.7 |  1265.1 |   1160.0 |
-| Python 3.14 |      10 |  189.3 |     210.4 |   299.9 |    365.5 |
-| Python 3.14 |     100 | 1818.8 |    1762.2 |  2459.3 |   3287.0 |
+| Runtime     | Objects |  SORT | ByteTrack | OC-SORT | BoT-SORT | C-BIoU |
+| ----------- | ------: | ----: | --------: | ------: | -------: | -----: |
+| Dart VM     |      10 |  20.3 |      19.7 |    23.6 |     23.8 |   23.5 |
+| Dart VM     |     100 | 313.7 |     314.1 |   482.4 |    357.2 |  362.1 |
+| Dart AOT    |      10 |  26.5 |      22.4 |    24.0 |     26.5 |   27.0 |
+| Dart AOT    |     100 | 458.9 |     460.0 |   540.9 |    515.3 |  525.8 |
+| Python 3.14 |      10 | 139.0 |     145.1 |   187.7 |    269.9 |  275.3 |
+| Python 3.14 |     100 | 1260.1 |   1262.8 |  1672.0 |   2467.5 | 2485.0 |
 
 Treat these as directional. CI should eventually upload benchmark JSON artifacts
 so changes can be compared over time on consistent runners.

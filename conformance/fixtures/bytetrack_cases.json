@@ -115,7 +115,7 @@
                 -1
             ],
             [
-                -1
+                0
             ]
         ],
         "frames": [
@@ -146,7 +146,7 @@
                 ]
             }
         ],
-        "name": "missing_confidence_is_low_confidence",
+        "name": "missing_confidence_defaults_to_one",
         "params": {
             "minimum_consecutive_frames": 1,
             "minimum_iou_threshold": 0.1
@@ -207,10 +207,14 @@
     },
     {
         "expected_output_indices": [
-            []
+            [
+                0
+            ]
         ],
         "expected_tracker_id": [
-            []
+            [
+                -1
+            ]
         ],
         "frames": [
             {
@@ -227,7 +231,7 @@
                 ]
             }
         ],
-        "name": "high_below_activation_is_dropped",
+        "name": "high_below_activation_is_returned_untracked",
         "params": {
             "high_conf_det_threshold": 0.6,
             "minimum_consecutive_frames": 1,

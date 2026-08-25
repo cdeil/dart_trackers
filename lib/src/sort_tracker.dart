@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'assignment.dart';
@@ -6,6 +5,8 @@ import 'detections.dart';
 import 'iou.dart';
 import 'kalman_filter.dart';
 import 'matrix.dart';
+import 'motion_model.dart';
+import 'timing.dart';
 import 'tracker.dart';
 
 /// SORT tracker using an XYXY constant-velocity Kalman filter.
@@ -20,6 +21,10 @@ class SORTTracker implements Tracker {
   final int minimumConsecutiveFrames;
   final double minimumIouThreshold;
   final int maximumFramesWithoutUpdate;
+  final double maximumTimeWithoutUpdate;
+  final BaseIoU iou;
+  final TrackerClock _clock;
+  final TrackerWarningHandler? _onWarning;
 
   final List<SORTTracklet> tracks = [];
   int _nextTrackId = 0;
@@ -31,16 +36,16 @@ class SORTTracker implements Tracker {
     this.trackActivationThreshold = 0.25,
     this.minimumConsecutiveFrames = 3,
     this.minimumIouThreshold = 0.3,
-  }) : maximumFramesWithoutUpdate = math.max(
-         1,
-         (frameRate / 30.0 * lostTrackBuffer).floor(),
-       ) {
-    if (lostTrackBuffer < 1) {
-      throw ArgumentError.value(lostTrackBuffer, 'lostTrackBuffer');
-    }
-    if (frameRate <= 0) {
-      throw ArgumentError.value(frameRate, 'frameRate');
-    }
+    BaseIoU? iou,
+    TrackerWarningHandler? onWarning,
+  }) : maximumFramesWithoutUpdate = computeMaximumFramesWithoutUpdate(
+         lostTrackBuffer,
+         frameRate,
+       ),
+       maximumTimeWithoutUpdate = lostTrackBuffer / 30.0,
+       iou = iou ?? const IoU(),
+       _clock = TrackerClock(frameRate, onWarning: onWarning),
+       _onWarning = onWarning {
     if (minimumConsecutiveFrames < 1) {
       throw ArgumentError.value(
         minimumConsecutiveFrames,
@@ -50,21 +55,39 @@ class SORTTracker implements Tracker {
   }
 
   @override
-  Detections update(Detections detections, {Object? frame}) {
+  Detections update(Detections detections, {Object? frame, double? timestamp}) {
     if (frame != null) {
-      throw UnsupportedError('SORTTracker does not use frame input');
+      _onWarning?.call('SORTTracker ignores frame input.');
+    }
+    final timing = _clock.timing(timestamp);
+    if (timing.skipUpdate) {
+      return detections.copyWithTrackerId(
+        Int32List.fromList(List.filled(detections.length, -1)),
+      );
     }
     if (tracks.isEmpty && detections.isEmpty) {
       return detections.copyWithTrackerId(Int32List(0));
     }
 
-    for (final track in tracks) {
-      track.predict();
+    if (!timing.skipPredict) {
+      for (final track in tracks) {
+        track.predict(timing);
+      }
+    }
+    if (timing.usesElapsedTime) {
+      tracks.removeWhere(
+        (track) => !withinLostTrackBudget(
+          timeSinceUpdate: track.timeSinceUpdate,
+          timeSinceUpdateSeconds: track.timeSinceUpdateSeconds,
+          maximumFrames: maximumFramesWithoutUpdate,
+          maximumSeconds: maximumTimeWithoutUpdate,
+        ),
+      );
     }
 
     final detectionBoxes = detections.xyxyRows();
     final predictedBoxes = [for (final track in tracks) track.getStateBbox()];
-    final iouMatrix = boxIouBatch(predictedBoxes, detectionBoxes);
+    final iouMatrix = iou.compute(predictedBoxes, detectionBoxes);
     final associated = _getAssociatedIndices(
       iouMatrix,
       tracks.length,
@@ -88,8 +111,15 @@ class SORTTracker implements Tracker {
       final isMature =
           track.numberOfSuccessfulUpdates >= minimumConsecutiveFrames;
       final isActive = track.timeSinceUpdate == 0;
-      return !(track.timeSinceUpdate < maximumFramesWithoutUpdate &&
-          (isMature || isActive));
+      final withinBudget = withinLostTrackBudget(
+        timeSinceUpdate: track.timeSinceUpdate,
+        timeSinceUpdateSeconds: track.timeSinceUpdateSeconds,
+        maximumFrames: maximumFramesWithoutUpdate,
+        maximumSeconds: timing.usesElapsedTime
+            ? maximumTimeWithoutUpdate
+            : null,
+      );
+      return !(withinBudget && (isMature || isActive));
     });
 
     final trackerIds = Int32List(detections.length);
@@ -112,6 +142,16 @@ class SORTTracker implements Tracker {
   void reset() {
     tracks.clear();
     _nextTrackId = 0;
+    _clock.reset();
+  }
+
+  @override
+  Detections get trackedObjects {
+    final confirmed = tracks.where((track) => track.trackerId >= 0).toList();
+    return Detections.fromRows(
+      [for (final track in confirmed) track.getStateBbox()],
+      trackerId: [for (final track in confirmed) track.trackerId],
+    );
   }
 
   _Association _getAssociatedIndices(
@@ -146,24 +186,38 @@ class SORTTracker implements Tracker {
 
 class SORTTracklet {
   final KalmanFilter kf;
+  late final KalmanMotionModel motionModel;
   int trackerId = -1;
   int timeSinceUpdate = 0;
+  double timeSinceUpdateSeconds = 0.0;
   int age = 0;
   int numberOfSuccessfulUpdates = 1;
 
   SORTTracklet(List<double> initialBbox) : kf = _createFilter(initialBbox) {
     _configureNoise();
+    motionModel = KalmanMotionModel.fromFilter(
+      kf,
+      positionIndices: const [0, 1, 2, 3],
+      velocityIndices: const [4, 5, 6, 7],
+    );
   }
 
-  void predict() {
+  void predict([PredictTiming timing = fixedRateTiming]) {
+    motionModel.apply(kf, timing.frameStep, frameRate: timing.frameRate);
     kf.predict();
     timeSinceUpdate++;
+    if (timing.elapsedSeconds != null) {
+      timeSinceUpdateSeconds += timing.elapsedSeconds!;
+    } else {
+      timeSinceUpdateSeconds = 0.0;
+    }
     age++;
   }
 
   void update(List<double> bbox) {
     kf.update(bbox);
     timeSinceUpdate = 0;
+    timeSinceUpdateSeconds = 0.0;
     numberOfSuccessfulUpdates++;
   }
 

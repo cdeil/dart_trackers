@@ -2,10 +2,13 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'assignment.dart';
+import 'converters.dart';
 import 'detections.dart';
 import 'iou.dart';
 import 'kalman_filter.dart';
 import 'matrix.dart';
+import 'motion_model.dart';
+import 'timing.dart';
 import 'tracker.dart';
 
 /// OC-SORT tracker with observation-centric recovery and direction consistency.
@@ -21,6 +24,10 @@ class OCSORTTracker implements Tracker {
   final double highConfDetThreshold;
   final int deltaT;
   final int maximumFramesWithoutUpdate;
+  final double maximumTimeWithoutUpdate;
+  final BaseIoU iou;
+  final TrackerClock _clock;
+  final TrackerWarningHandler? _onWarning;
 
   final List<OCSORTTracklet> tracks = [];
   int _frameCount = 0;
@@ -35,15 +42,16 @@ class OCSORTTracker implements Tracker {
     this.directionConsistencyWeight = 0.2,
     this.highConfDetThreshold = 0.6,
     this.deltaT = 3,
-  }) : maximumFramesWithoutUpdate = math
-           .max(1, (frameRate / 30.0 * lostTrackBuffer).floor())
-           .toInt() {
-    if (lostTrackBuffer < 1) {
-      throw ArgumentError.value(lostTrackBuffer, 'lostTrackBuffer');
-    }
-    if (frameRate <= 0) {
-      throw ArgumentError.value(frameRate, 'frameRate');
-    }
+    BaseIoU? iou,
+    TrackerWarningHandler? onWarning,
+  }) : maximumFramesWithoutUpdate = computeMaximumFramesWithoutUpdate(
+         lostTrackBuffer,
+         frameRate,
+       ),
+       maximumTimeWithoutUpdate = lostTrackBuffer / 30.0,
+       iou = iou ?? const IoU(),
+       _clock = TrackerClock(frameRate, onWarning: onWarning),
+       _onWarning = onWarning {
     if (minimumConsecutiveFrames < 1) {
       throw ArgumentError.value(
         minimumConsecutiveFrames,
@@ -56,24 +64,30 @@ class OCSORTTracker implements Tracker {
   }
 
   @override
-  Detections update(Detections detections, {Object? frame}) {
+  Detections update(Detections detections, {Object? frame, double? timestamp}) {
     if (frame != null) {
-      throw UnsupportedError('OCSORTTracker does not use frame input');
+      _onWarning?.call('OCSORTTracker ignores frame input.');
+    }
+    final timing = _clock.timing(timestamp);
+    if (timing.skipUpdate) {
+      return detections.copyWithTrackerId(
+        Int32List.fromList(List.filled(detections.length, -1)),
+      );
     }
     if (tracks.isEmpty && detections.isEmpty) {
       return Detections.empty().copyWithTrackerId(Int32List(0));
     }
 
-    var filtered = detections;
-    if (detections.confidence != null) {
-      final keep = <int>[];
-      for (var i = 0; i < detections.length; i++) {
-        if (detections.confidenceAt(i) >= highConfDetThreshold) {
-          keep.add(i);
-        }
+    final highIndices = <int>[];
+    final lowIndices = <int>[];
+    for (var i = 0; i < detections.length; i++) {
+      if (detections.confidenceAt(i) >= highConfDetThreshold) {
+        highIndices.add(i);
+      } else {
+        lowIndices.add(i);
       }
-      filtered = detections.select(keep);
     }
+    final filtered = detections.select(highIndices);
 
     final detectionBoxes = filtered.xyxyRows();
     final confidences = [
@@ -82,12 +96,24 @@ class OCSORTTracker implements Tracker {
     final outDetIndices = <int>[];
     final outTrackerIds = <int>[];
 
-    for (final track in tracks) {
-      track.predict();
+    if (!timing.skipPredict) {
+      for (final track in tracks) {
+        track.predict(timing);
+      }
+    }
+    if (timing.usesElapsedTime) {
+      tracks.removeWhere(
+        (track) => !withinLostTrackBudget(
+          timeSinceUpdate: track.timeSinceUpdate,
+          timeSinceUpdateSeconds: track.timeSinceUpdateSeconds,
+          maximumFrames: maximumFramesWithoutUpdate,
+          maximumSeconds: maximumTimeWithoutUpdate,
+        ),
+      );
     }
 
     final predictedBoxes = [for (final track in tracks) track.getStateBbox()];
-    final iouMatrix = boxIouBatch(predictedBoxes, detectionBoxes);
+    final iouMatrix = iou.compute(predictedBoxes, detectionBoxes);
     final directionMatrix = _computeDirectionConsistencyMatrix(
       detectionBoxes,
       confidences,
@@ -97,7 +123,7 @@ class OCSORTTracker implements Tracker {
     for (final (row, col) in primary.matched) {
       final track = tracks[row];
       track.update(detectionBoxes[col]);
-      outDetIndices.add(col);
+      outDetIndices.add(highIndices[col]);
       outTrackerIds.add(_resolveTrackerId(track));
     }
 
@@ -112,7 +138,7 @@ class OCSORTTracker implements Tracker {
         for (final detIndex in primary.unmatchedDetections)
           detectionBoxes[detIndex],
       ];
-      final ocrIou = boxIouBatch(lastObservationBoxes, unmatchedBoxes);
+      final ocrIou = iou.compute(lastObservationBoxes, unmatchedBoxes);
       final ocr = _getAssociatedIndices(
         ocrIou,
         Matrix(ocrIou.rows, ocrIou.cols),
@@ -123,7 +149,7 @@ class OCSORTTracker implements Tracker {
         final detIndex = primary.unmatchedDetections[col];
         final track = tracks[trackIndex];
         track.update(detectionBoxes[detIndex]);
-        outDetIndices.add(detIndex);
+        outDetIndices.add(highIndices[detIndex]);
         outTrackerIds.add(_resolveTrackerId(track));
       }
       remainingDetections = [
@@ -133,18 +159,29 @@ class OCSORTTracker implements Tracker {
     }
 
     tracks.removeWhere(
-      (track) => track.timeSinceUpdate > maximumFramesWithoutUpdate,
+      (track) => !withinLostTrackBudget(
+        timeSinceUpdate: track.timeSinceUpdate,
+        timeSinceUpdateSeconds: track.timeSinceUpdateSeconds,
+        maximumFrames: maximumFramesWithoutUpdate,
+        maximumSeconds: timing.usesElapsedTime
+            ? maximumTimeWithoutUpdate
+            : null,
+      ),
     );
 
     for (final detIndex in remainingDetections) {
       tracks.add(OCSORTTracklet(detectionBoxes[detIndex], deltaT: deltaT));
-      outDetIndices.add(detIndex);
+      outDetIndices.add(highIndices[detIndex]);
       outTrackerIds.add(-1);
     }
 
+    for (final detIndex in lowIndices) {
+      outDetIndices.add(detIndex);
+      outTrackerIds.add(-1);
+    }
     final result = outDetIndices.isEmpty
         ? Detections.empty()
-        : filtered.select(outDetIndices);
+        : detections.select(outDetIndices);
     _frameCount++;
     return result.copyWithTrackerId(Int32List.fromList(outTrackerIds));
   }
@@ -154,6 +191,16 @@ class OCSORTTracker implements Tracker {
     tracks.clear();
     _frameCount = 0;
     _nextTrackId = 0;
+    _clock.reset();
+  }
+
+  @override
+  Detections get trackedObjects {
+    final confirmed = tracks.where((track) => track.trackerId >= 0).toList();
+    return Detections.fromRows(
+      [for (final track in confirmed) track.getStateBbox()],
+      trackerId: [for (final track in confirmed) track.trackerId],
+    );
   }
 
   int _resolveTrackerId(OCSORTTracklet track) {
@@ -242,9 +289,11 @@ class OCSORTTracker implements Tracker {
 
 class OCSORTTracklet {
   final KalmanFilter kf;
+  late final KalmanMotionModel motionModel;
   final int deltaT;
   int trackerId = -1;
   int timeSinceUpdate = 0;
+  double timeSinceUpdateSeconds = 0.0;
   int age = 0;
   int numberOfSuccessfulConsecutiveUpdates = 0;
   late List<double> lastObservation;
@@ -257,21 +306,32 @@ class OCSORTTracklet {
   OCSORTTracklet(List<double> initialBbox, {required this.deltaT})
     : kf = _createFilter(initialBbox) {
     _configureNoise();
+    motionModel = KalmanMotionModel.fromFilter(
+      kf,
+      positionIndices: const [0, 1, 2],
+      velocityIndices: const [4, 5, 6],
+    );
     lastObservation = List<double>.from(initialBbox);
   }
 
-  void predict() {
+  void predict([PredictTiming timing = fixedRateTiming]) {
     if (_observed && timeSinceUpdate > 0) {
       _freeze();
       _observed = false;
     }
-    _clampVelocity();
+    _clampVelocity(timing.frameStep);
+    motionModel.apply(kf, timing.frameStep, frameRate: timing.frameRate);
     kf.predict();
     age++;
     if (timeSinceUpdate > 0) {
       numberOfSuccessfulConsecutiveUpdates = 0;
     }
     timeSinceUpdate++;
+    if (timing.elapsedSeconds != null) {
+      timeSinceUpdateSeconds += timing.elapsedSeconds!;
+    } else {
+      timeSinceUpdateSeconds = 0.0;
+    }
   }
 
   void update(List<double> bbox) {
@@ -282,9 +342,10 @@ class OCSORTTracklet {
     if (!_observed && _frozenState != null) {
       _unfreeze(bbox);
     }
-    kf.update(_xyxyToXcycsr(bbox));
+    kf.update(xyxyToXcycsr(bbox));
     _observed = true;
     timeSinceUpdate = 0;
+    timeSinceUpdateSeconds = 0.0;
     numberOfSuccessfulConsecutiveUpdates++;
     previousToLastObservation = lastObservation;
     lastObservation = List<double>.from(bbox);
@@ -292,7 +353,7 @@ class OCSORTTracklet {
   }
 
   List<double> getStateBbox() =>
-      _xcycsrToXyxy([kf.x[0][0], kf.x[1][0], kf.x[2][0], kf.x[3][0]]);
+      xcycsrToXyxy([kf.x[0][0], kf.x[1][0], kf.x[2][0], kf.x[3][0]]);
 
   List<double>? getKPreviousObs() {
     if (observations.isEmpty) return null;
@@ -330,10 +391,12 @@ class OCSORTTracklet {
     kf.h = frozen.h.copy();
     kf.q = frozen.q.copy();
     kf.r = frozen.r.copy();
+    motionModel.calibrate(kf.q);
+    motionModel.resetCache();
 
     final timeGap = timeSinceUpdate;
-    final last = _xyxyToXcycsr(lastObservation);
-    final next = _xyxyToXcycsr(newBbox);
+    final last = xyxyToXcycsr(lastObservation);
+    final next = xyxyToXcycsr(newBbox);
     final x1 = last[0];
     final y1 = last[1];
     final w1 = math.sqrt(last[2] * last[3]);
@@ -354,6 +417,7 @@ class OCSORTTracklet {
       final h = h1 + (i + 1) * dh;
       kf.update([x, y, w * h, w / h]);
       if (i < timeGap - 1) {
+        motionModel.apply(kf, 1.0);
         kf.predict();
       }
     }
@@ -373,8 +437,8 @@ class OCSORTTracklet {
     }
   }
 
-  void _clampVelocity() {
-    if (kf.x[6][0] + kf.x[2][0] <= 0.0) {
+  void _clampVelocity(double frameStep) {
+    if (kf.x[2][0] + frameStep * kf.x[6][0] <= 0.0) {
       kf.x[6][0] = 0.0;
     }
   }
@@ -394,7 +458,7 @@ class OCSORTTracklet {
     for (var i = 0; i < 4; i++) {
       kf.h[i][i] = 1.0;
     }
-    final measurement = _xyxyToXcycsr(bbox);
+    final measurement = xyxyToXcycsr(bbox);
     for (var i = 0; i < 4; i++) {
       kf.x[i][0] = measurement[i];
     }
@@ -411,23 +475,6 @@ class OCSORTTracklet {
     final norm = math.sqrt(dy * dy + dx * dx) + 1e-6;
     return [dy / norm, dx / norm];
   }
-}
-
-List<double> _xyxyToXcycsr(List<double> xyxy) {
-  final w = xyxy[2] - xyxy[0];
-  final h = xyxy[3] - xyxy[1];
-  return [xyxy[0] + w * 0.5, xyxy[1] + h * 0.5, w * h, w / (h + 1e-6)];
-}
-
-List<double> _xcycsrToXyxy(List<double> xcycsr) {
-  final w = math.sqrt(xcycsr[2] * xcycsr[3]);
-  final h = xcycsr[2] / w;
-  return [
-    xcycsr[0] - w * 0.5,
-    xcycsr[1] - h * 0.5,
-    xcycsr[0] + w * 0.5,
-    xcycsr[1] + h * 0.5,
-  ];
 }
 
 class _OCSORTAssociation {

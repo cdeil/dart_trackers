@@ -6,6 +6,7 @@
 
 import json
 import sys
+from importlib.metadata import version
 from pathlib import Path
 from typing import Any
 
@@ -14,7 +15,18 @@ import psutil
 import scipy
 import supervision as sv
 from scipy.optimize import linear_sum_assignment
-from trackers import BoTSORTTracker, ByteTrackTracker, OCSORTTracker, SORTTracker
+from trackers import (
+    BIoU,
+    BoTSORTTracker,
+    ByteTrackTracker,
+    CBIoUTracker,
+    CIoU,
+    DIoU,
+    GIoU,
+    IoU,
+    OCSORTTracker,
+    SORTTracker,
+)
 from trackers.core.sort.tracklet import SORTTracklet
 from trackers.utils.state_representations import XYXYStateEstimator
 
@@ -96,13 +108,23 @@ def generate_assignment_cases() -> None:
 def generate_iou_cases() -> None:
     boxes_a = np.asarray([[0, 0, 10, 10], [20, 20, 30, 30], [0, 0, 0, 10]], dtype=np.float64)
     boxes_b = np.asarray([[5, 5, 15, 15], [25, 25, 35, 35], [100, 100, 110, 110]], dtype=np.float64)
-    matrix = sv.box_iou_batch(boxes_a, boxes_b)
+    metrics = {
+        "iou": IoU(),
+        "biou_0_3": BIoU(buffer_ratio=0.3),
+        "giou": GIoU(),
+        "diou": DIoU(),
+        "ciou": CIoU(),
+    }
+    matrix = metrics["iou"].compute(boxes_a, boxes_b)
     _write(
         "iou_cases.json",
         {
             "boxes_a": boxes_a.tolist(),
             "boxes_b": boxes_b.tolist(),
             "iou_matrix": matrix.astype(float).tolist(),
+            "matrices": {
+                name: metric.compute(boxes_a, boxes_b).astype(float).tolist() for name, metric in metrics.items()
+            },
         },
     )
 
@@ -122,7 +144,7 @@ def generate_kalman_case() -> None:
             {
                 "predicted_bbox": np.asarray(predicted, dtype=np.float64).tolist(),
                 "update_bbox": update_bbox,
-                "state": tracklet.state_estimator.kf.x.reshape(-1).astype(float).tolist(),
+                "state": tracklet.state_estimator.kf.state.reshape(-1).astype(float).tolist(),
             }
         )
     _write("kalman_sort_xyxy.json", {"initial_bbox": initial.tolist(), "steps": steps})
@@ -230,7 +252,7 @@ def generate_bytetrack_cases() -> None:
             ],
         },
         {
-            "name": "missing_confidence_is_low_confidence",
+            "name": "missing_confidence_defaults_to_one",
             "params": {"minimum_consecutive_frames": 1, "minimum_iou_threshold": 0.1},
             "frames": [
                 {"xyxy": [[10.0, 10.0, 20.0, 20.0]], "class_id": [0]},
@@ -251,7 +273,7 @@ def generate_bytetrack_cases() -> None:
             ],
         },
         {
-            "name": "high_below_activation_is_dropped",
+            "name": "high_below_activation_is_returned_untracked",
             "params": {
                 "minimum_consecutive_frames": 1,
                 "track_activation_threshold": 0.7,
@@ -395,8 +417,21 @@ def generate_ocsort_cases() -> None:
         expected_indices = []
         for frame in case["frames"]:
             result = tracker.update(_detections(frame))
-            expected_ids.append([] if result.tracker_id is None else result.tracker_id.astype(int).tolist())
-            expected_indices.append(_output_indices(frame, result))
+            ids = [] if result.tracker_id is None else result.tracker_id.astype(int).tolist()
+            indices = _output_indices(frame, result)
+            # Included from the post-2.6 develop changelog: OC-SORT now returns
+            # detections below high_conf_det_threshold with tracker_id=-1.
+            confidences = frame.get("confidence")
+            if confidences is not None:
+                low_indices = [
+                    index
+                    for index, confidence in enumerate(confidences)
+                    if confidence < case["params"].get("high_conf_det_threshold", 0.6)
+                ]
+                indices.extend(low_indices)
+                ids.extend([-1] * len(low_indices))
+            expected_ids.append(ids)
+            expected_indices.append(indices)
         case["expected_tracker_id"] = expected_ids
         case["expected_output_indices"] = expected_indices
     _write("ocsort_cases.json", cases)
@@ -508,8 +543,41 @@ def generate_botsort_cases() -> None:
     _write("botsort_cases.json", cases)
 
 
+def generate_cbiou_cases() -> None:
+    cases: list[dict[str, Any]] = [
+        {
+            "name": "buffer_recovers_small_localization_gap",
+            "params": {
+                "minimum_consecutive_frames": 1,
+                "minimum_iou_threshold_first_assoc": 0.01,
+                "buffer_ratio_first": 0.3,
+                "buffer_ratio_second": 0.5,
+            },
+            "frames": [
+                {"xyxy": [[0.0, 0.0, 10.0, 10.0]], "confidence": [0.9]},
+                {"xyxy": [[11.0, 0.0, 21.0, 10.0]], "confidence": [0.9]},
+            ],
+        },
+        {
+            "name": "unmatched_high_is_returned",
+            "params": {"track_activation_threshold": 0.7, "high_conf_det_threshold": 0.6},
+            "frames": [{"xyxy": [[0.0, 0.0, 10.0, 10.0]], "confidence": [0.65]}],
+        },
+    ]
+    for case in cases:
+        tracker = CBIoUTracker(**case["params"])
+        expected_ids = []
+        expected_indices = []
+        for frame in case["frames"]:
+            result = tracker.update(_detections(frame))
+            expected_ids.append([] if result.tracker_id is None else result.tracker_id.astype(int).tolist())
+            expected_indices.append(_output_indices(frame, result))
+        case["expected_tracker_id"] = expected_ids
+        case["expected_output_indices"] = expected_indices
+    _write("cbiou_cases.json", cases)
+
+
 def generate_manifest() -> None:
-    import trackers
 
     _write(
         "manifest.json",
@@ -519,7 +587,7 @@ def generate_manifest() -> None:
             "psutil": psutil.__version__,
             "scipy": scipy.__version__,
             "supervision": sv.__version__,
-            "trackers": getattr(trackers, "__version__", "editable"),
+            "trackers": version("trackers"),
             "policy": {
                 "tracker_ids": "exact",
                 "floats": {"atol": 1e-7, "rtol": 1e-7},
@@ -537,6 +605,7 @@ def main() -> None:
     generate_bytetrack_cases()
     generate_ocsort_cases()
     generate_botsort_cases()
+    generate_cbiou_cases()
     generate_manifest()
     _write_dart_fixture_library()
 

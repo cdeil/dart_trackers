@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'assignment.dart';
@@ -6,6 +5,8 @@ import 'detections.dart';
 import 'iou.dart';
 import 'kalman_filter.dart';
 import 'matrix.dart';
+import 'motion_model.dart';
+import 'timing.dart';
 import 'tracker.dart';
 
 /// ByteTrack tracker with high- and low-confidence association stages.
@@ -20,6 +21,10 @@ class ByteTrackTracker implements Tracker {
   final double minimumIouThreshold;
   final double highConfDetThreshold;
   final int maximumFramesWithoutUpdate;
+  final double maximumTimeWithoutUpdate;
+  final BaseIoU iou;
+  final TrackerClock _clock;
+  final TrackerWarningHandler? _onWarning;
 
   final List<ByteTrackTracklet> tracks = [];
   int _nextTrackId = 0;
@@ -32,16 +37,16 @@ class ByteTrackTracker implements Tracker {
     this.minimumConsecutiveFrames = 2,
     this.minimumIouThreshold = 0.1,
     this.highConfDetThreshold = 0.6,
-  }) : maximumFramesWithoutUpdate = math.max(
-         1,
-         (frameRate / 30.0 * lostTrackBuffer).floor(),
-       ) {
-    if (lostTrackBuffer < 1) {
-      throw ArgumentError.value(lostTrackBuffer, 'lostTrackBuffer');
-    }
-    if (frameRate <= 0) {
-      throw ArgumentError.value(frameRate, 'frameRate');
-    }
+    BaseIoU? iou,
+    TrackerWarningHandler? onWarning,
+  }) : maximumFramesWithoutUpdate = computeMaximumFramesWithoutUpdate(
+         lostTrackBuffer,
+         frameRate,
+       ),
+       maximumTimeWithoutUpdate = lostTrackBuffer / 30.0,
+       iou = iou ?? const IoU(),
+       _clock = TrackerClock(frameRate, onWarning: onWarning),
+       _onWarning = onWarning {
     if (minimumConsecutiveFrames < 1) {
       throw ArgumentError.value(
         minimumConsecutiveFrames,
@@ -51,25 +56,41 @@ class ByteTrackTracker implements Tracker {
   }
 
   @override
-  Detections update(Detections detections, {Object? frame}) {
+  Detections update(Detections detections, {Object? frame, double? timestamp}) {
     if (frame != null) {
-      throw UnsupportedError('ByteTrackTracker does not use frame input');
+      _onWarning?.call('ByteTrackTracker ignores frame input.');
+    }
+    final timing = _clock.timing(timestamp);
+    if (timing.skipUpdate) {
+      return detections.copyWithTrackerId(
+        Int32List.fromList(List.filled(detections.length, -1)),
+      );
     }
     if (tracks.isEmpty && detections.isEmpty) {
       return Detections.empty().copyWithTrackerId(Int32List(0));
     }
 
-    for (final track in tracks) {
-      track.predict();
+    if (!timing.skipPredict) {
+      for (final track in tracks) {
+        track.predict(timing);
+      }
+    }
+    if (timing.usesElapsedTime) {
+      tracks.removeWhere(
+        (track) => !withinLostTrackBudget(
+          timeSinceUpdate: track.timeSinceUpdate,
+          timeSinceUpdateSeconds: track.timeSinceUpdateSeconds,
+          maximumFrames: maximumFramesWithoutUpdate,
+          maximumSeconds: maximumTimeWithoutUpdate,
+        ),
+      );
     }
 
     final detectionBoxes = detections.xyxyRows();
     final highIndices = <int>[];
     final lowIndices = <int>[];
     for (var i = 0; i < detections.length; i++) {
-      final confidence = detections.confidence == null
-          ? 0.0
-          : detections.confidenceAt(i);
+      final confidence = detections.confidenceAt(i);
       if (confidence >= highConfDetThreshold) {
         highIndices.add(i);
       } else {
@@ -85,7 +106,7 @@ class ByteTrackTracker implements Tracker {
     final predictedBoxes = [for (final track in tracks) track.getStateBbox()];
 
     final stage1 = _getAssociatedIndices(
-      boxIouBatch(predictedBoxes, highBoxes),
+      iou.compute(predictedBoxes, highBoxes),
       tracks.length,
       highBoxes.length,
     );
@@ -103,7 +124,7 @@ class ByteTrackTracker implements Tracker {
       for (final i in stage1.unmatchedTracks) predictedBoxes[i],
     ];
     final stage2 = _getAssociatedIndices(
-      boxIouBatch(remainingBoxes, lowBoxes),
+      iou.compute(remainingBoxes, lowBoxes),
       remainingTracks.length,
       lowBoxes.length,
     );
@@ -123,13 +144,11 @@ class ByteTrackTracker implements Tracker {
 
     for (final detLocalIndex in stage1.unmatchedDetections) {
       final globalIndex = highIndices[detLocalIndex];
-      final confidence = detections.confidence == null
-          ? 0.0
-          : detections.confidenceAt(globalIndex);
+      final confidence = detections.confidenceAt(globalIndex);
+      outDetIndices.add(globalIndex);
+      outTrackerIds.add(-1);
       if (confidence >= trackActivationThreshold) {
         tracks.add(ByteTrackTracklet(detectionBoxes[globalIndex]));
-        outDetIndices.add(globalIndex);
-        outTrackerIds.add(-1);
       }
     }
 
@@ -139,8 +158,15 @@ class ByteTrackTracker implements Tracker {
           track.numberOfSuccessfulConsecutiveUpdates >=
               minimumConsecutiveFrames;
       final isActive = track.timeSinceUpdate == 0;
-      return !(track.timeSinceUpdate < maximumFramesWithoutUpdate &&
-          (isMature || isActive));
+      final withinBudget = withinLostTrackBudget(
+        timeSinceUpdate: track.timeSinceUpdate,
+        timeSinceUpdateSeconds: track.timeSinceUpdateSeconds,
+        maximumFrames: maximumFramesWithoutUpdate,
+        maximumSeconds: timing.usesElapsedTime
+            ? maximumTimeWithoutUpdate
+            : null,
+      );
+      return !(withinBudget && (isMature || isActive));
     });
 
     if (outDetIndices.isEmpty) {
@@ -155,6 +181,16 @@ class ByteTrackTracker implements Tracker {
   void reset() {
     tracks.clear();
     _nextTrackId = 0;
+    _clock.reset();
+  }
+
+  @override
+  Detections get trackedObjects {
+    final confirmed = tracks.where((track) => track.trackerId >= 0).toList();
+    return Detections.fromRows(
+      [for (final track in confirmed) track.getStateBbox()],
+      trackerId: [for (final track in confirmed) track.trackerId],
+    );
   }
 
   void _assignIdIfMature(ByteTrackTracklet track) {
@@ -197,28 +233,42 @@ class ByteTrackTracker implements Tracker {
 
 class ByteTrackTracklet {
   final KalmanFilter kf;
+  late final KalmanMotionModel motionModel;
   int trackerId = -1;
   int timeSinceUpdate = 0;
+  double timeSinceUpdateSeconds = 0.0;
   int age = 0;
   int numberOfSuccessfulConsecutiveUpdates = 1;
 
   ByteTrackTracklet(List<double> initialBbox)
     : kf = _createFilter(initialBbox) {
     _configureNoise();
+    motionModel = KalmanMotionModel.fromFilter(
+      kf,
+      positionIndices: const [0, 1, 2, 3],
+      velocityIndices: const [4, 5, 6, 7],
+    );
   }
 
-  void predict() {
+  void predict([PredictTiming timing = fixedRateTiming]) {
+    motionModel.apply(kf, timing.frameStep, frameRate: timing.frameRate);
     kf.predict();
     if (timeSinceUpdate > 0) {
       numberOfSuccessfulConsecutiveUpdates = 0;
     }
     timeSinceUpdate++;
+    if (timing.elapsedSeconds != null) {
+      timeSinceUpdateSeconds += timing.elapsedSeconds!;
+    } else {
+      timeSinceUpdateSeconds = 0.0;
+    }
     age++;
   }
 
   void update(List<double> bbox) {
     kf.update(bbox);
     timeSinceUpdate = 0;
+    timeSinceUpdateSeconds = 0.0;
     numberOfSuccessfulConsecutiveUpdates++;
   }
 

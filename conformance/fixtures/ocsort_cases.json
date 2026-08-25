@@ -155,18 +155,22 @@
     {
         "expected_output_indices": [
             [
-                0
+                0,
+                1
             ],
             [
-                0
+                0,
+                1
             ]
         ],
         "expected_tracker_id": [
             [
+                -1,
                 -1
             ],
             [
-                0
+                0,
+                -1
             ]
         ],
         "frames": [

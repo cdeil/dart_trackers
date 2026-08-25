@@ -14,6 +14,6 @@
     "psutil": "7.2.2",
     "python": "3.14",
     "scipy": "1.17.1",
-    "supervision": "0.28.0",
-    "trackers": "editable"
+    "supervision": "0.29.0",
+    "trackers": "2.6.0"
 }
