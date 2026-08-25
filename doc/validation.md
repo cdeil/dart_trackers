@@ -13,7 +13,8 @@ uv sync --frozen --group dev
 uv run python generate_fixtures.py
 uv run ruff format --check .
 uv run ruff check .
-uv run ty check .
+uv run pyright
+uv run pyrefly check --output-format min-text --summarize-errors
 
 cd ../..
 dart format --output=none --set-exit-if-changed bin example lib test tool

@@ -88,9 +88,11 @@ jobs:
       - name: Lint Python
         run: uv run ruff check .
 
-      - name: Type check Python
-        continue-on-error: true
-        run: uv run ty check .
+      - name: Type check Python with Pyright
+        run: uv run pyright
+
+      - name: Type check Python with Pyrefly
+        run: uv run pyrefly check --output-format min-text --summarize-errors
 
       - name: Regenerate fixtures
         run: uv run python generate_fixtures.py

@@ -157,5 +157,6 @@ cd conformance/python
 uv run python generate_fixtures.py
 uv run ruff format --check .
 uv run ruff check .
-uv run ty check .
+uv run pyright
+uv run pyrefly check --output-format min-text --summarize-errors
 ```
