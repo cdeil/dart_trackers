@@ -63,11 +63,23 @@ flutter run -d ios
 
 The iOS target requires local code-signing setup.
 
+## Platform baseline
+
+- Flutter 3.47.1 stable with Dart 3.13.1 or newer compatible stable releases.
+- iOS 15 or newer, using Flutter's Swift Package Manager integration without
+  CocoaPods.
+- Android with Java 17, AGP 9.1.1, Kotlin 2.4.10, and Gradle 9.5.0.
+- Web remains supported for the deterministic video demo; the YOLO camera tab
+  remains mobile-only.
+
+The Android compatibility DSL stays enabled because the current stable
+`ultralytics_yolo` plugin still applies the Kotlin Gradle plugin directly.
+
 ## Validate
 
 ```bash
 cd flutter_example
-flutter analyze
+flutter analyze --fatal-infos
 flutter test
 flutter build web --debug
 flutter build apk --debug
