@@ -68,7 +68,9 @@ The iOS target requires local code-signing setup.
 - Flutter 3.47.1 stable with Dart 3.13.1 or newer compatible stable releases.
 - iOS 15 or newer, using Flutter's Swift Package Manager integration without
   CocoaPods.
-- Android with Java 17, AGP 9.1.1, Kotlin 2.4.10, and Gradle 9.5.0.
+- Android with Java and Kotlin bytecode targeting Java 17, AGP 9.1.1,
+  Kotlin 2.4.10, and Gradle 9.5.0. Gradle may run on any newer JDK supported by
+  that wrapper; the build does not require a separately installed JDK 17.
 - Web remains supported for the deterministic video demo; the YOLO camera tab
   remains mobile-only.
 
