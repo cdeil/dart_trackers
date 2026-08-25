@@ -14,7 +14,7 @@ class KalmanFilter {
   late Matrix y;
   late Matrix s;
 
-  KalmanFilter({required this.dimX, required this.dimZ}) {
+  new({required this.dimX, required this.dimZ}) {
     if (dimX < 1 || dimZ < 1) {
       throw ArgumentError('Kalman dimensions must be positive');
     }

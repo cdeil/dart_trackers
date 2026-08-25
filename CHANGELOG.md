@@ -1,3 +1,10 @@
+## Unreleased
+
+- Raised the minimum SDK to Dart 3.13.1 and adopted its concise constructor
+  syntax, formatter behavior, and analyzer lints.
+- Updated development dependencies and the Flutter example to their latest
+  stable releases.
+
 ## 0.2.0
 
 - Updated the Python conformance oracle to `trackers==2.6.0` and

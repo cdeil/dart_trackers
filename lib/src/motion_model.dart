@@ -9,7 +9,7 @@ class ScalableProcessNoise {
   Matrix _baseline;
   List<double>? _accelerationVariance;
 
-  ScalableProcessNoise({
+  new({
     required this.dimension,
     required this.positionIndices,
     required this.velocityIndices,
@@ -65,7 +65,7 @@ class KalmanMotionModel {
   Matrix? _cachedTransition;
   Matrix? _cachedNoise;
 
-  KalmanMotionModel.fromFilter(
+  new fromFilter(
     KalmanFilter filter, {
     required this.positionIndices,
     required this.velocityIndices,

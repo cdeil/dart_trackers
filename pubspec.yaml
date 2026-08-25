@@ -11,13 +11,13 @@ topics:
   - bytetrack
 
 environment:
-  sdk: ^3.11.5
+  sdk: ^3.13.1
 
 dependencies:
 
 dev_dependencies:
-  lints: ^6.0.0
-  test: ^1.25.6
+  lints: ^6.1.0
+  test: ^1.31.2
 
 executables:
   dart_trackers_track_json: track_json

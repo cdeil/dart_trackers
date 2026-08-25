@@ -16,7 +16,14 @@ analyzer:
     - windows/**
     - macos/**
     - linux/**
+  language:
+    strict-casts: true
+    strict-inference: true
+    strict-raw-types: true
 include: package:flutter_lints/flutter.yaml
+
+formatter:
+  page_width: 80
 
 linter:
   # The lint rules applied to this project can be customized in the
@@ -30,6 +37,12 @@ linter:
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
   rules:
+    - empty_container_bodies
+    - initialize_in_field_declaration
+    - unnecessary_const_in_enum_constructor
+    - unnecessary_primary_constructor_body
+    - unnecessary_type_name_in_constructor
+    - use_declaring_parameters
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
 

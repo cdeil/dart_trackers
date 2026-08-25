@@ -30,7 +30,7 @@ class SORTTracker implements Tracker {
   int _nextTrackId = 0;
 
   /// Creates a SORT tracker.
-  SORTTracker({
+  new({
     this.lostTrackBuffer = 30,
     this.frameRate = 30.0,
     this.trackActivationThreshold = 0.25,
@@ -193,7 +193,7 @@ class SORTTracklet {
   int age = 0;
   int numberOfSuccessfulUpdates = 1;
 
-  SORTTracklet(List<double> initialBbox) : kf = _createFilter(initialBbox) {
+  new(List<double> initialBbox) : kf = _createFilter(initialBbox) {
     _configureNoise();
     motionModel = KalmanMotionModel.fromFilter(
       kf,
@@ -253,7 +253,7 @@ class _Association {
   final List<int> unmatchedTracks;
   final List<int> unmatchedDetections;
 
-  const _Association({
+  const new({
     required this.matched,
     required this.unmatchedTracks,
     required this.unmatchedDetections,

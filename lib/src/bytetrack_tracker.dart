@@ -30,7 +30,7 @@ class ByteTrackTracker implements Tracker {
   int _nextTrackId = 0;
 
   /// Creates a ByteTrack tracker.
-  ByteTrackTracker({
+  new({
     this.lostTrackBuffer = 30,
     this.frameRate = 30.0,
     this.trackActivationThreshold = 0.7,
@@ -240,8 +240,7 @@ class ByteTrackTracklet {
   int age = 0;
   int numberOfSuccessfulConsecutiveUpdates = 1;
 
-  ByteTrackTracklet(List<double> initialBbox)
-    : kf = _createFilter(initialBbox) {
+  new(List<double> initialBbox) : kf = _createFilter(initialBbox) {
     _configureNoise();
     motionModel = KalmanMotionModel.fromFilter(
       kf,
@@ -303,7 +302,7 @@ class _ByteTrackAssociation {
   final List<int> unmatchedTracks;
   final List<int> unmatchedDetections;
 
-  const _ByteTrackAssociation({
+  const new({
     required this.matched,
     required this.unmatchedTracks,
     required this.unmatchedDetections,

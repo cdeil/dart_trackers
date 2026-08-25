@@ -40,7 +40,7 @@ class BoTSORTTracker implements Tracker {
   int _nextTrackId = 0;
 
   /// Creates a BoT-SORT tracker.
-  BoTSORTTracker({
+  new({
     this.lostTrackBuffer = 30,
     this.frameRate = 30.0,
     this.trackActivationThreshold = 0.7,
@@ -366,7 +366,7 @@ class BoTSORTTracklet {
   int age = 0;
   int numberOfSuccessfulUpdates = 1;
 
-  BoTSORTTracklet(List<double> initialBbox) : kf = _createFilter(initialBbox) {
+  new(List<double> initialBbox) : kf = _createFilter(initialBbox) {
     final measurement = xyxyToXcycwh(initialBbox);
     _setScaleAwareNoise(measurement[2], measurement[3], initial: true);
     motionModel = KalmanMotionModel.fromFilter(
@@ -506,7 +506,7 @@ class _BoTSORTAssociation {
   final List<int> unmatchedTracks;
   final List<int> unmatchedDetections;
 
-  const _BoTSORTAssociation({
+  const new({
     required this.matched,
     required this.unmatchedTracks,
     required this.unmatchedDetections,

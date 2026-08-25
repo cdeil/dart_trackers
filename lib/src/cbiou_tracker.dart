@@ -6,7 +6,7 @@ class CBIoUTracker extends BoTSORTTracker {
   final double bufferRatioFirst;
   final double bufferRatioSecond;
 
-  CBIoUTracker({
+  new({
     super.lostTrackBuffer,
     super.frameRate,
     super.trackActivationThreshold,
