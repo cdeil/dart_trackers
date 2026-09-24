@@ -58,7 +58,9 @@ class SORTTracker implements Tracker {
   @override
   Detections update(Detections detections, {Object? frame, double? timestamp}) {
     if (frame != null) {
-      _onWarning?.call('SORTTracker ignores frame input.');
+      _onWarning?.call(
+        'SORTTracker.update() received a frame argument but does not use it.',
+      );
     }
     final timing = _clock.timing(timestamp);
     if (timing.skipUpdate) {

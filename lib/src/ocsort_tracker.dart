@@ -82,7 +82,9 @@ class OCSORTTracker implements Tracker {
   @override
   Detections update(Detections detections, {Object? frame, double? timestamp}) {
     if (frame != null) {
-      _onWarning?.call('OCSORTTracker ignores frame input.');
+      _onWarning?.call(
+        'OCSORTTracker.update() received a frame argument but does not use it.',
+      );
     }
     final timing = _clock.timing(timestamp);
     if (timing.skipUpdate) {

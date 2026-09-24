@@ -59,7 +59,9 @@ class ByteTrackTracker implements Tracker {
   @override
   Detections update(Detections detections, {Object? frame, double? timestamp}) {
     if (frame != null) {
-      _onWarning?.call('ByteTrackTracker ignores frame input.');
+      _onWarning?.call(
+        'ByteTrackTracker.update() received a frame argument but does not use it.',
+      );
     }
     final timing = _clock.timing(timestamp);
     if (timing.skipUpdate) {

@@ -31,6 +31,16 @@ class Matrix {
     return result;
   }
 
+  /// Square matrix with [values] on the diagonal and zeros elsewhere.
+  factory diagonal(List<double> values) {
+    final size = values.length;
+    final result = Matrix(size, size);
+    for (var i = 0; i < size; i++) {
+      result.data[i * (size + 1)] = values[i];
+    }
+    return result;
+  }
+
   factory fromRows(List<List<num>> rows) {
     if (rows.isEmpty) {
       return Matrix(0, 0);
