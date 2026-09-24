@@ -9,7 +9,7 @@ applications. The normal user API is `Detections` plus `SORTTracker`,
 - `lib/`: package source. Keep runtime dependencies at zero.
 - `test/`: Dart tests that consume checked-in conformance fixtures.
 - `conformance/python/`: Python 3.14 + uv oracle that regenerates fixtures from
-    `trackers==2.6.0`.
+    Roboflow `trackers` pinned to a git revision (see `pyproject.toml`).
 - `conformance/fixtures/`: checked-in JSON fixtures.
 - `doc/`: package docs, validation notes, benchmark notes, and demo plans.
 - `tool/`: benchmark and reporting scripts.

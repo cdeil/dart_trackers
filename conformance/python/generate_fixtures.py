@@ -8,6 +8,7 @@ import json
 import subprocess
 import sys
 import warnings
+from collections.abc import Sequence
 from importlib.metadata import distribution, version
 from pathlib import Path
 from typing import Any
@@ -305,7 +306,7 @@ def _run_tracker_cases(tracker_class: Any, cases: list[dict[str, Any]]) -> list[
     return cases
 
 
-def _track(boxes: list[list[float] | None], confidence: float | None = 0.9, **extra: Any) -> list[dict[str, Any]]:
+def _track(boxes: Sequence[list[float] | None], confidence: float | None = 0.9, **extra: Any) -> list[dict[str, Any]]:
     """One detection per frame (``None`` = empty frame)."""
     frames = []
     for box in boxes:

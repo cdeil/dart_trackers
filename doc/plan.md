@@ -1,7 +1,7 @@
 # Dart trackers implementation record
 
 > The original 2.4 spike described below was completed and superseded by the
-> 0.2 parity update. Current design and validation live in `design.md` and
+> 0.2 and 0.3 parity updates (see `CHANGELOG.md`). Current design and validation live in `design.md` and
 > `validation.md`.
 
 ## 0.2 completion

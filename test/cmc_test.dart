@@ -76,11 +76,11 @@ void main() {
   test('trackers without CMC warn about unused frames after timing checks', () {
     final warnings = <String>[];
     final tracker = CBIoUTracker(onWarning: warnings.add);
-    tracker.update(_detection(0), frame: Object(), timestamp: 1.0);
+    tracker.update(_detection(0), frame: Object(), timestamp: 1.5);
     tracker.update(_detection(0), frame: Object(), timestamp: 0.5);
     expect(warnings, [
       'CBIoUTracker.update() received a frame argument but does not use it.',
-      'Timestamp 0.5 is earlier than 1.0; skipping update.',
+      'Timestamp 0.5 is earlier than 1.5; skipping update.',
     ]);
   });
 }
