@@ -136,6 +136,1397 @@ const fixtureJsonByName = <String, String>{
             0,
             1
         ]
+    },
+    {
+        "col_indices": [
+            0,
+            1,
+            2
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0,
+                1.0
+            ]
+        ],
+        "maximize": false,
+        "name": "ties_constant_square_minimize",
+        "row_indices": [
+            0,
+            1,
+            2
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1,
+            2
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0,
+                1.0
+            ]
+        ],
+        "maximize": true,
+        "name": "ties_constant_square_maximize",
+        "row_indices": [
+            0,
+            1,
+            2
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ]
+        ],
+        "maximize": false,
+        "name": "ties_constant_wide_minimize",
+        "row_indices": [
+            0,
+            1
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ]
+        ],
+        "maximize": true,
+        "name": "ties_constant_wide_maximize",
+        "row_indices": [
+            0,
+            1
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0
+            ]
+        ],
+        "maximize": false,
+        "name": "ties_constant_tall_minimize",
+        "row_indices": [
+            0,
+            1
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0
+            ]
+        ],
+        "maximize": true,
+        "name": "ties_constant_tall_maximize",
+        "row_indices": [
+            0,
+            1
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                0.0,
+                0.0
+            ],
+            [
+                0.0,
+                0.0
+            ],
+            [
+                0.0,
+                0.0
+            ]
+        ],
+        "maximize": false,
+        "name": "ties_zeros_tall_minimize",
+        "row_indices": [
+            0,
+            1
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                0.0,
+                0.0
+            ],
+            [
+                0.0,
+                0.0
+            ],
+            [
+                0.0,
+                0.0
+            ]
+        ],
+        "maximize": true,
+        "name": "ties_zeros_tall_maximize",
+        "row_indices": [
+            0,
+            1
+        ]
+    },
+    {
+        "col_indices": [
+            3,
+            0,
+            2,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            [
+                0.0,
+                1.0,
+                1.0,
+                0.0,
+                0.0
+            ],
+            [
+                1.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+            ],
+            [
+                0.0,
+                0.0,
+                1.0,
+                1.0,
+                1.0
+            ]
+        ],
+        "maximize": false,
+        "name": "ties_binary_wide_minimize",
+        "row_indices": [
+            0,
+            1,
+            2,
+            3
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1,
+            3,
+            2
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            [
+                0.0,
+                1.0,
+                1.0,
+                0.0,
+                0.0
+            ],
+            [
+                1.0,
+                1.0,
+                0.0,
+                1.0,
+                0.0
+            ],
+            [
+                0.0,
+                0.0,
+                1.0,
+                1.0,
+                1.0
+            ]
+        ],
+        "maximize": true,
+        "name": "ties_binary_wide_maximize",
+        "row_indices": [
+            0,
+            1,
+            2,
+            3
+        ]
+    },
+    {
+        "col_indices": [
+            2,
+            1,
+            0
+        ],
+        "cost_matrix": [
+            [
+                0.5,
+                0.5,
+                0.0
+            ],
+            [
+                0.5,
+                0.5,
+                0.0
+            ],
+            [
+                0.0,
+                0.0,
+                0.9
+            ]
+        ],
+        "maximize": false,
+        "name": "ties_duplicated_iou_like_minimize",
+        "row_indices": [
+            0,
+            1,
+            2
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1,
+            2
+        ],
+        "cost_matrix": [
+            [
+                0.5,
+                0.5,
+                0.0
+            ],
+            [
+                0.5,
+                0.5,
+                0.0
+            ],
+            [
+                0.0,
+                0.0,
+                0.9
+            ]
+        ],
+        "maximize": true,
+        "name": "ties_duplicated_iou_like_maximize",
+        "row_indices": [
+            0,
+            1,
+            2
+        ]
+    },
+    {
+        "col_indices": [
+            2,
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                0.2,
+                0.2,
+                0.0
+            ],
+            [
+                0.2,
+                0.2,
+                0.0
+            ],
+            [
+                0.0,
+                0.3,
+                0.3
+            ],
+            [
+                0.0,
+                0.3,
+                0.3
+            ],
+            [
+                0.1,
+                0.1,
+                0.1
+            ]
+        ],
+        "maximize": false,
+        "name": "ties_tall_transposed_ties_minimize",
+        "row_indices": [
+            0,
+            2,
+            4
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1,
+            2
+        ],
+        "cost_matrix": [
+            [
+                0.2,
+                0.2,
+                0.0
+            ],
+            [
+                0.2,
+                0.2,
+                0.0
+            ],
+            [
+                0.0,
+                0.3,
+                0.3
+            ],
+            [
+                0.0,
+                0.3,
+                0.3
+            ],
+            [
+                0.1,
+                0.1,
+                0.1
+            ]
+        ],
+        "maximize": true,
+        "name": "ties_tall_transposed_ties_maximize",
+        "row_indices": [
+            0,
+            2,
+            3
+        ]
+    },
+    {
+        "col_indices": [
+            1,
+            0,
+            2,
+            3
+        ],
+        "cost_matrix": [
+            [
+                2.0,
+                2.0,
+                1.0,
+                2.0
+            ],
+            [
+                2.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            [
+                0.0,
+                2.0,
+                2.0,
+                0.0
+            ],
+            [
+                1.0,
+                2.0,
+                0.0,
+                2.0
+            ],
+            [
+                0.0,
+                1.0,
+                2.0,
+                0.0
+            ],
+            [
+                1.0,
+                0.0,
+                2.0,
+                0.0
+            ]
+        ],
+        "maximize": false,
+        "name": "random_small_integers_0",
+        "row_indices": [
+            1,
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "col_indices": [
+            2,
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0,
+                2.0
+            ],
+            [
+                2.0,
+                2.0,
+                2.0
+            ],
+            [
+                1.0,
+                1.0,
+                2.0
+            ],
+            [
+                1.0,
+                0.0,
+                2.0
+            ],
+            [
+                0.0,
+                2.0,
+                1.0
+            ]
+        ],
+        "maximize": true,
+        "name": "random_small_integers_1",
+        "row_indices": [
+            1,
+            2,
+            5
+        ]
+    },
+    {
+        "col_indices": [
+            0
+        ],
+        "cost_matrix": [
+            [
+                1.0
+            ]
+        ],
+        "maximize": false,
+        "name": "random_small_integers_2",
+        "row_indices": [
+            0
+        ]
+    },
+    {
+        "col_indices": [
+            0
+        ],
+        "cost_matrix": [
+            [
+                1.0
+            ]
+        ],
+        "maximize": true,
+        "name": "random_small_integers_3",
+        "row_indices": [
+            0
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            2,
+            1
+        ],
+        "cost_matrix": [
+            [
+                2.0,
+                2.0,
+                2.0
+            ],
+            [
+                1.0,
+                1.0,
+                1.0
+            ],
+            [
+                0.0,
+                1.0,
+                1.0
+            ],
+            [
+                0.0,
+                2.0,
+                0.0
+            ],
+            [
+                0.0,
+                0.0,
+                2.0
+            ],
+            [
+                2.0,
+                2.0,
+                0.0
+            ]
+        ],
+        "maximize": false,
+        "name": "random_small_integers_4",
+        "row_indices": [
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            2,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                0.0,
+                1.0
+            ],
+            [
+                2.0,
+                1.0,
+                0.0
+            ],
+            [
+                1.0,
+                0.0,
+                2.0
+            ],
+            [
+                2.0,
+                0.0,
+                1.0
+            ],
+            [
+                2.0,
+                2.0,
+                2.0
+            ]
+        ],
+        "maximize": true,
+        "name": "random_small_integers_5",
+        "row_indices": [
+            1,
+            2,
+            4
+        ]
+    },
+    {
+        "col_indices": [
+            0
+        ],
+        "cost_matrix": [
+            [
+                2.0
+            ],
+            [
+                1.0
+            ],
+            [
+                0.0
+            ],
+            [
+                0.0
+            ]
+        ],
+        "maximize": false,
+        "name": "random_small_integers_6",
+        "row_indices": [
+            2
+        ]
+    },
+    {
+        "col_indices": [
+            2,
+            4,
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                1.0,
+                2.0,
+                2.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            [
+                1.0,
+                2.0,
+                1.0,
+                1.0,
+                1.0
+            ]
+        ],
+        "maximize": true,
+        "name": "random_small_integers_7",
+        "row_indices": [
+            0,
+            1,
+            2,
+            3
+        ]
+    },
+    {
+        "col_indices": [
+            2,
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0,
+                1.0
+            ],
+            [
+                2.0,
+                2.0,
+                0.0
+            ],
+            [
+                1.0,
+                1.0,
+                1.0
+            ],
+            [
+                0.0,
+                0.0,
+                1.0
+            ],
+            [
+                2.0,
+                0.0,
+                1.0
+            ]
+        ],
+        "maximize": false,
+        "name": "random_small_integers_8",
+        "row_indices": [
+            2,
+            4,
+            5
+        ]
+    },
+    {
+        "col_indices": [
+            2,
+            3,
+            4,
+            5,
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                0.0,
+                0.0,
+                2.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            [
+                2.0,
+                0.0,
+                1.0,
+                1.0,
+                0.0,
+                2.0
+            ],
+            [
+                2.0,
+                1.0,
+                2.0,
+                1.0,
+                2.0,
+                2.0
+            ],
+            [
+                1.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                2.0
+            ],
+            [
+                2.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            [
+                2.0,
+                2.0,
+                1.0,
+                1.0,
+                1.0,
+                0.0
+            ]
+        ],
+        "maximize": true,
+        "name": "random_small_integers_9",
+        "row_indices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+        ]
+    },
+    {
+        "col_indices": [
+            1,
+            2,
+            0
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                0.0,
+                0.0,
+                2.0,
+                0.0,
+                2.0
+            ],
+            [
+                2.0,
+                1.0,
+                1.0,
+                2.0,
+                1.0,
+                1.0
+            ],
+            [
+                0.0,
+                1.0,
+                2.0,
+                0.0,
+                0.0,
+                2.0
+            ]
+        ],
+        "maximize": false,
+        "name": "random_small_integers_10",
+        "row_indices": [
+            0,
+            1,
+            2
+        ]
+    },
+    {
+        "col_indices": [
+            1,
+            2,
+            3
+        ],
+        "cost_matrix": [
+            [
+                0.0,
+                2.0,
+                0.0,
+                1.0,
+                2.0
+            ],
+            [
+                0.0,
+                1.0,
+                2.0,
+                1.0,
+                0.0
+            ],
+            [
+                1.0,
+                1.0,
+                2.0,
+                2.0,
+                1.0
+            ]
+        ],
+        "maximize": true,
+        "name": "random_small_integers_11",
+        "row_indices": [
+            0,
+            1,
+            2
+        ]
+    },
+    {
+        "col_indices": [
+            0
+        ],
+        "cost_matrix": [
+            [
+                0.0,
+                2.0,
+                2.0,
+                1.0
+            ]
+        ],
+        "maximize": false,
+        "name": "random_small_integers_12",
+        "row_indices": [
+            0
+        ]
+    },
+    {
+        "col_indices": [
+            1,
+            0,
+            3,
+            2
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                2.0,
+                2.0,
+                2.0
+            ],
+            [
+                2.0,
+                0.0,
+                1.0,
+                2.0
+            ],
+            [
+                0.0,
+                0.0,
+                1.0,
+                2.0
+            ],
+            [
+                2.0,
+                2.0,
+                1.0,
+                0.0
+            ],
+            [
+                2.0,
+                1.0,
+                2.0,
+                2.0
+            ],
+            [
+                2.0,
+                0.0,
+                2.0,
+                1.0
+            ]
+        ],
+        "maximize": true,
+        "name": "random_small_integers_13",
+        "row_indices": [
+            0,
+            1,
+            2,
+            4
+        ]
+    },
+    {
+        "col_indices": [
+            2,
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                2.0,
+                1.0,
+                0.0,
+                2.0,
+                0.0
+            ],
+            [
+                0.0,
+                0.0,
+                0.0,
+                2.0,
+                1.0
+            ],
+            [
+                0.0,
+                0.0,
+                1.0,
+                1.0,
+                0.0
+            ]
+        ],
+        "maximize": false,
+        "name": "random_small_integers_14",
+        "row_indices": [
+            0,
+            1,
+            2
+        ]
+    },
+    {
+        "col_indices": [
+            1,
+            0,
+            3,
+            5,
+            4,
+            2
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                2.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            [
+                2.0,
+                0.0,
+                1.0,
+                0.0,
+                2.0,
+                0.0
+            ],
+            [
+                1.0,
+                2.0,
+                1.0,
+                2.0,
+                2.0,
+                2.0
+            ],
+            [
+                2.0,
+                1.0,
+                1.0,
+                2.0,
+                1.0,
+                2.0
+            ],
+            [
+                2.0,
+                1.0,
+                1.0,
+                2.0,
+                2.0,
+                0.0
+            ],
+            [
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                1.0,
+                1.0
+            ]
+        ],
+        "maximize": true,
+        "name": "random_small_integers_15",
+        "row_indices": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            2,
+            4,
+            3,
+            1
+        ],
+        "cost_matrix": [
+            [
+                0.0,
+                2.0,
+                2.0,
+                2.0,
+                2.0
+            ],
+            [
+                0.0,
+                2.0,
+                0.0,
+                1.0,
+                2.0
+            ],
+            [
+                2.0,
+                0.0,
+                0.0,
+                1.0,
+                1.0
+            ],
+            [
+                2.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            [
+                0.0,
+                0.0,
+                2.0,
+                2.0,
+                2.0
+            ],
+            [
+                1.0,
+                0.0,
+                2.0,
+                1.0,
+                2.0
+            ]
+        ],
+        "maximize": false,
+        "name": "random_small_integers_16",
+        "row_indices": [
+            0,
+            1,
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                1.0
+            ],
+            [
+                1.0,
+                1.0
+            ],
+            [
+                0.0,
+                0.0
+            ]
+        ],
+        "maximize": true,
+        "name": "random_small_integers_17",
+        "row_indices": [
+            0,
+            1
+        ]
+    },
+    {
+        "col_indices": [
+            2,
+            0,
+            1,
+            3,
+            4
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                0.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            [
+                0.0,
+                0.0,
+                2.0,
+                0.0,
+                2.0
+            ],
+            [
+                1.0,
+                0.0,
+                2.0,
+                2.0,
+                2.0
+            ],
+            [
+                2.0,
+                2.0,
+                2.0,
+                0.0,
+                2.0
+            ],
+            [
+                2.0,
+                2.0,
+                2.0,
+                2.0,
+                2.0
+            ],
+            [
+                2.0,
+                1.0,
+                2.0,
+                2.0,
+                0.0
+            ]
+        ],
+        "maximize": false,
+        "name": "random_small_integers_18",
+        "row_indices": [
+            0,
+            1,
+            2,
+            3,
+            5
+        ]
+    },
+    {
+        "col_indices": [
+            1
+        ],
+        "cost_matrix": [
+            [
+                0.0,
+                1.0
+            ]
+        ],
+        "maximize": true,
+        "name": "random_small_integers_19",
+        "row_indices": [
+            0
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                "inf"
+            ],
+            [
+                2.0,
+                3.0
+            ]
+        ],
+        "maximize": false,
+        "name": "forbidden_edge_minimize",
+        "row_indices": [
+            0,
+            1
+        ]
+    },
+    {
+        "col_indices": [
+            0,
+            1
+        ],
+        "cost_matrix": [
+            [
+                1.0,
+                "-inf"
+            ],
+            [
+                2.0,
+                3.0
+            ]
+        ],
+        "maximize": true,
+        "name": "forbidden_edge_maximize",
+        "row_indices": [
+            0,
+            1
+        ]
+    },
+    {
+        "cost_matrix": [
+            [
+                1.0,
+                "-inf"
+            ],
+            [
+                2.0,
+                3.0
+            ]
+        ],
+        "error": "matrix contains invalid numeric entries",
+        "maximize": false,
+        "name": "negative_infinity_minimize_is_invalid"
+    },
+    {
+        "cost_matrix": [
+            [
+                1.0,
+                "inf"
+            ],
+            [
+                2.0,
+                3.0
+            ]
+        ],
+        "error": "matrix contains invalid numeric entries",
+        "maximize": true,
+        "name": "positive_infinity_maximize_is_invalid"
+    },
+    {
+        "cost_matrix": [
+            [
+                1.0,
+                "nan"
+            ],
+            [
+                2.0,
+                3.0
+            ]
+        ],
+        "error": "matrix contains invalid numeric entries",
+        "maximize": false,
+        "name": "nan_is_invalid"
+    },
+    {
+        "cost_matrix": [
+            [
+                "inf",
+                "inf"
+            ],
+            [
+                2.0,
+                3.0
+            ]
+        ],
+        "error": "cost matrix is infeasible",
+        "maximize": false,
+        "name": "infeasible_is_invalid"
     }
 ]
 ''',
@@ -145,9 +1536,23 @@ const fixtureJsonByName = <String, String>{
             [],
             []
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            }
+        ],
         "expected_tracker_id": [
             [],
             []
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -177,6 +1582,47 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        20.0,
+                        20.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.8677685950413228,
+                        0.0,
+                        20.867768595041323,
+                        20.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        1.7959520623985874,
+                        0.0,
+                        21.795952062398587,
+                        20.0
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 0
@@ -187,6 +1633,11 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
         ],
         "frames": [
             {
@@ -253,6 +1704,25 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        10.867768595041323,
+                        10.0,
+                        30.867768595041323,
+                        30.0
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1
@@ -260,6 +1730,10 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -312,6 +1786,34 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        10.0,
+                        10.0,
+                        30.0,
+                        30.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        10.867768595041323,
+                        10.0,
+                        30.867768595041323,
+                        30.0
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 0
@@ -319,6 +1821,10 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -364,6 +1870,34 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        50.0,
+                        50.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        1.7355371900826455,
+                        1.7355371900826455,
+                        51.735537190082646,
+                        51.735537190082646
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 0
@@ -371,6 +1905,10 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -417,11 +1955,43 @@ const fixtureJsonByName = <String, String>{
             ],
             []
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        20.0,
+                        20.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        20.0,
+                        20.0
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 0
             ],
             []
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -471,6 +2041,48 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0,
+                    1
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        20.0,
+                        20.0
+                    ],
+                    [
+                        100.0,
+                        100.0,
+                        120.0,
+                        120.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0,
+                    1
+                ],
+                "xyxy": [
+                    [
+                        0.8677685950413228,
+                        0.0,
+                        20.867768595041323,
+                        20.0
+                    ],
+                    [
+                        100.86776859504133,
+                        100.0,
+                        120.86776859504133,
+                        120.0
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 0,
@@ -480,6 +2092,10 @@ const fixtureJsonByName = <String, String>{
                 0,
                 1
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -537,6 +2153,1488 @@ const fixtureJsonByName = <String, String>{
             "minimum_consecutive_frames": 1,
             "minimum_iou_threshold_first_assoc": 0.1
         }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.73553719008264,
+                        50.0,
+                        81.73553719008264,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        53.59190412479718,
+                        50.0,
+                        83.59190412479718,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        54.60172507045462,
+                        50.0,
+                        84.60172507045462,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        55.61154601611206,
+                        50.0,
+                        85.61154601611206,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        59.75848661917857,
+                        50.0,
+                        89.75848661917857,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        61.84459198242372,
+                        50.0,
+                        91.84459198242372,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        54.0,
+                        50.0,
+                        84.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        62.0,
+                        50.0,
+                        92.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "lost_track_re_associates_after_gap",
+        "params": {
+            "enable_cmc": false,
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold_first_assoc": 0.1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        10.413223140495868,
+                        0.0,
+                        20.413223140495866,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        21.551424748783056,
+                        0.0,
+                        31.551424748783056,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        12.0,
+                        0.0,
+                        22.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        24.0,
+                        0.0,
+                        34.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "giou_metric",
+        "params": {
+            "enable_cmc": false,
+            "iou": "giou",
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold_first_assoc": 0.1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        100.0,
+                        80.0,
+                        140.0,
+                        160.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        102.60330578512396,
+                        80.86776859504133,
+                        142.60330578512395,
+                        160.86776859504133
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        105.38785618719577,
+                        81.79595206239858,
+                        145.38785618719578,
+                        161.79595206239858
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        108.50344010141973,
+                        82.83448003380657,
+                        148.50344010141973,
+                        162.83448003380659
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        111.62625941756801,
+                        83.875419805856,
+                        151.626259417568,
+                        163.87541980585598
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        114.71334483785904,
+                        84.90444827928634,
+                        154.71334483785904,
+                        164.90444827928633
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        117.77328586557877,
+                        85.92442862185959,
+                        157.77328586557877,
+                        165.9244286218596
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        120.8158571127978,
+                        86.93861903759927,
+                        160.8158571127978,
+                        166.93861903759927
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        123.84733423715105,
+                        87.94911141238369,
+                        163.84733423715105,
+                        167.94911141238367
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        126.87147837040993,
+                        88.95715945680331,
+                        166.87147837040993,
+                        168.9571594568033
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        129.8905698335277,
+                        89.96352327784257,
+                        169.8905698335277,
+                        169.96352327784257
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        132.9060367826863,
+                        90.96867892756211,
+                        172.9060367826863,
+                        170.9686789275621
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        100.0,
+                        80.0,
+                        140.0,
+                        160.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        103.0,
+                        81.0,
+                        143.0,
+                        161.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        106.0,
+                        82.0,
+                        146.0,
+                        162.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        109.0,
+                        83.0,
+                        149.0,
+                        163.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        112.0,
+                        84.0,
+                        152.0,
+                        164.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        115.0,
+                        85.0,
+                        155.0,
+                        165.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        118.0,
+                        86.0,
+                        158.0,
+                        166.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        121.0,
+                        87.0,
+                        161.0,
+                        167.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        124.0,
+                        88.0,
+                        164.0,
+                        168.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        127.0,
+                        89.0,
+                        167.0,
+                        169.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        130.0,
+                        90.0,
+                        170.0,
+                        170.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        133.0,
+                        91.0,
+                        173.0,
+                        171.0
+                    ]
+                ]
+            }
+        ],
+        "name": "long_track_default_parameters",
+        "params": {
+            "enable_cmc": false
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.73553719008264,
+                        50.0,
+                        81.73553719008264,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.6586763973834,
+                        50.0,
+                        87.6586763973834,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.82333806253901,
+                        50.0,
+                        87.82333806253901,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.82333806253901,
+                        50.0,
+                        87.82333806253901,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        59.90301067236052,
+                        50.0,
+                        89.90301067236052,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                -1
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.03333333333333333,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.13333333333333333,
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.13333333333333333,
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.1,
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.16666666666666666,
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_bootstrap_gap_duplicate_backwards",
+        "params": {
+            "enable_cmc": false,
+            "minimum_consecutive_frames": 1,
+            "track_activation_threshold": 0.5
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.73553719008264,
+                        50.0,
+                        81.73553719008264,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                -1
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.03333333333333333,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.23333333333333334,
+                "xyxy": [
+                    [
+                        54.0,
+                        50.0,
+                        84.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_seconds_budget_prunes_before_association",
+        "params": {
+            "enable_cmc": false,
+            "lost_track_buffer": 2,
+            "minimum_consecutive_frames": 1,
+            "track_activation_threshold": 0.5
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.73444534345761,
+                        50.0,
+                        81.73444534345761,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        53.59836027875171,
+                        50.0,
+                        83.59836027875171,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        55.6662715890147,
+                        50.0,
+                        85.6662715890147,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.7446189971794,
+                        50.0,
+                        87.7446189971794,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        59.817440764248985,
+                        50.0,
+                        89.81744076424899,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.033,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.067,
+                "xyxy": [
+                    [
+                        54.0,
+                        50.0,
+                        84.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.1,
+                "xyxy": [
+                    [
+                        56.0,
+                        50.0,
+                        86.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.133,
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.167,
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_millisecond_rounded_clock_matches_fixed_rate",
+        "params": {
+            "enable_cmc": false,
+            "minimum_consecutive_frames": 2,
+            "track_activation_threshold": 0.5
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.73553719008264,
+                        50.0,
+                        81.73553719008264,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        52.14876033057851,
+                        50.0,
+                        82.14876033057851,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        55.64669506482477,
+                        50.0,
+                        85.64669506482477,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.755010822419436,
+                        50.0,
+                        87.75501082241944,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.03333333333333333,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        56.0,
+                        50.0,
+                        86.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_then_fixed_rate",
+        "params": {
+            "enable_cmc": false,
+            "lost_track_buffer": 3,
+            "minimum_consecutive_frames": 1,
+            "track_activation_threshold": 0.5
+        }
     }
 ]
 ''',
@@ -546,9 +3644,23 @@ const fixtureJsonByName = <String, String>{
             [],
             []
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            }
+        ],
         "expected_tracker_id": [
             [],
             []
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -577,6 +3689,38 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.95260663507109,
+                        0.0,
+                        10.95260663507109,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        1.9314136719192836,
+                        0.0,
+                        11.931413671919284,
+                        10.0
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1
@@ -587,6 +3731,11 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
         ],
         "frames": [
             {
@@ -652,6 +3801,25 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        10.95260663507109,
+                        10.0,
+                        20.95260663507109,
+                        20.0
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1
@@ -659,6 +3827,10 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -703,6 +3875,25 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        1.90521327014218,
+                        1.90521327014218,
+                        51.90521327014218,
+                        51.90521327014218
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1
@@ -710,6 +3901,10 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -753,10 +3948,19 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1
             ]
+        ],
+        "expected_warning_count": [
+            0
         ],
         "frames": [
             {
@@ -791,6 +3995,32 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0,
+                    1
+                ],
+                "xyxy": [
+                    [
+                        1.90521327014218,
+                        0.0,
+                        41.90521327014218,
+                        40.0
+                    ],
+                    [
+                        101.90521327014218,
+                        100.0,
+                        141.90521327014218,
+                        140.0
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1,
@@ -800,6 +4030,10 @@ const fixtureJsonByName = <String, String>{
                 0,
                 1
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -872,6 +4106,51 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        50.95260663507109,
+                        50.0,
+                        70.95260663507109,
+                        70.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.42654028436019,
+                        50.0,
+                        71.42654028436019,
+                        70.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        52.957034650073155,
+                        50.0,
+                        72.95703465007315,
+                        70.0
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1
@@ -883,6 +4162,12 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0
         ],
         "frames": [
             {
@@ -935,6 +4220,1079 @@ const fixtureJsonByName = <String, String>{
             "minimum_consecutive_frames": 1,
             "minimum_iou_threshold": 0.1
         }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.95260663507109,
+                        0.0,
+                        20.95260663507109,
+                        20.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [],
+            [
+                -1
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        20.0,
+                        20.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        20.0,
+                        20.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        1.0,
+                        0.0,
+                        21.0,
+                        20.0
+                    ]
+                ]
+            }
+        ],
+        "name": "immature_track_pruned_on_first_miss",
+        "params": {
+            "minimum_consecutive_frames": 2
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0,
+                1,
+                2
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1,
+                -1,
+                -1
+            ]
+        ],
+        "expected_warning_count": [
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.5,
+                    0.65,
+                    0.8
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ],
+                    [
+                        50.0,
+                        0.0,
+                        60.0,
+                        10.0
+                    ],
+                    [
+                        100.0,
+                        0.0,
+                        110.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "mid_gap_rows_keep_input_order",
+        "params": {
+            "high_conf_det_threshold": 0.6,
+            "minimum_consecutive_frames": 1,
+            "track_activation_threshold": 0.7
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.95260663507109,
+                        0.0,
+                        20.95260663507109,
+                        20.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        1.4265402843601895,
+                        0.0,
+                        21.426540284360186,
+                        20.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                -1
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        20.0,
+                        20.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.65
+                ],
+                "xyxy": [
+                    [
+                        1.0,
+                        0.0,
+                        21.0,
+                        20.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.65
+                ],
+                "xyxy": [
+                    [
+                        200.0,
+                        0.0,
+                        220.0,
+                        20.0
+                    ]
+                ]
+            }
+        ],
+        "name": "mid_gap_detection_matches_existing_track",
+        "params": {
+            "high_conf_det_threshold": 0.6,
+            "minimum_consecutive_frames": 1,
+            "track_activation_threshold": 0.7
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        11.43127962085308,
+                        0.0,
+                        21.43127962085308,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        23.176964063031402,
+                        0.0,
+                        33.176964063031406,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        12.0,
+                        0.0,
+                        22.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        24.0,
+                        0.0,
+                        34.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "giou_metric",
+        "params": {
+            "iou": "giou",
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": -0.2
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.90521327014218,
+                        50.0,
+                        81.90521327014218,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.94095966365943,
+                        50.0,
+                        87.94095966365943,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.97020933802631,
+                        50.0,
+                        87.97020933802631,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.97020933802631,
+                        50.0,
+                        87.97020933802631,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        59.993474234560544,
+                        50.0,
+                        89.99347423456054,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                -1
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.03333333333333333,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.13333333333333333,
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.13333333333333333,
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.1,
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.16666666666666666,
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_bootstrap_gap_duplicate_backwards",
+        "params": {
+            "minimum_consecutive_frames": 1,
+            "track_activation_threshold": 0.5
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.90521327014218,
+                        50.0,
+                        81.90521327014218,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                -1
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.03333333333333333,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.23333333333333334,
+                "xyxy": [
+                    [
+                        54.0,
+                        50.0,
+                        84.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_seconds_budget_prunes_before_association",
+        "params": {
+            "lost_track_buffer": 2,
+            "minimum_consecutive_frames": 1,
+            "track_activation_threshold": 0.5
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.90431079852639,
+                        50.0,
+                        81.90431079852638,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        53.869397584631116,
+                        50.0,
+                        83.86939758463112,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        55.91084150530038,
+                        50.0,
+                        85.91084150530038,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.940561144980016,
+                        50.0,
+                        87.94056114498001,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        59.9825453526719,
+                        50.0,
+                        89.9825453526719,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.033,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.067,
+                "xyxy": [
+                    [
+                        54.0,
+                        50.0,
+                        84.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.1,
+                "xyxy": [
+                    [
+                        56.0,
+                        50.0,
+                        86.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.133,
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.167,
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_millisecond_rounded_clock_matches_fixed_rate",
+        "params": {
+            "minimum_consecutive_frames": 2,
+            "track_activation_threshold": 0.5
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.90521327014218,
+                        50.0,
+                        81.90521327014218,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        52.85308056872037,
+                        50.0,
+                        82.85308056872039,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        55.9140693001463,
+                        50.0,
+                        85.91406930014631,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.95241275540251,
+                        50.0,
+                        87.9524127554025,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.03333333333333333,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        56.0,
+                        50.0,
+                        86.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_then_fixed_rate",
+        "params": {
+            "lost_track_buffer": 3,
+            "minimum_consecutive_frames": 1,
+            "track_activation_threshold": 0.5
+        }
     }
 ]
 ''',
@@ -948,6 +5306,34 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        9.545454545454545,
+                        0.0,
+                        19.545454545454547,
+                        10.0
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 0
@@ -955,6 +5341,10 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -998,10 +5388,19 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1
             ]
+        ],
+        "expected_warning_count": [
+            0
         ],
         "frames": [
             {
@@ -1023,10 +5422,1616 @@ const fixtureJsonByName = <String, String>{
             "high_conf_det_threshold": 0.6,
             "track_activation_threshold": 0.7
         }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        10.413223140495868,
+                        0.0,
+                        20.413223140495866,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.3
+                ],
+                "xyxy": [
+                    [
+                        12.0,
+                        0.0,
+                        22.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "second_buffer_recovers_low_confidence_detection",
+        "params": {
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold_first_assoc": 0.2,
+            "minimum_iou_threshold_second_assoc": 0.2,
+            "track_activation_threshold": 0.5
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.73553719008264,
+                        50.0,
+                        81.73553719008264,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        53.59190412479718,
+                        50.0,
+                        83.59190412479718,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        54.60172507045462,
+                        50.0,
+                        84.60172507045462,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.71165866171344,
+                        50.0,
+                        87.71165866171344,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        59.80674458643962,
+                        50.0,
+                        89.80674458643962,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        54.0,
+                        50.0,
+                        84.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "moving_object_with_gap",
+        "params": {
+            "minimum_consecutive_frames": 1
+        }
     }
 ]
 ''',
   'iou_cases.json': r'''{
+    "batches": [
+        {
+            "boxes_a": [
+                [
+                    0.0,
+                    0.0,
+                    10.0,
+                    10.0
+                ],
+                [
+                    20.0,
+                    20.0,
+                    30.0,
+                    30.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    10.0
+                ]
+            ],
+            "boxes_b": [
+                [
+                    5.0,
+                    5.0,
+                    15.0,
+                    15.0
+                ],
+                [
+                    25.0,
+                    25.0,
+                    35.0,
+                    35.0
+                ],
+                [
+                    100.0,
+                    100.0,
+                    110.0,
+                    110.0
+                ]
+            ],
+            "fused": {
+                "biou_0_3": [
+                    [
+                        0.30946290493011475,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.001956947147846222,
+                        0.30946290493011475,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                ],
+                "ciou": [
+                    [
+                        0.5158730158853615,
+                        0.2448979591940858,
+                        0.0867768595058398
+                    ],
+                    [
+                        0.3200000000144,
+                        0.5158730158853615,
+                        0.10493827160737695
+                    ],
+                    [
+                        0.33611111114197534,
+                        0.16377551021678466,
+                        0.04059917355551407
+                    ]
+                ],
+                "diou": [
+                    [
+                        0.5158730158853615,
+                        0.2448979591940858,
+                        0.0867768595058398
+                    ],
+                    [
+                        0.3200000000144,
+                        0.5158730158853615,
+                        0.10493827160737695
+                    ],
+                    [
+                        0.3611111111419753,
+                        0.18877551021678468,
+                        0.06559917355551409
+                    ]
+                ],
+                "giou": [
+                    [
+                        0.46031746031746035,
+                        0.08163265306122447,
+                        0.008264462809917328
+                    ],
+                    [
+                        0.15999999999999998,
+                        0.46031746031746035,
+                        0.012345679012345678
+                    ],
+                    [
+                        0.2222222222222222,
+                        0.040816326530612235,
+                        0.004132231404958664
+                    ]
+                ],
+                "iou": [
+                    [
+                        0.1428571492433548,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.1428571492433548,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                ]
+            },
+            "matrices": {
+                "biou_0_3": [
+                    [
+                        0.30946290493011475,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.001956947147846222,
+                        0.30946290493011475,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                ],
+                "ciou": [
+                    [
+                        0.031746031770723104,
+                        -0.5102040816118284,
+                        -0.8264462809883204
+                    ],
+                    [
+                        -0.35999999997119997,
+                        0.031746031770723104,
+                        -0.7901234567852461
+                    ],
+                    [
+                        -0.3277777777160494,
+                        -0.6724489795664307,
+                        -0.9188016528889719
+                    ]
+                ],
+                "diou": [
+                    [
+                        0.031746031770723104,
+                        -0.5102040816118284,
+                        -0.8264462809883204
+                    ],
+                    [
+                        -0.35999999997119997,
+                        0.031746031770723104,
+                        -0.7901234567852461
+                    ],
+                    [
+                        -0.2777777777160494,
+                        -0.6224489795664306,
+                        -0.8688016528889718
+                    ]
+                ],
+                "giou": [
+                    [
+                        -0.07936507936507936,
+                        -0.8367346938775511,
+                        -0.9834710743801653
+                    ],
+                    [
+                        -0.68,
+                        -0.07936507936507936,
+                        -0.9753086419753086
+                    ],
+                    [
+                        -0.5555555555555556,
+                        -0.9183673469387755,
+                        -0.9917355371900827
+                    ]
+                ],
+                "iou": [
+                    [
+                        0.1428571492433548,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.1428571492433548,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                ]
+            },
+            "name": "integer_grid"
+        },
+        {
+            "boxes_a": [
+                [
+                    154.79120971119266,
+                    87.77568795041046,
+                    188.51171214512692,
+                    92.54090606055681
+                ],
+                [
+                    171.7195839822765,
+                    139.47360581187277,
+                    221.54982312983884,
+                    177.7418053600746
+                ],
+                [
+                    18.835469577529906,
+                    195.1244703273512,
+                    64.56264624256696,
+                    217.04150244701341
+                ],
+                [
+                    152.2279403980706,
+                    157.21286105539076,
+                    210.4991238373699,
+                    210.90700721340042
+                ],
+                [
+                    25.622726535109173,
+                    90.07718757911343,
+                    72.54735286246112,
+                    102.56087134237951
+                ],
+                [
+                    74.15960484651625,
+                    185.35299776972036,
+                    102.69614406641126,
+                    188.93741995116685
+                ],
+                [
+                    128.77302401613292,
+                    164.552322654166,
+                    138.87610404811824,
+                    205.85221089547082
+                ],
+                [
+                    88.68283976546623,
+                    45.447744356955376,
+                    133.62380696402744,
+                    103.53081857057376
+                ]
+            ],
+            "boxes_b": [
+                [
+                    65.16507162763038,
+                    74.09194120697377,
+                    115.26839990994725,
+                    122.57303829928509
+                ],
+                [
+                    93.91116225516159,
+                    37.89427181685714,
+                    117.77238661794188,
+                    55.90562994874155
+                ],
+                [
+                    25.98430106709433,
+                    95.14098524518676,
+                    67.25153580161788,
+                    104.38638177813604
+                ],
+                [
+                    45.38186981017682,
+                    133.96279893650208,
+                    58.17645375620822,
+                    135.3971728518114
+                ],
+                [
+                    87.43038377446615,
+                    166.53563921156749,
+                    134.8589220470923,
+                    206.7618397504974
+                ],
+                [
+                    140.0530204004498,
+                    62.47332827640821,
+                    182.65777773940357,
+                    109.53634110670431
+                ]
+            ],
+            "fused": {
+                "biou_0_3": [
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.07504642009735107
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.021079115569591522,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.07710415124893188,
+                        0.0
+                    ],
+                    [
+                        0.10428427159786224,
+                        0.0,
+                        0.5914669036865234,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.044289957731962204,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.20947405695915222,
+                        0.0
+                    ],
+                    [
+                        0.3555130362510681,
+                        0.16464447975158691,
+                        0.008632107637822628,
+                        0.0,
+                        0.0,
+                        0.13879011571407318
+                    ]
+                ],
+                "ciou": [
+                    [
+                        0.2982721921240137,
+                        0.23529367048495492,
+                        0.20541033448681778,
+                        0.14068774918121063,
+                        0.2266064303245235,
+                        0.5022297509027441
+                    ],
+                    [
+                        0.2875131078313573,
+                        0.21098215620875482,
+                        0.2091914828085416,
+                        0.16653139087667423,
+                        0.3202397025136683,
+                        0.33643539876610806
+                    ],
+                    [
+                        0.2643342485692161,
+                        0.14824853732645932,
+                        0.1705597599721,
+                        0.2098949481893203,
+                        0.3372666984913346,
+                        0.21500943222883706
+                    ],
+                    [
+                        0.30350403660319447,
+                        0.2183641651494415,
+                        0.22820985161894192,
+                        0.1989086302540905,
+                        0.36307038886768195,
+                        0.31449626370201333
+                    ],
+                    [
+                        0.42899710088646087,
+                        0.2748260771524039,
+                        0.7278431801143961,
+                        0.32621956591604817,
+                        0.2619940020234811,
+                        0.2555953537490788
+                    ],
+                    [
+                        0.23660167461890075,
+                        0.09049561848669796,
+                        0.1804421304820495,
+                        0.1753099623701349,
+                        0.4570053464742901,
+                        0.20267044252049188
+                    ],
+                    [
+                        0.28549320519399046,
+                        0.15556550367636912,
+                        0.1186494407653354,
+                        0.05301295054320104,
+                        0.48685827200442494,
+                        0.2696216367149927
+                    ],
+                    [
+                        0.5445523287272018,
+                        0.4819018071419831,
+                        0.32475605879759956,
+                        0.24810819467580197,
+                        0.2773670146969426,
+                        0.3974802510447131
+                    ]
+                ],
+                "diou": [
+                    [
+                        0.3093223980990094,
+                        0.2401788931454199,
+                        0.20541369179916596,
+                        0.14068780522457613,
+                        0.23391989345565561,
+                        0.5191526724074065
+                    ],
+                    [
+                        0.28752692576272754,
+                        0.21098215660109426,
+                        0.21191076011220922,
+                        0.17292079649600106,
+                        0.3202401569222271,
+                        0.3365208213867734
+                    ],
+                    [
+                        0.2651814823704163,
+                        0.1483769229361238,
+                        0.1707717073862473,
+                        0.21088788112210494,
+                        0.33761277588858163,
+                        0.21676591948145874
+                    ],
+                    [
+                        0.30350406571883504,
+                        0.21837169613190605,
+                        0.23378742068554625,
+                        0.210245607855004,
+                        0.36307062366110643,
+                        0.31450176314027184
+                    ],
+                    [
+                        0.4341297864947098,
+                        0.2765554619086438,
+                        0.7278435564933462,
+                        0.3262590160108788,
+                        0.26493423112979314,
+                        0.26351540103537624
+                    ],
+                    [
+                        0.24869471962276946,
+                        0.09597245575033214,
+                        0.18044892074535435,
+                        0.17530996494903017,
+                        0.46530753370778294,
+                        0.220011022306979
+                    ],
+                    [
+                        0.2927532327246223,
+                        0.17070067140418327,
+                        0.20192328699204598,
+                        0.16626731744538514,
+                        0.4990424216062975,
+                        0.2741348303937645
+                    ],
+                    [
+                        0.5445943715058654,
+                        0.48233753446405153,
+                        0.34051774475229324,
+                        0.27489547052555996,
+                        0.2775205861481032,
+                        0.3974831610891777
+                    ]
+                ],
+                "giou": [
+                    [
+                        0.21653497795677268,
+                        0.057108714212889045,
+                        0.10042206372360074,
+                        0.013133531780164909,
+                        0.08599432856965034,
+                        0.47837310264694066
+                    ],
+                    [
+                        0.133750039384191,
+                        0.06545358230457532,
+                        0.07083272085245107,
+                        0.12481531586207079,
+                        0.2113532996167955,
+                        0.2082188970928363
+                    ],
+                    [
+                        0.12445618795120278,
+                        0.040395928234693845,
+                        0.11722714267434386,
+                        0.13432066678707022,
+                        0.2483055564408797,
+                        0.05938208043451826
+                    ],
+                    [
+                        0.1397585265661041,
+                        0.08820977728064378,
+                        0.08216908923281102,
+                        0.12385750264869128,
+                        0.3811014890667859,
+                        0.24548812710607587
+                    ],
+                    [
+                        0.35200813845913376,
+                        0.08521265086411056,
+                        0.723882754184488,
+                        0.1420431141245636,
+                        0.09781992034630899,
+                        0.17528485842610342
+                    ],
+                    [
+                        0.219959108493115,
+                        0.040384605754295144,
+                        0.033620497389857285,
+                        0.01914403542216342,
+                        0.41441651644298516,
+                        0.07679383325128142
+                    ],
+                    [
+                        0.14653346541666978,
+                        0.05607816317289471,
+                        0.031955637214559685,
+                        0.03240532519810174,
+                        0.5376357985448172,
+                        0.15676834410523177
+                    ],
+                    [
+                        0.49503746368263307,
+                        0.5177218982211906,
+                        0.23579619725769796,
+                        0.16558891797016767,
+                        0.2952714254812929,
+                        0.38316710015558914
+                    ]
+                ],
+                "iou": [
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.06531728804111481
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.031531840562820435,
+                        0.0,
+                        0.46314650774002075,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.027982953935861588,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.11471424996852875,
+                        0.0
+                    ],
+                    [
+                        0.18386179208755493,
+                        0.08942267298698425,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                ]
+            },
+            "matrices": {
+                "biou_0_3": [
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.07504642009735107
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.021079115569591522,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.07710415124893188,
+                        0.0
+                    ],
+                    [
+                        0.10428427159786224,
+                        0.0,
+                        0.5914669036865234,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.044289957731962204,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.20947405695915222,
+                        0.0
+                    ],
+                    [
+                        0.3555130362510681,
+                        0.16464447975158691,
+                        0.008632107637822628,
+                        0.0,
+                        0.0,
+                        0.13879011571407318
+                    ]
+                ],
+                "ciou": [
+                    [
+                        -0.4034556157519727,
+                        -0.5294126590300902,
+                        -0.5891793310263644,
+                        -0.7186245016375787,
+                        -0.546787139350953,
+                        0.004459501805488285
+                    ],
+                    [
+                        -0.42497378433728533,
+                        -0.5780356875824904,
+                        -0.5816170343829168,
+                        -0.6669372182466515,
+                        -0.3595205949726635,
+                        -0.32712920246778393
+                    ],
+                    [
+                        -0.4713315028615678,
+                        -0.7035029253470814,
+                        -0.6588804800558,
+                        -0.5802101036213594,
+                        -0.32546660301733077,
+                        -0.5699811355423259
+                    ],
+                    [
+                        -0.3929919267936111,
+                        -0.563271669701117,
+                        -0.5435802967621162,
+                        -0.602182739491819,
+                        -0.27385922226463616,
+                        -0.37100747259597333
+                    ],
+                    [
+                        -0.14200579822707826,
+                        -0.4503478456951921,
+                        0.4556863602287923,
+                        -0.3475608681679036,
+                        -0.4760119959530377,
+                        -0.48880929250184235
+                    ],
+                    [
+                        -0.5267966507621985,
+                        -0.8190087630266041,
+                        -0.639115739035901,
+                        -0.6493800752597302,
+                        -0.08598930705141983,
+                        -0.5946591149590162
+                    ],
+                    [
+                        -0.4290135896120191,
+                        -0.6888689926472618,
+                        -0.7627011184693292,
+                        -0.8939740989135979,
+                        -0.026283455991150163,
+                        -0.46075672657001465
+                    ],
+                    [
+                        0.08910465745440367,
+                        -0.03619638571603376,
+                        -0.3504878824048009,
+                        -0.503783610648396,
+                        -0.44526597060611484,
+                        -0.20503949791057383
+                    ]
+                ],
+                "diou": [
+                    [
+                        -0.3813552038019811,
+                        -0.5196422137091602,
+                        -0.5891726164016681,
+                        -0.7186243895508477,
+                        -0.5321602130886888,
+                        0.03830534481481302
+                    ],
+                    [
+                        -0.42494614847454487,
+                        -0.5780356867978115,
+                        -0.5761784797755816,
+                        -0.6541584070079979,
+                        -0.35951968615554575,
+                        -0.3269583572264531
+                    ],
+                    [
+                        -0.4696370352591674,
+                        -0.7032461541277524,
+                        -0.6584565852275054,
+                        -0.5782242377557901,
+                        -0.32477444822283674,
+                        -0.5664681610370825
+                    ],
+                    [
+                        -0.39299186856233,
+                        -0.5632566077361879,
+                        -0.5324251586289075,
+                        -0.579508784289992,
+                        -0.2738587526777871,
+                        -0.3709964737194563
+                    ],
+                    [
+                        -0.13174042701058036,
+                        -0.44688907618271245,
+                        0.45568711298669246,
+                        -0.3474819679782423,
+                        -0.4701315377404137,
+                        -0.4729691979292475
+                    ],
+                    [
+                        -0.5026105607544611,
+                        -0.8080550884993357,
+                        -0.6391021585092913,
+                        -0.6493800701019397,
+                        -0.06938493258443408,
+                        -0.559977955386042
+                    ],
+                    [
+                        -0.4144935345507554,
+                        -0.6585986571916335,
+                        -0.596153426015908,
+                        -0.6674653651092297,
+                        -0.0019151567874049619,
+                        -0.45173033921247097
+                    ],
+                    [
+                        0.08918874301173084,
+                        -0.035324931071896964,
+                        -0.3189645104954136,
+                        -0.45020905894888,
+                        -0.4449588277037936,
+                        -0.20503367782164464
+                    ]
+                ],
+                "giou": [
+                    [
+                        -0.5669300440864546,
+                        -0.8857825715742219,
+                        -0.7991558725527985,
+                        -0.9737329364396702,
+                        -0.8280113428606993,
+                        -0.04325379470611865
+                    ],
+                    [
+                        -0.732499921231618,
+                        -0.8690928353908494,
+                        -0.8583345582950979,
+                        -0.7503693682758584,
+                        -0.577293400766409,
+                        -0.5835622058143274
+                    ],
+                    [
+                        -0.7510876240975944,
+                        -0.9192081435306123,
+                        -0.7655457146513123,
+                        -0.7313586664258596,
+                        -0.5033888871182406,
+                        -0.8812358391309635
+                    ],
+                    [
+                        -0.7204829468677918,
+                        -0.8235804454387124,
+                        -0.835661821534378,
+                        -0.7522849947026174,
+                        -0.23779702186642815,
+                        -0.5090237457878483
+                    ],
+                    [
+                        -0.2959837230817325,
+                        -0.8295746982717789,
+                        0.44776550836897594,
+                        -0.7159137717508728,
+                        -0.804360159307382,
+                        -0.6494302831477932
+                    ],
+                    [
+                        -0.56008178301377,
+                        -0.9192307884914097,
+                        -0.9327590052202854,
+                        -0.9617119291556732,
+                        -0.17116696711402973,
+                        -0.8464123334974372
+                    ],
+                    [
+                        -0.7069330691666604,
+                        -0.8878436736542106,
+                        -0.9360887255708806,
+                        -0.9351893496037965,
+                        0.07527159708963445,
+                        -0.6864633117895365
+                    ],
+                    [
+                        -0.009925072634733828,
+                        0.03544379644238124,
+                        -0.5284076054846041,
+                        -0.6688221640596647,
+                        -0.4094571490374141,
+                        -0.2336657996888217
+                    ]
+                ],
+                "iou": [
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.06531728804111481
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.031531840562820435,
+                        0.0,
+                        0.46314650774002075,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.027982953935861588,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.11471424996852875,
+                        0.0
+                    ],
+                    [
+                        0.18386179208755493,
+                        0.08942267298698425,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ]
+                ]
+            },
+            "name": "random_non_integer"
+        },
+        {
+            "boxes_a": [
+                [
+                    10.0,
+                    0.0,
+                    0.0,
+                    10.0
+                ],
+                [
+                    0.0,
+                    10.0,
+                    10.0,
+                    0.0
+                ],
+                [
+                    10.0,
+                    10.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    5.0,
+                    5.0,
+                    5.0,
+                    5.0
+                ],
+                [
+                    274.3,
+                    274.3,
+                    125.7,
+                    125.7
+                ]
+            ],
+            "boxes_b": [
+                [
+                    0.0,
+                    0.0,
+                    10.0,
+                    10.0
+                ],
+                [
+                    100.0,
+                    100.0,
+                    300.0,
+                    300.0
+                ]
+            ],
+            "fused": {
+                "biou_0_3": [
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ]
+                ],
+                "ciou": [
+                    [
+                        0.25,
+                        0.031591039632520634
+                    ],
+                    [
+                        0.47500000114591556,
+                        0.2565910407784362
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.475,
+                        0.25652829646665815
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ]
+                ],
+                "diou": [
+                    [
+                        0.5,
+                        0.28159103963252063
+                    ],
+                    [
+                        0.5,
+                        0.28159103963252063
+                    ],
+                    [
+                        0.5,
+                        0.27392984542225096
+                    ],
+                    [
+                        0.5,
+                        0.2815282964666581
+                    ],
+                    [
+                        0.0,
+                        0.5
+                    ]
+                ],
+                "giou": [
+                    [
+                        0.5,
+                        0.22988505747126436
+                    ],
+                    [
+                        0.5,
+                        0.22988505747126436
+                    ],
+                    [
+                        0.5,
+                        0.23781212841854937
+                    ],
+                    [
+                        0.5,
+                        0.2298190175237001
+                    ],
+                    [
+                        0.003164458823745331,
+                        0.5
+                    ]
+                ],
+                "iou": [
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ]
+                ]
+            },
+            "matrices": {
+                "biou_0_3": [
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ]
+                ],
+                "ciou": [
+                    [
+                        -0.5,
+                        -0.9368179207349587
+                    ],
+                    [
+                        -0.049999997708168875,
+                        -0.4868179184431276
+                    ],
+                    [
+                        -1.5576922904018655,
+                        -2.0098325995573636
+                    ],
+                    [
+                        -0.05,
+                        -0.4869434070666837
+                    ],
+                    [
+                        -3.9642632419794666,
+                        -1.5576923065287518
+                    ]
+                ],
+                "diou": [
+                    [
+                        0.0,
+                        -0.43681792073495873
+                    ],
+                    [
+                        0.0,
+                        -0.43681792073495873
+                    ],
+                    [
+                        0.0,
+                        -0.45214030915549813
+                    ],
+                    [
+                        0.0,
+                        -0.4369434070666837
+                    ],
+                    [
+                        -2.406570935450715,
+                        0.0
+                    ]
+                ],
+                "giou": [
+                    [
+                        0.0,
+                        -0.5402298850574713
+                    ],
+                    [
+                        0.0,
+                        -0.5402298850574713
+                    ],
+                    [
+                        0.0,
+                        -0.5243757431629013
+                    ],
+                    [
+                        0.0,
+                        -0.5403619649525998
+                    ],
+                    [
+                        -0.9936710823525093,
+                        0.0
+                    ]
+                ],
+                "iou": [
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ],
+                    [
+                        0.0,
+                        0.0
+                    ]
+                ]
+            },
+            "name": "malformed_boxes"
+        },
+        {
+            "boxes_a": [
+                [
+                    0.0,
+                    0.0,
+                    100.0,
+                    1.0
+                ]
+            ],
+            "boxes_b": [
+                [
+                    400.0,
+                    400.0,
+                    401.0,
+                    500.0
+                ]
+            ],
+            "fused": {
+                "biou_0_3": [
+                    [
+                        0.0
+                    ]
+                ],
+                "ciou": [
+                    [
+                        0.0
+                    ]
+                ],
+                "diou": [
+                    [
+                        0.10455244753552095
+                    ]
+                ],
+                "giou": [
+                    [
+                        0.0004987531172069848
+                    ]
+                ],
+                "iou": [
+                    [
+                        0.0
+                    ]
+                ]
+            },
+            "matrices": {
+                "biou_0_3": [
+                    [
+                        0.0
+                    ]
+                ],
+                "ciou": [
+                    [
+                        -1.271999773871575
+                    ]
+                ],
+                "diou": [
+                    [
+                        -0.7908951049289581
+                    ]
+                ],
+                "giou": [
+                    [
+                        -0.999002493765586
+                    ]
+                ],
+                "iou": [
+                    [
+                        0.0
+                    ]
+                ]
+            },
+            "name": "wide_versus_tall"
+        }
+    ],
     "boxes_a": [
         [
             0.0,
@@ -1257,7 +7262,7 @@ const fixtureJsonByName = <String, String>{
 }
 ''',
   'manifest.json': r'''{
-    "numpy": "2.4.4",
+    "numpy": "2.5.3",
     "policy": {
         "floats": {
             "atol": 1e-07,
@@ -1271,9 +7276,13 @@ const fixtureJsonByName = <String, String>{
     },
     "psutil": "7.2.2",
     "python": "3.14",
-    "scipy": "1.17.1",
-    "supervision": "0.29.0",
-    "trackers": "2.6.0"
+    "scipy": "1.18.1",
+    "supervision": "0.30.5",
+    "trackers": "2.6.0",
+    "trackers_source": {
+        "repository": "https://github.com/roboflow/trackers",
+        "revision": "52610c3ce8eab6d0d2a6beb91e8a1fed9fea34de"
+    }
 }
 ''',
   'ocsort_cases.json': r'''[
@@ -1282,9 +7291,23 @@ const fixtureJsonByName = <String, String>{
             [],
             []
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            }
+        ],
         "expected_tracker_id": [
             [],
             []
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -1313,6 +7336,38 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.9999003698561637,
+                        -2.4999999759245384e-07,
+                        20.999899869856183,
+                        20.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        1.9999238401441062,
+                        -2.4999999759245384e-07,
+                        21.999923340144125,
+                        20.00000025
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1
@@ -1323,6 +7378,11 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
         ],
         "frames": [
             {
@@ -1388,6 +7448,25 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        10.999900369856162,
+                        9.999999750000002,
+                        30.99989986985618,
+                        30.00000025
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1
@@ -1395,6 +7474,10 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -1441,6 +7524,25 @@ const fixtureJsonByName = <String, String>{
                 1
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.9999003698561637,
+                        -2.4999999759245384e-07,
+                        20.999899869856183,
+                        20.00000025
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1,
@@ -1450,6 +7552,10 @@ const fixtureJsonByName = <String, String>{
                 0,
                 -1
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -1519,6 +7625,32 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0,
+                    1
+                ],
+                "xyxy": [
+                    [
+                        0.9999003698561637,
+                        -2.4999999759245384e-07,
+                        20.999899869856183,
+                        20.00000025
+                    ],
+                    [
+                        100.99990036985616,
+                        99.99999975,
+                        120.9998998698562,
+                        120.00000025
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1,
@@ -1528,6 +7660,10 @@ const fixtureJsonByName = <String, String>{
                 0,
                 1
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -1598,6 +7734,51 @@ const fixtureJsonByName = <String, String>{
                 0
             ]
         ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.999800489712335,
+                        49.99999975,
+                        81.99979998971234,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        53.99740336626048,
+                        49.99999975,
+                        83.99740286626049,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        55.999953545664845,
+                        49.99999975,
+                        85.99995304566485,
+                        80.00000025
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1
@@ -1609,6 +7790,12 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0
         ],
         "frames": [
             {
@@ -1661,14 +7848,2721 @@ const fixtureJsonByName = <String, String>{
             "minimum_consecutive_frames": 1,
             "minimum_iou_threshold": 0.1
         }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.999800489712335,
+                        49.99999975,
+                        81.99979998971234,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        53.99984743028822,
+                        49.99999975,
+                        83.99984693028823,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        55.99943611015632,
+                        49.99999975,
+                        85.99943561015633,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.999024790024414,
+                        49.99999975,
+                        87.99902429002442,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        59.99997765323395,
+                        49.99999975,
+                        89.99997715323396,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        61.99997247364137,
+                        49.99999975,
+                        91.99997197364138,
+                        80.00000025
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        54.0,
+                        50.0,
+                        84.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        62.0,
+                        50.0,
+                        92.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "oru_replay_after_two_misses",
+        "params": {
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": 0.1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        -0.010225821850724515,
+                        -0.010226274358615228,
+                        80.01222342472727,
+                        80.01222387723516
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.5365187244833756,
+                        0.5365183306187085,
+                        59.46500947263431,
+                        59.465009866498974
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        11.721414800239838,
+                        11.72141468953776,
+                        28.28422659819689,
+                        28.28422670889897
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        1.7234714008993635,
+                        1.7234712901972848,
+                        18.286283198856417,
+                        18.286283309558495
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        -5.601670725017219,
+                        -5.6016722788690965,
+                        7.549868340679345,
+                        7.549869894531223
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        -7.34393612197411,
+                        -7.343937645874108,
+                        2.798192083875721,
+                        2.798193607775719
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        100.0,
+                        100.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        60.0,
+                        60.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        2.0,
+                        2.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        2.0,
+                        2.0
+                    ]
+                ]
+            }
+        ],
+        "name": "oru_replay_clamps_shrinking_scale",
+        "params": {
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": 0.0
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            []
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.9999003698561637,
+                        -2.499999993688107e-07,
+                        300.99989986985616,
+                        300.00000024999997
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        1.998701808130221,
+                        -2.499999993688107e-07,
+                        301.9987013081302,
+                        300.00000024999997
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        113.07276499525433,
+                        113.03624016164204,
+                        187.98807108487625,
+                        187.9515832814648
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        112.94431294475702,
+                        113.26191590839045,
+                        187.8596190343789,
+                        188.1772590282132
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            []
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        300.0,
+                        300.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        1.0,
+                        0.0,
+                        301.0,
+                        300.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        150.0,
+                        150.0,
+                        151.0,
+                        151.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            }
+        ],
+        "name": "oru_shrinking_re_detection",
+        "params": {
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": 0.0
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        10.999900119856173,
+                        15.0,
+                        10.999900119856173,
+                        15.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        11.998701558130245,
+                        15.0,
+                        11.998701558130245,
+                        15.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        30.82503734365641,
+                        9.313929719215853,
+                        38.63914744871038,
+                        20.686070280784147
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        33.99008003500427,
+                        8.958221842242121,
+                        43.26481247662285,
+                        21.04177815775788
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        10.0,
+                        10.0,
+                        10.0,
+                        20.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        11.0,
+                        10.0,
+                        11.0,
+                        20.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        30.0,
+                        10.0,
+                        40.0,
+                        20.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        31.0,
+                        10.0,
+                        41.0,
+                        20.0
+                    ]
+                ]
+            }
+        ],
+        "name": "oru_zero_width_last_observation",
+        "params": {
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": 0.0
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.999800489712335,
+                        49.99999975,
+                        81.99979998971234,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        53.99984743028822,
+                        49.99999975,
+                        83.99984693028823,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        59.99994554976046,
+                        49.99999975,
+                        89.99994504976047,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        61.99992295952831,
+                        49.99999975,
+                        91.99992245952832,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        66.2163693638474,
+                        49.99999975,
+                        96.2163688638474,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        68.06080122528701,
+                        49.99999975,
+                        98.06080072528701,
+                        80.00000025
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.03333333333333333,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.06666666666666667,
+                "xyxy": [
+                    [
+                        54.0,
+                        50.0,
+                        84.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.16666666666666666,
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "timestamp": 0.2,
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.26666666666666666,
+                "xyxy": [
+                    [
+                        66.0,
+                        50.0,
+                        96.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.3,
+                "xyxy": [
+                    [
+                        68.0,
+                        50.0,
+                        98.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_gap_before_freeze_then_oru",
+        "params": {
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": 0.1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        4.999500849280843,
+                        -2.4999999315156174e-07,
+                        14.999500349280883,
+                        10.000000249999992
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        9.999618200720562,
+                        -2.4999999315156174e-07,
+                        19.9996177007206,
+                        10.000000249999992
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        8.223123346540326,
+                        2.5412477137029894,
+                        18.223122846540363,
+                        12.541248213702975
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        5.0,
+                        0.0,
+                        15.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        10.0,
+                        0.0,
+                        20.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        7.0,
+                        3.0,
+                        17.0,
+                        13.0
+                    ]
+                ]
+            }
+        ],
+        "name": "ocr_uses_plain_iou_with_giou_metric",
+        "params": {
+            "iou": "giou",
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": 0.3
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        10.000000249999992,
+                        9.999999750000004,
+                        49.99999975000001,
+                        50.00000025
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "xyxy": [
+                    [
+                        10.0,
+                        10.0,
+                        50.0,
+                        50.0
+                    ]
+                ]
+            },
+            {
+                "xyxy": [
+                    [
+                        10.0,
+                        10.0,
+                        50.0,
+                        50.0
+                    ]
+                ]
+            }
+        ],
+        "name": "missing_confidence_bypasses_high_threshold",
+        "params": {
+            "high_conf_det_threshold": 1.5,
+            "minimum_consecutive_frames": 1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        10.999900369856164,
+                        9.999999750000004,
+                        50.99989986985618,
+                        50.00000025
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.6
+                ],
+                "xyxy": [
+                    [
+                        10.0,
+                        10.0,
+                        50.0,
+                        50.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.6
+                ],
+                "xyxy": [
+                    [
+                        11.0,
+                        10.0,
+                        51.0,
+                        50.0
+                    ]
+                ]
+            }
+        ],
+        "name": "confidence_equal_to_threshold_is_high",
+        "params": {
+            "high_conf_det_threshold": 0.6,
+            "minimum_consecutive_frames": 1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        11.999960886864041,
+                        9.99999975,
+                        51.99996038686406,
+                        50.00000025
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                -1
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        10.0,
+                        10.0,
+                        50.0,
+                        50.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.3
+                ],
+                "xyxy": [
+                    [
+                        11.0,
+                        10.0,
+                        51.0,
+                        50.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        12.0,
+                        10.0,
+                        52.0,
+                        50.0
+                    ]
+                ]
+            }
+        ],
+        "name": "low_confidence_never_recovers_track",
+        "params": {
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": 0.1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0,
+                1
+            ],
+            [
+                0,
+                1
+            ],
+            [
+                0,
+                1
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0,
+                    1
+                ],
+                "xyxy": [
+                    [
+                        3.99960072942468,
+                        -2.4999999759245384e-07,
+                        23.9996002294247,
+                        20.00000025
+                    ],
+                    [
+                        26.0003997705753,
+                        -2.4999999759245384e-07,
+                        46.000399270575315,
+                        20.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0,
+                    1
+                ],
+                "xyxy": [
+                    [
+                        7.999694610576453,
+                        -2.4999999759245384e-07,
+                        27.99969411057647,
+                        20.00000025
+                    ],
+                    [
+                        22.00030588942353,
+                        -2.4999999759245384e-07,
+                        42.000305389423545,
+                        20.00000025
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1,
+                -1
+            ],
+            [
+                0,
+                1
+            ],
+            [
+                0,
+                1
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9,
+                    0.8
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        20.0,
+                        20.0
+                    ],
+                    [
+                        30.0,
+                        0.0,
+                        50.0,
+                        20.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9,
+                    0.8
+                ],
+                "xyxy": [
+                    [
+                        4.0,
+                        0.0,
+                        24.0,
+                        20.0
+                    ],
+                    [
+                        26.0,
+                        0.0,
+                        46.0,
+                        20.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9,
+                    0.8
+                ],
+                "xyxy": [
+                    [
+                        8.0,
+                        0.0,
+                        28.0,
+                        20.0
+                    ],
+                    [
+                        22.0,
+                        0.0,
+                        42.0,
+                        20.0
+                    ]
+                ]
+            }
+        ],
+        "name": "direction_weight_zero",
+        "params": {
+            "direction_consistency_weight": 0.0,
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": 0.1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        10.999900369856164,
+                        10.999899869856176,
+                        50.99989986985618,
+                        50.999900369856164
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        11.99992384014411,
+                        11.999923340144122,
+                        51.99992334014412,
+                        51.99992384014411
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        10.0,
+                        10.0,
+                        50.0,
+                        50.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        11.0,
+                        11.0,
+                        51.0,
+                        51.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        12.0,
+                        12.0,
+                        52.0,
+                        52.0
+                    ]
+                ]
+            }
+        ],
+        "name": "delta_t_zero_uses_latest_observation",
+        "params": {
+            "delta_t": 0,
+            "minimum_consecutive_frames": 0
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        102.99970048456852,
+                        80.99989986985618,
+                        142.99970023456854,
+                        160.99990036985616
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        105.99977089543235,
+                        81.99992334014412,
+                        145.99977064543236,
+                        161.9999238401441
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        108.99987072484898,
+                        82.99995661661633,
+                        148.999870474849,
+                        162.99995711661632
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        111.9999169436919,
+                        83.9999720228973,
+                        151.9999166936919,
+                        163.99997252289728
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        114.99994115380035,
+                        84.99998009293344,
+                        154.99994090380034,
+                        164.99998059293344
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        117.99995541027529,
+                        85.99998484509176,
+                        157.9999551602753,
+                        165.99998534509177
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        120.99996461175282,
+                        86.99998791225093,
+                        160.9999643617528,
+                        166.99998841225093
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        123.99997098828261,
+                        87.99999003776087,
+                        163.99997073828263,
+                        167.99999053776088
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        126.99997565821458,
+                        88.99999159440486,
+                        166.9999754082146,
+                        168.99999209440486
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        129.99997922884688,
+                        89.99999278461561,
+                        169.99997897884685,
+                        169.9999932846156
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        132.999982052554,
+                        90.99999372585134,
+                        172.99998180255403,
+                        170.99999422585134
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        100.0,
+                        80.0,
+                        140.0,
+                        160.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        103.0,
+                        81.0,
+                        143.0,
+                        161.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        106.0,
+                        82.0,
+                        146.0,
+                        162.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        109.0,
+                        83.0,
+                        149.0,
+                        163.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        112.0,
+                        84.0,
+                        152.0,
+                        164.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        115.0,
+                        85.0,
+                        155.0,
+                        165.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        118.0,
+                        86.0,
+                        158.0,
+                        166.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        121.0,
+                        87.0,
+                        161.0,
+                        167.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        124.0,
+                        88.0,
+                        164.0,
+                        168.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        127.0,
+                        89.0,
+                        167.0,
+                        169.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        130.0,
+                        90.0,
+                        170.0,
+                        170.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        133.0,
+                        91.0,
+                        173.0,
+                        171.0
+                    ]
+                ]
+            }
+        ],
+        "name": "long_track_default_parameters",
+        "params": {}
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.999800489712335,
+                        49.99999975,
+                        81.99979998971234,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.9999366188001,
+                        49.99999975,
+                        87.99993611880011,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.99996829685566,
+                        49.99999975,
+                        87.99996779685567,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.99996829685566,
+                        49.99999975,
+                        87.99996779685567,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        59.999981243692424,
+                        49.99999975,
+                        89.99998074369243,
+                        80.00000025
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                -1
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.03333333333333333,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.13333333333333333,
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.13333333333333333,
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.1,
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.16666666666666666,
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_bootstrap_gap_duplicate_backwards",
+        "params": {
+            "minimum_consecutive_frames": 1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.999800489712335,
+                        49.99999975,
+                        81.99979998971234,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                -1
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.03333333333333333,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.23333333333333334,
+                "xyxy": [
+                    [
+                        54.0,
+                        50.0,
+                        84.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_seconds_budget_prunes_before_association",
+        "params": {
+            "lost_track_buffer": 2,
+            "minimum_consecutive_frames": 1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.99979643872923,
+                        49.99999975,
+                        81.99979593872924,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        54.003253696436694,
+                        49.99999975,
+                        84.0032531964367,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        55.99335872640629,
+                        49.99999975,
+                        85.9933582264063,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.99238513688079,
+                        49.99999975,
+                        87.9923846368808,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        60.00883232177524,
+                        49.99999975,
+                        90.00883182177525,
+                        80.00000025
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.033,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.067,
+                "xyxy": [
+                    [
+                        54.0,
+                        50.0,
+                        84.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.1,
+                "xyxy": [
+                    [
+                        56.0,
+                        50.0,
+                        86.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.133,
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.167,
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_millisecond_rounded_clock_matches_fixed_rate",
+        "params": {
+            "minimum_consecutive_frames": 2
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.999800489712335,
+                        49.99999975,
+                        81.99979998971234,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        53.99740336626048,
+                        49.99999975,
+                        83.99740286626049,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        55.999953545664845,
+                        49.99999975,
+                        85.99995304566485,
+                        80.00000025
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.9999476731172,
+                        49.99999975,
+                        87.9999471731172,
+                        80.00000025
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.03333333333333333,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        56.0,
+                        50.0,
+                        86.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_then_fixed_rate",
+        "params": {
+            "lost_track_buffer": 3,
+            "minimum_consecutive_frames": 1
+        }
     }
 ]
 ''',
   'sort_cases.json': r'''[
     {
+        "expected_output_indices": [
+            [],
+            []
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            }
+        ],
         "expected_tracker_id": [
             [],
             []
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -1688,6 +10582,49 @@ const fixtureJsonByName = <String, String>{
         }
     },
     {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.95260663507109,
+                        0.0,
+                        10.95260663507109,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        1.9314136719192836,
+                        0.0,
+                        11.931413671919284,
+                        10.0
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1
@@ -1698,6 +10635,11 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
         ],
         "frames": [
             {
@@ -1756,6 +10698,33 @@ const fixtureJsonByName = <String, String>{
         }
     },
     {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        10.95260663507109,
+                        10.0,
+                        20.95260663507109,
+                        20.0
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1
@@ -1763,6 +10732,10 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
         ],
         "frames": [
             {
@@ -1799,6 +10772,66 @@ const fixtureJsonByName = <String, String>{
         }
     },
     {
+        "expected_output_indices": [
+            [
+                0,
+                1
+            ],
+            [
+                0,
+                1
+            ],
+            [
+                0,
+                1
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0,
+                    1
+                ],
+                "xyxy": [
+                    [
+                        0.95260663507109,
+                        0.0,
+                        10.95260663507109,
+                        10.0
+                    ],
+                    [
+                        100.95260663507109,
+                        100.0,
+                        110.95260663507109,
+                        110.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0,
+                    1
+                ],
+                "xyxy": [
+                    [
+                        1.9314136719192836,
+                        0.0,
+                        11.931413671919284,
+                        10.0
+                    ],
+                    [
+                        101.93141367191929,
+                        100.0,
+                        111.93141367191929,
+                        110.0
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1,
@@ -1812,6 +10845,11 @@ const fixtureJsonByName = <String, String>{
                 0,
                 1
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
         ],
         "frames": [
             {
@@ -1894,6 +10932,63 @@ const fixtureJsonByName = <String, String>{
         }
     },
     {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        50.95260663507109,
+                        50.0,
+                        60.95260663507109,
+                        60.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.42654028436019,
+                        50.0,
+                        61.42654028436019,
+                        60.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        52.957034650073155,
+                        50.0,
+                        62.957034650073155,
+                        60.0
+                    ]
+                ]
+            }
+        ],
         "expected_tracker_id": [
             [
                 -1
@@ -1905,6 +11000,12 @@ const fixtureJsonByName = <String, String>{
             [
                 0
             ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0
         ],
         "frames": [
             {
@@ -1956,6 +11057,1183 @@ const fixtureJsonByName = <String, String>{
             "lost_track_buffer": 3,
             "minimum_consecutive_frames": 1,
             "minimum_iou_threshold": 0.1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                -1
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.2
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.2
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "below_activation_threshold_does_not_spawn",
+        "params": {
+            "minimum_consecutive_frames": 1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                -1
+            ],
+            [],
+            [
+                -1
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        1.0,
+                        0.0,
+                        11.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        3.0,
+                        0.0,
+                        13.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "immature_track_dropped_on_first_miss",
+        "params": {}
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.95260663507109,
+                        0.0,
+                        10.95260663507109,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        1.0,
+                        0.0,
+                        11.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "minimum_consecutive_frames_zero",
+        "params": {
+            "minimum_consecutive_frames": 0
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        5.23696682464455
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        5.0
+                    ]
+                ]
+            }
+        ],
+        "name": "iou_equal_to_threshold_matches",
+        "params": {
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": 0.5
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [],
+            [
+                -1
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "zero_lost_track_buffer_expires_on_first_miss",
+        "params": {
+            "lost_track_buffer": 0,
+            "minimum_consecutive_frames": 1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        11.43127962085308,
+                        0.0,
+                        21.43127962085308,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        23.176964063031402,
+                        0.0,
+                        33.176964063031406,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        0.0,
+                        0.0,
+                        10.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        12.0,
+                        0.0,
+                        22.0,
+                        10.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        24.0,
+                        0.0,
+                        34.0,
+                        10.0
+                    ]
+                ]
+            }
+        ],
+        "name": "giou_metric",
+        "params": {
+            "iou": "giou",
+            "minimum_consecutive_frames": 1,
+            "minimum_iou_threshold": -0.2
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.90521327014218,
+                        50.0,
+                        81.90521327014218,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.94095966365943,
+                        50.0,
+                        87.94095966365943,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.97020933802631,
+                        50.0,
+                        87.97020933802631,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.97020933802631,
+                        50.0,
+                        87.97020933802631,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        59.993474234560544,
+                        50.0,
+                        89.99347423456054,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                -1
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.03333333333333333,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.13333333333333333,
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.13333333333333333,
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.1,
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.16666666666666666,
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_bootstrap_gap_duplicate_backwards",
+        "params": {
+            "minimum_consecutive_frames": 1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.90521327014218,
+                        50.0,
+                        81.90521327014218,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [],
+                "xyxy": []
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                -1
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.03333333333333333,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.23333333333333334,
+                "xyxy": [
+                    [
+                        54.0,
+                        50.0,
+                        84.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_seconds_budget_prunes_before_association",
+        "params": {
+            "lost_track_buffer": 2,
+            "minimum_consecutive_frames": 1
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.90431079852639,
+                        50.0,
+                        81.90431079852638,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        53.869397584631116,
+                        50.0,
+                        83.86939758463112,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        55.91084150530038,
+                        50.0,
+                        85.91084150530038,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.940561144980016,
+                        50.0,
+                        87.94056114498001,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        59.9825453526719,
+                        50.0,
+                        89.9825453526719,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.033,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.067,
+                "xyxy": [
+                    [
+                        54.0,
+                        50.0,
+                        84.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.1,
+                "xyxy": [
+                    [
+                        56.0,
+                        50.0,
+                        86.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.133,
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.167,
+                "xyxy": [
+                    [
+                        60.0,
+                        50.0,
+                        90.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_millisecond_rounded_clock_matches_fixed_rate",
+        "params": {
+            "minimum_consecutive_frames": 2
+        }
+    },
+    {
+        "expected_output_indices": [
+            [
+                0
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_tracked_objects": [
+            {
+                "tracker_id": [],
+                "xyxy": []
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        51.90521327014218,
+                        50.0,
+                        81.90521327014218,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        52.85308056872037,
+                        50.0,
+                        82.85308056872039,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        55.9140693001463,
+                        50.0,
+                        85.91406930014631,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "tracker_id": [
+                    0
+                ],
+                "xyxy": [
+                    [
+                        57.95241275540251,
+                        50.0,
+                        87.9524127554025,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "expected_tracker_id": [
+            [
+                -1
+            ],
+            [
+                0
+            ],
+            [],
+            [
+                0
+            ],
+            [
+                0
+            ]
+        ],
+        "expected_warning_count": [
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "frames": [
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.0,
+                "xyxy": [
+                    [
+                        50.0,
+                        50.0,
+                        80.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "timestamp": 0.03333333333333333,
+                "xyxy": [
+                    [
+                        52.0,
+                        50.0,
+                        82.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [],
+                "xyxy": []
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        56.0,
+                        50.0,
+                        86.0,
+                        80.0
+                    ]
+                ]
+            },
+            {
+                "confidence": [
+                    0.9
+                ],
+                "xyxy": [
+                    [
+                        58.0,
+                        50.0,
+                        88.0,
+                        80.0
+                    ]
+                ]
+            }
+        ],
+        "name": "timestamps_then_fixed_rate",
+        "params": {
+            "lost_track_buffer": 3,
+            "minimum_consecutive_frames": 1
         }
     }
 ]

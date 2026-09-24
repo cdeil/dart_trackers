@@ -46,10 +46,11 @@ class SORTTracker implements Tracker {
        iou = iou ?? const IoU(),
        _clock = TrackerClock(frameRate, onWarning: onWarning),
        _onWarning = onWarning {
-    if (minimumConsecutiveFrames < 1) {
+    if (minimumConsecutiveFrames < 0) {
       throw ArgumentError.value(
         minimumConsecutiveFrames,
         'minimumConsecutiveFrames',
+        'Must be non-negative',
       );
     }
   }
@@ -57,7 +58,9 @@ class SORTTracker implements Tracker {
   @override
   Detections update(Detections detections, {Object? frame, double? timestamp}) {
     if (frame != null) {
-      _onWarning?.call('SORTTracker ignores frame input.');
+      _onWarning?.call(
+        'SORTTracker.update() received a frame argument but does not use it.',
+      );
     }
     final timing = _clock.timing(timestamp);
     if (timing.skipUpdate) {
@@ -66,7 +69,7 @@ class SORTTracker implements Tracker {
       );
     }
     if (tracks.isEmpty && detections.isEmpty) {
-      return detections.copyWithTrackerId(Int32List(0));
+      return Detections.empty().copyWithTrackerId(Int32List(0));
     }
 
     if (!timing.skipPredict) {

@@ -63,25 +63,28 @@ class BoTSORTTracker implements Tracker {
        iouSecond = secondIou ?? firstIou ?? const IoU(),
        _clock = TrackerClock(frameRate, onWarning: onWarning),
        _onWarning = onWarning {
-    if (minimumConsecutiveFrames < 1) {
+    if (minimumConsecutiveFrames < 0) {
       throw ArgumentError.value(
         minimumConsecutiveFrames,
         'minimumConsecutiveFrames',
+        'Must be non-negative',
       );
     }
   }
 
   @override
   Detections update(Detections detections, {Object? frame, double? timestamp}) {
-    if (frame != null && cameraMotionCompensator == null) {
-      _onWarning?.call(
-        'BoTSORTTracker ignores frame input without a CMC adapter.',
-      );
-    }
     final timing = _clock.timing(timestamp);
     if (timing.skipUpdate) {
       return detections.copyWithTrackerId(
         Int32List.fromList(List.filled(detections.length, -1)),
+      );
+    }
+    if (frame != null && cameraMotionCompensator == null) {
+      // Upstream C-BIoU warns here; upstream BoT-SORT with CMC disabled is
+      // silent. Dart warns for both because the frame is always unused.
+      _onWarning?.call(
+        '$runtimeType.update() received a frame argument but does not use it.',
       );
     }
     _frameId++;
@@ -95,17 +98,6 @@ class BoTSORTTracker implements Tracker {
     if (!timing.skipPredict) {
       for (final track in tracks) {
         track.predict(timing);
-      }
-    }
-    if (frame != null && cameraMotionCompensator != null) {
-      final transform = cameraMotionCompensator!.estimateAffine2x3(
-        frame,
-        maskBoxes: detections.xyxyRows(),
-      );
-      if (transform != null) {
-        for (final track in tracks) {
-          track.applyCameraMotion(transform);
-        }
       }
     }
     if (timing.usesElapsedTime) {
@@ -138,6 +130,25 @@ class BoTSORTTracker implements Tracker {
     final lowBoxes = [for (final i in lowIndices) detectionBoxes[i]];
     final highScores = [for (final i in highIndices) confidences[i]];
 
+    // Camera motion is estimated after the confidence split so only
+    // high-confidence boxes mask the feature detector, as upstream.
+    if (frame != null && cameraMotionCompensator != null) {
+      final transform = cameraMotionCompensator!.estimateAffine2x3(
+        frame,
+        maskBoxes: highBoxes.isEmpty ? null : highBoxes,
+      );
+      if (transform != null) {
+        for (final track in tracks) {
+          track.applyCameraMotion(transform);
+        }
+      }
+    }
+    // Track state does not change between the association stages, so each
+    // predicted box is decoded once.
+    final predictedBoxes = <BoTSORTTracklet, List<double>>{
+      for (final track in tracks) track: track.getStateBbox(),
+    };
+
     final confirmedTracks = <BoTSORTTracklet>[];
     final unconfirmedTracks = <BoTSORTTracklet>[];
     final lostTracks = <BoTSORTTracklet>[];
@@ -155,7 +166,7 @@ class BoTSORTTracker implements Tracker {
     final strackPool = [...confirmedTracks, ...lostTracks];
     final stage1 = _getAssociatedIndices(
       _fuseScore(
-        _getIouMatrix(strackPool, highBoxes, iouFirst),
+        _getIouMatrix(strackPool, highBoxes, iouFirst, predictedBoxes),
         highScores,
         iouFirst,
       ),
@@ -176,7 +187,7 @@ class BoTSORTTracker implements Tracker {
         if (strackPool[index].timeSinceUpdate == 1) strackPool[index],
     ];
     final stage2 = _getAssociatedIndices(
-      _getIouMatrix(remainingTracked, lowBoxes, iouSecond),
+      _getIouMatrix(remainingTracked, lowBoxes, iouSecond, predictedBoxes),
       minimumIouThresholdSecondAssoc,
       remainingTracked.length,
       lowBoxes.length,
@@ -207,7 +218,12 @@ class BoTSORTTracker implements Tracker {
       ];
       final unconfirmed = _getAssociatedIndices(
         _fuseScore(
-          _getIouMatrix(unconfirmedTracks, unmatchedHighBoxes, iouFirst),
+          _getIouMatrix(
+            unconfirmedTracks,
+            unmatchedHighBoxes,
+            iouFirst,
+            predictedBoxes,
+          ),
           unmatchedHighScores,
           iouFirst,
         ),
@@ -306,9 +322,10 @@ class BoTSORTTracker implements Tracker {
     List<BoTSORTTracklet> tracklets,
     List<List<double>> boxes,
     BaseIoU metric,
+    Map<BoTSORTTracklet, List<double>> predictedBoxes,
   ) {
     return metric.compute([
-      for (final track in tracklets) track.getStateBbox(),
+      for (final track in tracklets) predictedBoxes[track]!,
     ], boxes);
   }
 
@@ -353,6 +370,7 @@ class BoTSORTTracker implements Tracker {
   }
 }
 
+/// One BoT-SORT track with XCYCWH Kalman state and scale-aware noise.
 class BoTSORTTracklet {
   static const _sigmaP = 0.05;
   static const _sigmaV = 0.00625;
@@ -368,7 +386,7 @@ class BoTSORTTracklet {
 
   new(List<double> initialBbox) : kf = _createFilter(initialBbox) {
     final measurement = xyxyToXcycwh(initialBbox);
-    _setScaleAwareNoise(measurement[2], measurement[3], initial: true);
+    _setInitialNoise(measurement[2], measurement[3]);
     motionModel = KalmanMotionModel.fromFilter(
       kf,
       positionIndices: const [0, 1, 2, 3],
@@ -377,7 +395,9 @@ class BoTSORTTracklet {
   }
 
   void update(List<double> bbox) {
-    _refreshNoiseFromState();
+    // Only update() reads R and only predict() reads Q (upstream #567).
+    final (w, h) = _currentWh();
+    kf.r = _measurementNoise(w, h);
     kf.update(xyxyToXcycwh(bbox));
     _clampStateBbox();
     timeSinceUpdate = 0;
@@ -386,7 +406,8 @@ class BoTSORTTracklet {
   }
 
   List<double> predict([PredictTiming timing = fixedRateTiming]) {
-    _refreshNoiseFromState();
+    final (w, h) = _currentWh();
+    kf.q = _processNoise(w, h);
     motionModel.calibrate(kf.q);
     motionModel.apply(kf, timing.frameStep, frameRate: timing.frameRate);
     kf.predict();
@@ -404,10 +425,19 @@ class BoTSORTTracklet {
   List<double> getStateBbox() =>
       xcycwhToXyxy([kf.x[0][0], kf.x[1][0], kf.x[2][0], kf.x[3][0]]);
 
-  /// Applies an externally estimated 2x3 affine transform to center state.
+  /// Applies an externally estimated affine transform to the center state,
+  /// center velocity, and their covariance.
+  ///
+  /// [affine] is 2x3, or 3x3 in which case only the top two rows are used, as
+  /// upstream does. Non-finite entries throw an [ArgumentError].
   void applyCameraMotion(Matrix affine) {
-    if (affine.rows != 2 || affine.cols != 3) {
-      throw ArgumentError('Camera motion transform must be 2x3');
+    if (affine.cols != 3 || (affine.rows != 2 && affine.rows != 3)) {
+      throw ArgumentError('Camera motion transform must be 2x3 or 3x3');
+    }
+    for (var i = 0; i < 6; i++) {
+      if (!affine.data[i].isFinite) {
+        throw ArgumentError('Camera motion transform must be finite');
+      }
     }
     final a00 = affine[0][0];
     final a01 = affine[0][1];
@@ -434,44 +464,50 @@ class BoTSORTTracklet {
     kf.p = transform * kf.p * transform.transpose();
   }
 
-  void _refreshNoiseFromState() {
-    final bbox = getStateBbox();
-    final w = math.max(bbox[2] - bbox[0], 1e-3).toDouble();
-    final h = math.max(bbox[3] - bbox[1], 1e-3).toDouble();
-    _setScaleAwareNoise(w, h);
+  /// Width and height rebuilt from the decoded corners, so the result keeps
+  /// the center-dependent rounding of [getStateBbox] (upstream #572).
+  (double, double) _currentWh() {
+    final xc = kf.x[0][0];
+    final yc = kf.x[1][0];
+    final halfW = kf.x[2][0] * 0.5;
+    final halfH = kf.x[3][0] * 0.5;
+    return (
+      math.max((xc + halfW) - (xc - halfW), 1e-3).toDouble(),
+      math.max((yc + halfH) - (yc - halfH), 1e-3).toDouble(),
+    );
   }
 
-  void _setScaleAwareNoise(double w, double h, {bool initial = false}) {
-    final qDiag = [
-      math.pow(_sigmaP * w, 2).toDouble(),
-      math.pow(_sigmaP * h, 2).toDouble(),
-      math.pow(_sigmaP * w, 2).toDouble(),
-      math.pow(_sigmaP * h, 2).toDouble(),
-      math.pow(_sigmaV * w, 2).toDouble(),
-      math.pow(_sigmaV * h, 2).toDouble(),
-      math.pow(_sigmaV * w, 2).toDouble(),
-      math.pow(_sigmaV * h, 2).toDouble(),
-    ];
-    final rDiag = [
-      math.pow(_sigmaM * w, 2).toDouble(),
-      math.pow(_sigmaM * h, 2).toDouble(),
-      math.pow(_sigmaM * w, 2).toDouble(),
-      math.pow(_sigmaM * h, 2).toDouble(),
-    ];
-    kf.q = _diag(qDiag);
-    kf.r = _diag(rDiag);
-    if (initial) {
-      kf.p = _diag([
-        math.pow(2 * _sigmaP * w, 2).toDouble(),
-        math.pow(2 * _sigmaP * h, 2).toDouble(),
-        math.pow(2 * _sigmaP * w, 2).toDouble(),
-        math.pow(2 * _sigmaP * h, 2).toDouble(),
-        math.pow(10 * _sigmaV * w, 2).toDouble(),
-        math.pow(10 * _sigmaV * h, 2).toDouble(),
-        math.pow(10 * _sigmaV * w, 2).toDouble(),
-        math.pow(10 * _sigmaV * h, 2).toDouble(),
-      ]);
-    }
+  Matrix _processNoise(double w, double h) => Matrix.diagonal([
+    math.pow(_sigmaP * w, 2).toDouble(),
+    math.pow(_sigmaP * h, 2).toDouble(),
+    math.pow(_sigmaP * w, 2).toDouble(),
+    math.pow(_sigmaP * h, 2).toDouble(),
+    math.pow(_sigmaV * w, 2).toDouble(),
+    math.pow(_sigmaV * h, 2).toDouble(),
+    math.pow(_sigmaV * w, 2).toDouble(),
+    math.pow(_sigmaV * h, 2).toDouble(),
+  ]);
+
+  Matrix _measurementNoise(double w, double h) => Matrix.diagonal([
+    math.pow(_sigmaM * w, 2).toDouble(),
+    math.pow(_sigmaM * h, 2).toDouble(),
+    math.pow(_sigmaM * w, 2).toDouble(),
+    math.pow(_sigmaM * h, 2).toDouble(),
+  ]);
+
+  void _setInitialNoise(double w, double h) {
+    kf.q = _processNoise(w, h);
+    kf.r = _measurementNoise(w, h);
+    kf.p = Matrix.diagonal([
+      math.pow(2 * _sigmaP * w, 2).toDouble(),
+      math.pow(2 * _sigmaP * h, 2).toDouble(),
+      math.pow(2 * _sigmaP * w, 2).toDouble(),
+      math.pow(2 * _sigmaP * h, 2).toDouble(),
+      math.pow(10 * _sigmaV * w, 2).toDouble(),
+      math.pow(10 * _sigmaV * h, 2).toDouble(),
+      math.pow(10 * _sigmaV * w, 2).toDouble(),
+      math.pow(10 * _sigmaV * h, 2).toDouble(),
+    ]);
   }
 
   void _clampStateBbox() {
@@ -490,14 +526,6 @@ class BoTSORTTracklet {
       kf.x[i][0] = measurement[i];
     }
     return kf;
-  }
-
-  static Matrix _diag(List<double> values) {
-    final result = Matrix(values.length, values.length);
-    for (var i = 0; i < values.length; i++) {
-      result[i][i] = values[i];
-    }
-    return result;
   }
 }
 
