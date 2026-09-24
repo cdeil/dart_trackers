@@ -155,7 +155,8 @@ environment:
 
 ```bash
 cd conformance/python
-uv run python generate_fixtures.py
+uv run python generate_fixtures.py          # regenerate
+uv run python generate_fixtures.py --check  # verify, as CI does
 uv run ruff format --check .
 uv run ruff check .
 uv run pyright

@@ -5,7 +5,10 @@ The checked-in fixtures are generated with Python 3.14 from Roboflow
 (`[tool.uv.sources]`) and in `ORACLE_REVISION` in `generate_fixtures.py`, with
 supervision, NumPy, and SciPy pinned alongside. `conformance/fixtures/manifest.json`
 records the exact environment, including the oracle revision; the generator
-refuses to run against a different trackers revision. To move the oracle, change
+refuses to run against a different trackers revision. `--check` compares the committed
+fixtures with the oracle, allowing a relative float difference of `1e-12`
+because libm functions such as `atan` can differ in the last bit between
+platforms. To move the oracle, change
 both pins, run `uv lock`, regenerate, and update these docs and the CHANGELOG. Dart consumes embedded copies of the same JSON
 so the suite runs on the VM and in Chrome without `dart:io`.
 
@@ -14,7 +17,8 @@ so the suite runs on the VM and in Chrome without `dart:io`.
 ```bash
 cd conformance/python
 uv sync --frozen --group dev
-uv run python generate_fixtures.py
+uv run python generate_fixtures.py          # regenerate
+uv run python generate_fixtures.py --check  # verify, as CI does
 uv run ruff format --check .
 uv run ruff check .
 uv run pyright
