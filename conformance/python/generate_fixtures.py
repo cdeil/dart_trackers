@@ -5,8 +5,10 @@
 # ------------------------------------------------------------------------
 
 import json
+import subprocess
 import sys
-from importlib.metadata import version
+import warnings
+from importlib.metadata import distribution, version
 from pathlib import Path
 from typing import Any
 
@@ -29,6 +31,11 @@ from trackers import (
 )
 from trackers.core.sort.tracklet import SORTTracklet
 from trackers.utils.state_representations import XYXYStateEstimator
+
+# Upstream oracle revision; keep in sync with [tool.uv.sources] in pyproject.toml.
+ORACLE_REPOSITORY = "https://github.com/roboflow/trackers"
+ORACLE_REVISION = "52610c3ce8eab6d0d2a6beb91e8a1fed9fea34de"
+INPUT_INDEX_KEY = "input_index"
 
 FIXTURE_DIR = Path(__file__).resolve().parents[1] / "fixtures"
 DART_TEST_DIR = Path(__file__).resolve().parents[2] / "test"
@@ -66,6 +73,8 @@ def _detections(frame: dict[str, Any]) -> sv.Detections:
         xyxy=xyxy,
         confidence=None if confidence is None else np.asarray(confidence, dtype=np.float64),
         class_id=None if class_id is None else np.asarray(class_id, dtype=int),
+        # Carried through tracker output so rows map back to input detections exactly.
+        data={INPUT_INDEX_KEY: np.arange(len(xyxy))},
     )
 
 
@@ -97,12 +106,68 @@ def generate_assignment_cases() -> None:
             "maximize": False,
         },
     ]
+    inf = float("inf")
+    ties = [
+        ("constant_square", np.ones((3, 3))),
+        ("constant_wide", np.ones((2, 4))),
+        ("constant_tall", np.ones((4, 2))),
+        ("zeros_tall", np.zeros((3, 2))),
+        ("binary_wide", np.asarray([[1, 0, 1, 0, 1], [0, 1, 1, 0, 0], [1, 1, 0, 1, 0], [0, 0, 1, 1, 1]])),
+        ("duplicated_iou_like", np.asarray([[0.5, 0.5, 0.0], [0.5, 0.5, 0.0], [0.0, 0.0, 0.9]])),
+        (
+            "tall_transposed_ties",
+            np.asarray([[0.2, 0.2, 0.0], [0.2, 0.2, 0.0], [0.0, 0.3, 0.3], [0.0, 0.3, 0.3], [0.1, 0.1, 0.1]]),
+        ),
+    ]
+    for name, matrix in ties:
+        for maximize in (False, True):
+            cases.append(
+                {
+                    "name": f"ties_{name}_{'maximize' if maximize else 'minimize'}",
+                    "cost_matrix": matrix.astype(float).tolist(),
+                    "maximize": maximize,
+                }
+            )
+    rng = np.random.default_rng(7)
+    for index in range(20):
+        shape = (int(rng.integers(1, 7)), int(rng.integers(1, 7)))
+        cases.append(
+            {
+                "name": f"random_small_integers_{index}",
+                "cost_matrix": rng.integers(0, 3, size=shape).astype(float).tolist(),
+                "maximize": bool(index % 2),
+            }
+        )
+    # Forbidden edges follow SciPy: +inf when minimizing, -inf when maximizing.
+    cases += [
+        {"name": "forbidden_edge_minimize", "cost_matrix": [[1.0, inf], [2.0, 3.0]], "maximize": False},
+        {"name": "forbidden_edge_maximize", "cost_matrix": [[1.0, -inf], [2.0, 3.0]], "maximize": True},
+        {"name": "negative_infinity_minimize_is_invalid", "cost_matrix": [[1.0, -inf], [2.0, 3.0]], "maximize": False},
+        {"name": "positive_infinity_maximize_is_invalid", "cost_matrix": [[1.0, inf], [2.0, 3.0]], "maximize": True},
+        {"name": "nan_is_invalid", "cost_matrix": [[1.0, float("nan")], [2.0, 3.0]], "maximize": False},
+        {"name": "infeasible_is_invalid", "cost_matrix": [[inf, inf], [2.0, 3.0]], "maximize": False},
+    ]
     for case in cases:
         matrix = np.asarray(case["cost_matrix"], dtype=np.float64)
-        rows, cols = linear_sum_assignment(matrix, maximize=case["maximize"])
+        try:
+            rows, cols = linear_sum_assignment(matrix, maximize=case["maximize"])
+        except ValueError as error:
+            case["error"] = str(error)
+            continue
         case["row_indices"] = rows.astype(int).tolist()
         case["col_indices"] = cols.astype(int).tolist()
-    _write("assignment_cases.json", cases)
+    _write("assignment_cases.json", _json_safe(cases))
+
+
+def _json_safe(value: Any) -> Any:
+    """Encode non-finite floats as strings so the fixtures stay strict JSON."""
+    if isinstance(value, float) and not np.isfinite(value):
+        return "nan" if np.isnan(value) else ("inf" if value > 0 else "-inf")
+    if isinstance(value, list):
+        return [_json_safe(item) for item in value]
+    if isinstance(value, dict):
+        return {key: _json_safe(item) for key, item in value.items()}
+    return value
 
 
 def generate_iou_cases() -> None:
@@ -115,6 +180,31 @@ def generate_iou_cases() -> None:
         "diou": DIoU(),
         "ciou": CIoU(),
     }
+
+    def batch(name: str, first: np.ndarray, second: np.ndarray) -> dict[str, Any]:
+        return {
+            "name": name,
+            "boxes_a": first.tolist(),
+            "boxes_b": second.tolist(),
+            "matrices": {key: metric.compute(first, second).astype(float).tolist() for key, metric in metrics.items()},
+            "fused": {
+                key: metric.normalize_for_fusion(metric.compute(first, second)).astype(float).tolist()
+                for key, metric in metrics.items()
+            },
+        }
+
+    rng = np.random.default_rng(42)
+
+    def random_boxes(count: int) -> np.ndarray:
+        corners = rng.uniform(0.0, 200.0, size=(count, 2))
+        sizes = rng.uniform(1.0, 60.0, size=(count, 2))
+        return np.hstack([corners, corners + sizes])
+
+    # Malformed boxes (x2 < x1 and/or y2 < y1): upstream #589 clamps extents at zero.
+    malformed = np.asarray(
+        [[10, 0, 0, 10], [0, 10, 10, 0], [10, 10, 0, 0], [5, 5, 5, 5], [274.3, 274.3, 125.7, 125.7]], dtype=np.float64
+    )
+    well_formed = np.asarray([[0, 0, 10, 10], [100, 100, 300, 300]], dtype=np.float64)
     matrix = metrics["iou"].compute(boxes_a, boxes_b)
     _write(
         "iou_cases.json",
@@ -125,6 +215,14 @@ def generate_iou_cases() -> None:
             "matrices": {
                 name: metric.compute(boxes_a, boxes_b).astype(float).tolist() for name, metric in metrics.items()
             },
+            "batches": [
+                batch("integer_grid", boxes_a, boxes_b),
+                batch("random_non_integer", random_boxes(8), random_boxes(6)),
+                batch("malformed_boxes", malformed, well_formed),
+                batch(
+                    "wide_versus_tall", np.asarray([[0.0, 0.0, 100.0, 1.0]]), np.asarray([[400.0, 400.0, 401.0, 500.0]])
+                ),
+            ],
         },
     )
 
@@ -148,6 +246,123 @@ def generate_kalman_case() -> None:
             }
         )
     _write("kalman_sort_xyxy.json", {"initial_bbox": initial.tolist(), "steps": steps})
+
+
+IOU_VARIANTS: dict[str, Any] = {
+    "iou": IoU,
+    "giou": GIoU,
+    "diou": DIoU,
+    "ciou": CIoU,
+    "biou": BIoU,
+}
+
+
+def _tracker_kwargs(params: dict[str, Any]) -> dict[str, Any]:
+    kwargs = dict(params)
+    if "iou" in kwargs:
+        kwargs["iou"] = IOU_VARIANTS[kwargs["iou"]]()
+    return kwargs
+
+
+def _tracked_objects(tracker: Any) -> dict[str, Any]:
+    # Same selection as BaseTracker.tracked_objects, but decoded in float64 from
+    # each tracklet (upstream casts the public property to float32).
+    tracklets = [t for t in tracker.tracks if t.tracker_id != -1]
+    return {
+        "tracker_id": [int(t.tracker_id) for t in tracklets],
+        "xyxy": [np.asarray(t.get_state_bbox(), dtype=np.float64).reshape(-1).tolist() for t in tracklets],
+    }
+
+
+def _run_tracker_cases(tracker_class: Any, cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    for case in cases:
+        tracker = tracker_class(**_tracker_kwargs(case["params"]))
+        expected_ids: list[list[int]] = []
+        expected_indices: list[list[int]] = []
+        expected_tracked: list[dict[str, Any]] = []
+        expected_warnings: list[int] = []
+        for frame in case["frames"]:
+            detections = _detections(frame)
+            timestamp = frame.get("timestamp")
+            with warnings.catch_warnings(record=True) as caught:
+                warnings.simplefilter("always")
+                if timestamp is None:
+                    result = tracker.update(detections)
+                else:
+                    result = tracker.update(detections, timestamp=timestamp)
+            expected_warnings.append(len(caught))
+            ids = [] if result.tracker_id is None else result.tracker_id.astype(int).tolist()
+            indices = [] if len(result) == 0 else result.data[INPUT_INDEX_KEY].astype(int).tolist()
+            if len(ids) != len(indices):
+                raise AssertionError(f"{case['name']}: {len(ids)} ids for {len(indices)} rows")
+            expected_ids.append(ids)
+            expected_indices.append(indices)
+            expected_tracked.append(_tracked_objects(tracker))
+        case["expected_tracker_id"] = expected_ids
+        case["expected_output_indices"] = expected_indices
+        case["expected_tracked_objects"] = expected_tracked
+        case["expected_warning_count"] = expected_warnings
+    return cases
+
+
+def _track(boxes: list[list[float] | None], confidence: float | None = 0.9, **extra: Any) -> list[dict[str, Any]]:
+    """One detection per frame (``None`` = empty frame)."""
+    frames = []
+    for box in boxes:
+        frame: dict[str, Any] = {"xyxy": [] if box is None else [box]}
+        if confidence is not None:
+            frame["confidence"] = [] if box is None else [confidence]
+        frame.update(extra)
+        frames.append(frame)
+    return frames
+
+
+def _with_timestamps(frames: list[dict[str, Any]], timestamps: list[float]) -> list[dict[str, Any]]:
+    return [{**frame, "timestamp": timestamp} for frame, timestamp in zip(frames, timestamps, strict=True)]
+
+
+FPS = 30.0
+MOVING_BOX = [[50.0 + 2.0 * i, 50.0, 80.0 + 2.0 * i, 80.0] for i in range(12)]
+
+
+def _timestamp_cases(prefix_params: dict[str, Any]) -> list[dict[str, Any]]:
+    """Dynamic frame-rate scenarios shared by every tracker."""
+    return [
+        {
+            "name": "timestamps_bootstrap_gap_duplicate_backwards",
+            "params": {**prefix_params, "minimum_consecutive_frames": 1},
+            # Bootstrap, nominal step, 3-frame gap, duplicate, backwards, nominal.
+            "frames": _with_timestamps(
+                _track([MOVING_BOX[0], MOVING_BOX[1], MOVING_BOX[4], MOVING_BOX[4], MOVING_BOX[5], MOVING_BOX[5]]),
+                [0.0, 1 / FPS, 4 / FPS, 4 / FPS, 3 / FPS, 5 / FPS],
+            ),
+        },
+        {
+            "name": "timestamps_seconds_budget_prunes_before_association",
+            "params": {**prefix_params, "minimum_consecutive_frames": 1, "lost_track_buffer": 2},
+            # The 0.2 s gap exceeds lost_track_buffer / 30 = 0.0667 s.
+            "frames": _with_timestamps(
+                _track([MOVING_BOX[0], MOVING_BOX[1], MOVING_BOX[2]]),
+                [0.0, 1 / FPS, 1 / FPS + 0.2],
+            ),
+        },
+        {
+            "name": "timestamps_millisecond_rounded_clock_matches_fixed_rate",
+            "params": {**prefix_params, "minimum_consecutive_frames": 2},
+            "frames": _with_timestamps(
+                _track(MOVING_BOX[:6]),
+                [round(i / FPS, 3) for i in range(6)],
+            ),
+        },
+        {
+            "name": "timestamps_then_fixed_rate",
+            "params": {**prefix_params, "minimum_consecutive_frames": 1, "lost_track_buffer": 3},
+            "frames": [
+                *_with_timestamps(_track(MOVING_BOX[:2]), [0.0, 1 / FPS]),
+                *_track([None, MOVING_BOX[3], MOVING_BOX[4]]),
+            ],
+        },
+    ]
 
 
 def generate_sort_cases() -> None:
@@ -205,34 +420,39 @@ def generate_sort_cases() -> None:
                 {"xyxy": [[53.0, 50.0, 63.0, 60.0]], "confidence": [0.9]},
             ],
         },
+        {
+            "name": "below_activation_threshold_does_not_spawn",
+            "params": {"minimum_consecutive_frames": 1},
+            "frames": _track([[0.0, 0.0, 10.0, 10.0], [0.0, 0.0, 10.0, 10.0]], confidence=0.2),
+        },
+        {
+            "name": "immature_track_dropped_on_first_miss",
+            "params": {},
+            "frames": _track([[0.0, 0.0, 10.0, 10.0], [1.0, 0.0, 11.0, 10.0], None, [3.0, 0.0, 13.0, 10.0]]),
+        },
+        {
+            "name": "minimum_consecutive_frames_zero",
+            "params": {"minimum_consecutive_frames": 0},
+            "frames": _track([[0.0, 0.0, 10.0, 10.0], [1.0, 0.0, 11.0, 10.0]]),
+        },
+        {
+            "name": "iou_equal_to_threshold_matches",
+            "params": {"minimum_consecutive_frames": 1, "minimum_iou_threshold": 0.5},
+            "frames": _track([[0.0, 0.0, 10.0, 10.0], [0.0, 0.0, 10.0, 5.0]]),
+        },
+        {
+            "name": "zero_lost_track_buffer_expires_on_first_miss",
+            "params": {"minimum_consecutive_frames": 1, "lost_track_buffer": 0},
+            "frames": _track([[0.0, 0.0, 10.0, 10.0], None, [0.0, 0.0, 10.0, 10.0]]),
+        },
+        {
+            "name": "giou_metric",
+            "params": {"minimum_consecutive_frames": 1, "minimum_iou_threshold": -0.2, "iou": "giou"},
+            "frames": _track([[0.0, 0.0, 10.0, 10.0], [12.0, 0.0, 22.0, 10.0], [24.0, 0.0, 34.0, 10.0]]),
+        },
+        *_timestamp_cases({}),
     ]
-
-    for case in cases:
-        tracker = SORTTracker(**case["params"])
-        tracker.reset()
-        expected = []
-        for frame in case["frames"]:
-            result = tracker.update(_detections(frame))
-            expected.append([] if result.tracker_id is None else result.tracker_id.astype(int).tolist())
-        case["expected_tracker_id"] = expected
-    _write("sort_cases.json", cases)
-
-
-def _output_indices(frame: dict[str, Any], result: sv.Detections) -> list[int]:
-    source_boxes = np.asarray(frame["xyxy"], dtype=np.float64).reshape((-1, 4))
-    used: set[int] = set()
-    indices: list[int] = []
-    for box in result.xyxy:
-        candidates = np.where(np.all(np.isclose(source_boxes, box, atol=1e-9), axis=1))[0]
-        for candidate in candidates:
-            idx = int(candidate)
-            if idx not in used:
-                used.add(idx)
-                indices.append(idx)
-                break
-        else:
-            raise AssertionError(f"Could not map output box {box.tolist()} to input frame {frame}")
-    return indices
+    _write("sort_cases.json", _run_tracker_cases(SORTTracker, cases))
 
 
 def generate_bytetrack_cases() -> None:
@@ -318,20 +538,48 @@ def generate_bytetrack_cases() -> None:
                 {"xyxy": [[53.0, 50.0, 73.0, 70.0]], "confidence": [0.95]},
             ],
         },
+        {
+            "name": "immature_track_pruned_on_first_miss",
+            "params": {"minimum_consecutive_frames": 2},
+            "frames": _track(
+                [[0.0, 0.0, 20.0, 20.0], None, [0.0, 0.0, 20.0, 20.0], [1.0, 0.0, 21.0, 20.0]], confidence=0.9
+            ),
+        },
+        {
+            "name": "mid_gap_rows_keep_input_order",
+            "params": {
+                "minimum_consecutive_frames": 1,
+                "track_activation_threshold": 0.7,
+                "high_conf_det_threshold": 0.6,
+            },
+            "frames": [
+                {
+                    "xyxy": [[0.0, 0.0, 10.0, 10.0], [50.0, 0.0, 60.0, 10.0], [100.0, 0.0, 110.0, 10.0]],
+                    "confidence": [0.5, 0.65, 0.8],
+                },
+            ],
+        },
+        {
+            "name": "mid_gap_detection_matches_existing_track",
+            "params": {
+                "minimum_consecutive_frames": 1,
+                "track_activation_threshold": 0.7,
+                "high_conf_det_threshold": 0.6,
+            },
+            "frames": [
+                {"xyxy": [[0.0, 0.0, 20.0, 20.0]], "confidence": [0.9]},
+                {"xyxy": [[1.0, 0.0, 21.0, 20.0]], "confidence": [0.65]},
+                {"xyxy": [[200.0, 0.0, 220.0, 20.0]], "confidence": [0.65]},
+            ],
+        },
+        {
+            "name": "giou_metric",
+            "params": {"minimum_consecutive_frames": 1, "minimum_iou_threshold": -0.2, "iou": "giou"},
+            "frames": _track([[0.0, 0.0, 10.0, 10.0], [12.0, 0.0, 22.0, 10.0], [24.0, 0.0, 34.0, 10.0]]),
+        },
+        *_timestamp_cases({"track_activation_threshold": 0.5}),
     ]
-
-    for case in cases:
-        tracker = ByteTrackTracker(**case["params"])
-        tracker.reset()
-        expected_ids = []
-        expected_indices = []
-        for frame in case["frames"]:
-            result = tracker.update(_detections(frame))
-            expected_ids.append([] if result.tracker_id is None else result.tracker_id.astype(int).tolist())
-            expected_indices.append(_output_indices(frame, result))
-        case["expected_tracker_id"] = expected_ids
-        case["expected_output_indices"] = expected_indices
-    _write("bytetrack_cases.json", cases)
+    _write("bytetrack_cases.json", _run_tracker_cases(ByteTrackTracker, cases))
 
 
 def generate_ocsort_cases() -> None:
@@ -408,45 +656,124 @@ def generate_ocsort_cases() -> None:
                 {"xyxy": [[56.0, 50.0, 86.0, 80.0]], "confidence": [0.95]},
             ],
         },
-    ]
-
-    for case in cases:
-        tracker = OCSORTTracker(**case["params"])
-        tracker.reset()
-        expected_ids = []
-        expected_indices = []
-        for frame in case["frames"]:
-            result = tracker.update(_detections(frame))
-            ids = [] if result.tracker_id is None else result.tracker_id.astype(int).tolist()
-            indices = _output_indices(frame, result)
-            # Included from the post-2.6 develop changelog: OC-SORT now returns
-            # detections below high_conf_det_threshold with tracker_id=-1.
-            confidences = frame.get("confidence")
-            if confidences is not None:
-                low_indices = [
-                    index
-                    for index, confidence in enumerate(confidences)
-                    if confidence < case["params"].get("high_conf_det_threshold", 0.6)
+        {
+            # ORU replays the virtual trajectory over two missed frames.
+            "name": "oru_replay_after_two_misses",
+            "params": {"minimum_consecutive_frames": 1, "minimum_iou_threshold": 0.1},
+            "frames": _track([MOVING_BOX[0], MOVING_BOX[1], MOVING_BOX[2], None, None, MOVING_BOX[5], MOVING_BOX[6]]),
+        },
+        {
+            # The replay's predict steps must clamp scale velocity so the area stays positive.
+            "name": "oru_replay_clamps_shrinking_scale",
+            "params": {"minimum_consecutive_frames": 1, "minimum_iou_threshold": 0.0},
+            "frames": _track(
+                [
+                    [0.0, 0.0, 100.0, 100.0],
+                    [0.0, 0.0, 80.0, 80.0],
+                    [0.0, 0.0, 60.0, 60.0],
+                    None,
+                    None,
+                    [0.0, 0.0, 2.0, 2.0],
+                    [0.0, 0.0, 2.0, 2.0],
                 ]
-                indices.extend(low_indices)
-                ids.extend([-1] * len(low_indices))
-            expected_ids.append(ids)
-            expected_indices.append(indices)
-        case["expected_tracker_id"] = expected_ids
-        case["expected_output_indices"] = expected_indices
-    _write("ocsort_cases.json", cases)
+            ),
+        },
+        {
+            "name": "oru_shrinking_re_detection",
+            "params": {"minimum_consecutive_frames": 1, "minimum_iou_threshold": 0.0},
+            "frames": _track(
+                [[0.0, 0.0, 300.0, 300.0], [1.0, 0.0, 301.0, 300.0], None, [150.0, 150.0, 151.0, 151.0], None]
+            ),
+        },
+        {
+            "name": "oru_zero_width_last_observation",
+            "params": {"minimum_consecutive_frames": 1, "minimum_iou_threshold": 0.0},
+            "frames": _track(
+                [
+                    [10.0, 10.0, 10.0, 20.0],
+                    [11.0, 10.0, 11.0, 20.0],
+                    None,
+                    [30.0, 10.0, 40.0, 20.0],
+                    [31.0, 10.0, 41.0, 20.0],
+                ]
+            ),
+        },
+        {
+            # A gap before the first miss makes the frozen process noise DWNA-scaled; ORU must
+            # replay with the current frame step and keep the configured one-frame baseline.
+            "name": "timestamps_gap_before_freeze_then_oru",
+            "params": {"minimum_consecutive_frames": 1, "minimum_iou_threshold": 0.1},
+            "frames": _with_timestamps(
+                _track(
+                    [MOVING_BOX[0], MOVING_BOX[1], MOVING_BOX[2], MOVING_BOX[5], None, MOVING_BOX[8], MOVING_BOX[9]]
+                ),
+                [0.0, 1 / FPS, 2 / FPS, 5 / FPS, 6 / FPS, 8 / FPS, 9 / FPS],
+            ),
+        },
+        {
+            "name": "ocr_uses_plain_iou_with_giou_metric",
+            "params": {"minimum_consecutive_frames": 1, "minimum_iou_threshold": 0.3, "iou": "giou"},
+            "frames": _track(
+                [[0.0, 0.0, 10.0, 10.0], [5.0, 0.0, 15.0, 10.0], [10.0, 0.0, 20.0, 10.0], [7.0, 3.0, 17.0, 13.0]]
+            ),
+        },
+        {
+            "name": "missing_confidence_bypasses_high_threshold",
+            "params": {"minimum_consecutive_frames": 1, "high_conf_det_threshold": 1.5},
+            "frames": _track([[10.0, 10.0, 50.0, 50.0], [10.0, 10.0, 50.0, 50.0]], confidence=None),
+        },
+        {
+            "name": "confidence_equal_to_threshold_is_high",
+            "params": {"minimum_consecutive_frames": 1, "high_conf_det_threshold": 0.6},
+            "frames": _track([[10.0, 10.0, 50.0, 50.0], [11.0, 10.0, 51.0, 50.0]], confidence=0.6),
+        },
+        {
+            "name": "low_confidence_never_recovers_track",
+            "params": {"minimum_consecutive_frames": 1, "minimum_iou_threshold": 0.1},
+            "frames": [
+                {"xyxy": [[10.0, 10.0, 50.0, 50.0]], "confidence": [0.9]},
+                {"xyxy": [[11.0, 10.0, 51.0, 50.0]], "confidence": [0.3]},
+                {"xyxy": [[12.0, 10.0, 52.0, 50.0]], "confidence": [0.9]},
+            ],
+        },
+        {
+            "name": "direction_weight_zero",
+            "params": {
+                "minimum_consecutive_frames": 1,
+                "minimum_iou_threshold": 0.1,
+                "direction_consistency_weight": 0.0,
+            },
+            "frames": [
+                {"xyxy": [[0.0, 0.0, 20.0, 20.0], [30.0, 0.0, 50.0, 20.0]], "confidence": [0.9, 0.8]},
+                {"xyxy": [[4.0, 0.0, 24.0, 20.0], [26.0, 0.0, 46.0, 20.0]], "confidence": [0.9, 0.8]},
+                {"xyxy": [[8.0, 0.0, 28.0, 20.0], [22.0, 0.0, 42.0, 20.0]], "confidence": [0.9, 0.8]},
+            ],
+        },
+        {
+            "name": "delta_t_zero_uses_latest_observation",
+            "params": {"minimum_consecutive_frames": 0, "delta_t": 0},
+            "frames": _track([[10.0, 10.0, 50.0, 50.0], [11.0, 11.0, 51.0, 51.0], [12.0, 12.0, 52.0, 52.0]]),
+        },
+        {
+            "name": "long_track_default_parameters",
+            "params": {},
+            "frames": _track([[100.0 + 3.0 * i, 80.0 + i, 140.0 + 3.0 * i, 160.0 + i] for i in range(12)]),
+        },
+        *_timestamp_cases({}),
+    ]
+    _write("ocsort_cases.json", _run_tracker_cases(OCSORTTracker, cases))
 
 
 def generate_botsort_cases() -> None:
     cases: list[dict[str, Any]] = [
         {
             "name": "empty_frames",
-            "params": {"minimum_consecutive_frames": 1, "enable_cmc": False},
+            "params": {"minimum_consecutive_frames": 1},
             "frames": [{"xyxy": [], "confidence": []}, {"xyxy": [], "confidence": []}],
         },
         {
             "name": "single_object_instant_first_frame",
-            "params": {"minimum_iou_threshold_first_assoc": 0.1, "enable_cmc": False},
+            "params": {"minimum_iou_threshold_first_assoc": 0.1},
             "frames": [
                 {"xyxy": [[0.0, 0.0, 20.0, 20.0]], "confidence": [0.9], "class_id": [0]},
                 {"xyxy": [[1.0, 0.0, 21.0, 20.0]], "confidence": [0.9], "class_id": [0]},
@@ -459,7 +786,6 @@ def generate_botsort_cases() -> None:
                 "minimum_consecutive_frames": 2,
                 "minimum_iou_threshold_unconfirmed_assoc": 0.1,
                 "instant_first_frame_activation": False,
-                "enable_cmc": False,
             },
             "frames": [
                 {"xyxy": [[10.0, 10.0, 30.0, 30.0]], "confidence": [0.9], "class_id": [0]},
@@ -471,7 +797,6 @@ def generate_botsort_cases() -> None:
             "params": {
                 "minimum_consecutive_frames": 1,
                 "minimum_iou_threshold_first_assoc": 0.1,
-                "enable_cmc": False,
             },
             "frames": [
                 {"xyxy": [[10.0, 10.0, 30.0, 30.0]], "class_id": [0]},
@@ -486,7 +811,6 @@ def generate_botsort_cases() -> None:
                 "minimum_iou_threshold_second_assoc": 0.1,
                 "track_activation_threshold": 0.5,
                 "high_conf_det_threshold": 0.6,
-                "enable_cmc": False,
             },
             "frames": [
                 {"xyxy": [[0.0, 0.0, 50.0, 50.0]], "confidence": [0.9]},
@@ -500,7 +824,6 @@ def generate_botsort_cases() -> None:
                 "minimum_iou_threshold_first_assoc": 0.1,
                 "track_activation_threshold": 0.5,
                 "high_conf_det_threshold": 0.6,
-                "enable_cmc": False,
             },
             "frames": [
                 {"xyxy": [[0.0, 0.0, 20.0, 20.0]], "confidence": [0.9]},
@@ -512,7 +835,6 @@ def generate_botsort_cases() -> None:
             "params": {
                 "minimum_consecutive_frames": 1,
                 "minimum_iou_threshold_first_assoc": 0.1,
-                "enable_cmc": False,
             },
             "frames": [
                 {
@@ -527,20 +849,27 @@ def generate_botsort_cases() -> None:
                 },
             ],
         },
+        {
+            "name": "lost_track_re_associates_after_gap",
+            "params": {"minimum_consecutive_frames": 1, "minimum_iou_threshold_first_assoc": 0.1},
+            "frames": _track([MOVING_BOX[0], MOVING_BOX[1], MOVING_BOX[2], None, None, MOVING_BOX[5], MOVING_BOX[6]]),
+        },
+        {
+            "name": "giou_metric",
+            "params": {"minimum_consecutive_frames": 1, "minimum_iou_threshold_first_assoc": 0.1, "iou": "giou"},
+            "frames": _track([[0.0, 0.0, 10.0, 10.0], [12.0, 0.0, 22.0, 10.0], [24.0, 0.0, 34.0, 10.0]]),
+        },
+        {
+            "name": "long_track_default_parameters",
+            "params": {},
+            "frames": _track([[100.0 + 3.0 * i, 80.0 + i, 140.0 + 3.0 * i, 160.0 + i] for i in range(12)]),
+        },
+        *_timestamp_cases({"track_activation_threshold": 0.5}),
     ]
-
     for case in cases:
-        tracker = BoTSORTTracker(**case["params"])
-        tracker.reset()
-        expected_ids = []
-        expected_indices = []
-        for frame in case["frames"]:
-            result = tracker.update(_detections(frame))
-            expected_ids.append([] if result.tracker_id is None else result.tracker_id.astype(int).tolist())
-            expected_indices.append(_output_indices(frame, result))
-        case["expected_tracker_id"] = expected_ids
-        case["expected_output_indices"] = expected_indices
-    _write("botsort_cases.json", cases)
+        # Camera-motion estimation is image-runtime specific and stays out of the fixtures.
+        case["params"]["enable_cmc"] = False
+    _write("botsort_cases.json", _run_tracker_cases(BoTSORTTracker, cases))
 
 
 def generate_cbiou_cases() -> None:
@@ -563,22 +892,46 @@ def generate_cbiou_cases() -> None:
             "params": {"track_activation_threshold": 0.7, "high_conf_det_threshold": 0.6},
             "frames": [{"xyxy": [[0.0, 0.0, 10.0, 10.0]], "confidence": [0.65]}],
         },
+        {
+            "name": "second_buffer_recovers_low_confidence_detection",
+            "params": {
+                "minimum_consecutive_frames": 1,
+                "minimum_iou_threshold_first_assoc": 0.2,
+                "minimum_iou_threshold_second_assoc": 0.2,
+                "track_activation_threshold": 0.5,
+            },
+            "frames": [
+                {"xyxy": [[0.0, 0.0, 10.0, 10.0]], "confidence": [0.9]},
+                {"xyxy": [[12.0, 0.0, 22.0, 10.0]], "confidence": [0.3]},
+            ],
+        },
+        {
+            "name": "moving_object_with_gap",
+            "params": {"minimum_consecutive_frames": 1},
+            "frames": _track([MOVING_BOX[0], MOVING_BOX[1], MOVING_BOX[2], None, MOVING_BOX[4], MOVING_BOX[5]]),
+        },
     ]
-    for case in cases:
-        tracker = CBIoUTracker(**case["params"])
-        expected_ids = []
-        expected_indices = []
-        for frame in case["frames"]:
-            result = tracker.update(_detections(frame))
-            expected_ids.append([] if result.tracker_id is None else result.tracker_id.astype(int).tolist())
-            expected_indices.append(_output_indices(frame, result))
-        case["expected_tracker_id"] = expected_ids
-        case["expected_output_indices"] = expected_indices
-    _write("cbiou_cases.json", cases)
+    _write("cbiou_cases.json", _run_tracker_cases(CBIoUTracker, cases))
+
+
+def _installed_oracle_revision() -> str:
+    """Return the git revision of the installed trackers package."""
+    direct_url = json.loads(distribution("trackers").read_text("direct_url.json") or "{}")
+    if "vcs_info" in direct_url:
+        return direct_url["vcs_info"]["commit_id"]
+    if direct_url.get("url", "").startswith("file://"):
+        # Editable install of a local checkout (useful when iterating on upstream).
+        path = direct_url["url"].removeprefix("file://")
+        return subprocess.run(
+            ["git", "-C", path, "rev-parse", "HEAD"], check=True, capture_output=True, text=True
+        ).stdout.strip()
+    raise RuntimeError("trackers must be installed from git; see [tool.uv.sources] in pyproject.toml")
 
 
 def generate_manifest() -> None:
-
+    revision = _installed_oracle_revision()
+    if revision != ORACLE_REVISION:
+        raise RuntimeError(f"Installed trackers is at {revision}, expected ORACLE_REVISION {ORACLE_REVISION}")
     _write(
         "manifest.json",
         {
@@ -588,6 +941,7 @@ def generate_manifest() -> None:
             "scipy": scipy.__version__,
             "supervision": sv.__version__,
             "trackers": version("trackers"),
+            "trackers_source": {"repository": ORACLE_REPOSITORY, "revision": ORACLE_REVISION},
             "policy": {
                 "tracker_ids": "exact",
                 "floats": {"atol": 1e-7, "rtol": 1e-7},

@@ -44,9 +44,11 @@ class TrackerClock {
     final last = _lastTimestamp;
     if (last == null) {
       _lastTimestamp = timestamp;
+      // One nominal frame, computed like upstream so rates such as 49 fps
+      // round-trip identically ((1 / 49) * 49 != 1.0).
       final elapsed = 1.0 / frameRate;
       return PredictTiming(
-        frameStep: 1.0,
+        frameStep: elapsed * frameRate,
         elapsedSeconds: elapsed,
         frameRate: frameRate,
       );

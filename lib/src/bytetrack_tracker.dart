@@ -47,10 +47,11 @@ class ByteTrackTracker implements Tracker {
        iou = iou ?? const IoU(),
        _clock = TrackerClock(frameRate, onWarning: onWarning),
        _onWarning = onWarning {
-    if (minimumConsecutiveFrames < 1) {
+    if (minimumConsecutiveFrames < 0) {
       throw ArgumentError.value(
         minimumConsecutiveFrames,
         'minimumConsecutiveFrames',
+        'Must be non-negative',
       );
     }
   }

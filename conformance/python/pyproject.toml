@@ -1,12 +1,12 @@
 [project]
 name = "dart-trackers-conformance"
-version = "0.2.0"
+version = "0.3.0"
 requires-python = ">=3.14,<3.15"
 dependencies = [
-  "numpy==2.4.4",
-  "scipy==1.17.1",
-  "supervision==0.29.0",
-  "trackers==2.6.0",
+  "numpy==2.5.3",
+  "scipy==1.18.1",
+  "supervision==0.30.5",
+  "trackers",
   "psutil==7.2.2",
 ]
 
@@ -24,3 +24,8 @@ target-version = "py314"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
+
+# Oracle: Roboflow trackers `develop` after 2.6.0 (a superset of the 2.6.1 fixes).
+# Keep this revision in sync with ORACLE_REVISION in generate_fixtures.py.
+[tool.uv.sources]
+trackers = { git = "https://github.com/roboflow/trackers", rev = "52610c3ce8eab6d0d2a6beb91e8a1fed9fea34de" }
