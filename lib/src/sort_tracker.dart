@@ -69,7 +69,7 @@ class SORTTracker implements Tracker {
       );
     }
     if (tracks.isEmpty && detections.isEmpty) {
-      return detections.copyWithTrackerId(Int32List(0));
+      return Detections.empty().copyWithTrackerId(Int32List(0));
     }
 
     if (!timing.skipPredict) {
