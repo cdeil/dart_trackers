@@ -75,7 +75,14 @@ Python package:
 | `trackActivationThreshold` | `track_activation_threshold` | Minimum confidence to spawn a new track.          |
 | `minimumConsecutiveFrames` | `minimum_consecutive_frames` | Successful updates before a stable ID is emitted. |
 | `minimumIouThreshold`      | `minimum_iou_threshold`      | Minimum IoU for SORT/ByteTrack association.       |
-| `highConfDetThreshold`     | `high_conf_det_threshold`    | High/low split for ByteTrack and BoT-SORT.        |
+| `highConfDetThreshold`     | `high_conf_det_threshold`    | High/low split for ByteTrack, BoT-SORT, OC-SORT.  |
+| `deltaT`                   | `delta_t`                    | OC-SORT look-back for the motion direction.       |
+| `directionConsistencyWeight` | `direction_consistency_weight` | OC-SORT weight of the direction term.       |
+| `iou` / `firstIou`         | `iou`                        | Association metric (`BaseIoU.fromName('giou')`).  |
+
+OC-SORT only associates detections at or above `highConfDetThreshold`; lower
+ones are returned after the associated rows with `trackerId == -1`. Without
+confidence scores every detection counts as high confidence.
 
 See the Python docs for deeper algorithm explanations:
 
@@ -85,6 +92,7 @@ See the Python docs for deeper algorithm explanations:
 - BoT-SORT: https://trackers.roboflow.com/latest/trackers/botsort/
 - C-BIoU: https://trackers.roboflow.com/latest/trackers/cbiou/
 - State estimators: https://trackers.roboflow.com/latest/learn/state-estimators/
+- Timestamps and variable frame rates: https://trackers.roboflow.com/latest/learn/dynamic-frame-rate/
 
 ## Flutter integration pattern
 

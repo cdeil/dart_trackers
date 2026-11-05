@@ -17,9 +17,14 @@ class LinearAssignmentResult {
 
 /// Rectangular shortest augmenting path assignment.
 ///
-/// This is a small Dart port of the algorithm used by SciPy's
-/// `linear_sum_assignment` implementation. Ties are deterministic but should
-/// not be treated as a public semantic contract for tracker IDs.
+/// A Dart port of SciPy's `linear_sum_assignment` (`rectangular_lsap`),
+/// including its tie-breaking: candidate columns are scanned in reverse order
+/// and an unassigned column wins a reduced-cost tie. Tracker output row order
+/// depends on this, and the conformance fixtures lock it against SciPy.
+///
+/// As in SciPy, `+inf` marks a forbidden edge when minimizing and `-inf` when
+/// maximizing. NaN, the opposite infinity, or a matrix without a complete
+/// assignment throws an [ArgumentError].
 LinearAssignmentResult linearSumAssignment(
   Matrix costMatrix, {
   bool maximize = false,
@@ -42,13 +47,13 @@ LinearAssignmentResult linearSumAssignment(
 
   for (var i = 0; i < nr; i++) {
     for (var j = 0; j < nc; j++) {
-      final value = workingCost[i][j];
+      // Negate before validating, as SciPy does, so the forbidden-edge sign
+      // follows the optimisation direction.
+      final value = maximize ? -workingCost[i][j] : workingCost[i][j];
       if (value.isNaN || value == double.negativeInfinity) {
         throw ArgumentError('Cost matrix contains invalid numeric entries');
       }
-      if (maximize) {
-        workingCost[i][j] = -value;
-      }
+      workingCost[i][j] = value;
     }
   }
 
@@ -96,7 +101,7 @@ LinearAssignmentResult _solveAssignment(Matrix cost, int nr, int nc) {
     final minVal = pathResult.$1;
     var sink = pathResult.$2;
     if (sink < 0) {
-      throw StateError('Cost matrix is infeasible');
+      throw ArgumentError('Cost matrix is infeasible');
     }
 
     u[curRow] += minVal;

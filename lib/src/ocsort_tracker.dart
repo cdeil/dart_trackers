@@ -14,7 +14,17 @@ import 'tracker.dart';
 /// OC-SORT tracker with observation-centric recovery and direction consistency.
 ///
 /// OC-SORT is useful when object motion is less linear. It uses XCYCSR Kalman
-/// state, direction consistency during association, OCR, and ORU replay.
+/// state and adds three ideas to SORT: observation-centric momentum (OCM, a
+/// direction-consistency term in the association cost), observation-centric
+/// recovery (OCR, a second association pass against each lost track's last
+/// observation, always using plain IoU), and observation-centric re-update
+/// (ORU, which replays a straight-line virtual trajectory through the Kalman
+/// filter when a lost track is found again).
+///
+/// Only detections with confidence `>= highConfDetThreshold` take part in
+/// association and spawning. Lower-confidence detections are still returned,
+/// after the associated rows, with tracker ID `-1`. Detections without
+/// confidence all count as high confidence regardless of the threshold.
 class OCSORTTracker implements Tracker {
   final int lostTrackBuffer;
   final double frameRate;
@@ -34,6 +44,11 @@ class OCSORTTracker implements Tracker {
   int _nextTrackId = 0;
 
   /// Creates an OC-SORT tracker.
+  ///
+  /// [deltaT] is how many frames back OCM looks for the observation used to
+  /// estimate a track's direction (`0` uses the latest observation).
+  /// [directionConsistencyWeight] scales the OCM term; `0` disables it. [iou]
+  /// is used for the primary association only.
   new({
     this.lostTrackBuffer = 30,
     this.frameRate = 30.0,
@@ -52,21 +67,24 @@ class OCSORTTracker implements Tracker {
        iou = iou ?? const IoU(),
        _clock = TrackerClock(frameRate, onWarning: onWarning),
        _onWarning = onWarning {
-    if (minimumConsecutiveFrames < 1) {
+    if (minimumConsecutiveFrames < 0) {
       throw ArgumentError.value(
         minimumConsecutiveFrames,
         'minimumConsecutiveFrames',
+        'Must be non-negative',
       );
     }
-    if (deltaT < 1) {
-      throw ArgumentError.value(deltaT, 'deltaT');
+    if (deltaT < 0) {
+      throw ArgumentError.value(deltaT, 'deltaT', 'Must be non-negative');
     }
   }
 
   @override
   Detections update(Detections detections, {Object? frame, double? timestamp}) {
     if (frame != null) {
-      _onWarning?.call('OCSORTTracker ignores frame input.');
+      _onWarning?.call(
+        'OCSORTTracker.update() received a frame argument but does not use it.',
+      );
     }
     final timing = _clock.timing(timestamp);
     if (timing.skipUpdate) {
@@ -78,10 +96,14 @@ class OCSORTTracker implements Tracker {
       return Detections.empty().copyWithTrackerId(Int32List(0));
     }
 
+    // Without confidence every detection is high confidence, whatever the
+    // threshold (upstream never compares the implied 1.0 against it).
+    final hasConfidence = detections.confidence != null;
     final highIndices = <int>[];
     final lowIndices = <int>[];
     for (var i = 0; i < detections.length; i++) {
-      if (detections.confidenceAt(i) >= highConfDetThreshold) {
+      if (!hasConfidence ||
+          detections.confidenceAt(i) >= highConfDetThreshold) {
         highIndices.add(i);
       } else {
         lowIndices.add(i);
@@ -96,9 +118,10 @@ class OCSORTTracker implements Tracker {
     final outDetIndices = <int>[];
     final outTrackerIds = <int>[];
 
+    final predictedByTrack = <OCSORTTracklet, List<double>>{};
     if (!timing.skipPredict) {
       for (final track in tracks) {
-        track.predict(timing);
+        predictedByTrack[track] = track.predict(timing);
       }
     }
     if (timing.usesElapsedTime) {
@@ -112,17 +135,19 @@ class OCSORTTracker implements Tracker {
       );
     }
 
-    final predictedBoxes = [for (final track in tracks) track.getStateBbox()];
+    final predictedBoxes = [
+      for (final track in tracks)
+        predictedByTrack[track] ?? track.getStateBbox(),
+    ];
     final iouMatrix = iou.compute(predictedBoxes, detectionBoxes);
-    final directionMatrix = _computeDirectionConsistencyMatrix(
-      detectionBoxes,
-      confidences,
-    );
+    final directionMatrix = directionConsistencyWeight == 0.0
+        ? null
+        : _computeDirectionConsistencyMatrix(detectionBoxes, confidences);
 
     final primary = _getAssociatedIndices(iouMatrix, directionMatrix);
     for (final (row, col) in primary.matched) {
       final track = tracks[row];
-      track.update(detectionBoxes[col]);
+      track.update(detectionBoxes[col], timing);
       outDetIndices.add(highIndices[col]);
       outTrackerIds.add(_resolveTrackerId(track));
     }
@@ -138,17 +163,16 @@ class OCSORTTracker implements Tracker {
         for (final detIndex in primary.unmatchedDetections)
           detectionBoxes[detIndex],
       ];
-      final ocrIou = iou.compute(lastObservationBoxes, unmatchedBoxes);
-      final ocr = _getAssociatedIndices(
-        ocrIou,
-        Matrix(ocrIou.rows, ocrIou.cols),
-      );
+      // OCR uses plain IoU as in the OC-SORT paper; the configured metric
+      // applies to the primary (OCM) pass only.
+      final ocrIou = const IoU().compute(lastObservationBoxes, unmatchedBoxes);
+      final ocr = _getAssociatedIndices(ocrIou, null);
 
       for (final (row, col) in ocr.matched) {
         final trackIndex = primary.unmatchedTracks[row];
         final detIndex = primary.unmatchedDetections[col];
         final track = tracks[trackIndex];
-        track.update(detectionBoxes[detIndex]);
+        track.update(detectionBoxes[detIndex], timing);
         outDetIndices.add(highIndices[detIndex]);
         outTrackerIds.add(_resolveTrackerId(track));
       }
@@ -256,7 +280,7 @@ class OCSORTTracker implements Tracker {
 
   _OCSORTAssociation _getAssociatedIndices(
     Matrix iouMatrix,
-    Matrix directionMatrix,
+    Matrix? directionMatrix,
   ) {
     final nTracks = iouMatrix.rows;
     final nDetections = iouMatrix.cols;
@@ -265,8 +289,9 @@ class OCSORTTracker implements Tracker {
     final unmatchedDetections = <int>{for (var i = 0; i < nDetections; i++) i};
 
     if (nTracks > 0 && nDetections > 0) {
-      final costMatrix =
-          iouMatrix + directionMatrix.scaled(directionConsistencyWeight);
+      final costMatrix = directionMatrix == null
+          ? iouMatrix
+          : iouMatrix + directionMatrix.scaled(directionConsistencyWeight);
       final assignment = linearSumAssignment(costMatrix, maximize: true);
       for (var i = 0; i < assignment.rowIndices.length; i++) {
         final row = assignment.rowIndices[i];
@@ -287,6 +312,8 @@ class OCSORTTracker implements Tracker {
   }
 }
 
+/// One OC-SORT track: XCYCSR Kalman state plus the observation history used by
+/// OCM, OCR, and ORU.
 class OCSORTTracklet {
   final KalmanFilter kf;
   late final KalmanMotionModel motionModel;
@@ -314,14 +341,15 @@ class OCSORTTracklet {
     lastObservation = List<double>.from(initialBbox);
   }
 
-  void predict([PredictTiming timing = fixedRateTiming]) {
+  /// Advances the Kalman state and returns the predicted box.
+  List<double> predict([PredictTiming timing = fixedRateTiming]) {
+    // Freeze on the first predict after a miss, capturing the state from
+    // before the track was lost (for ORU).
     if (_observed && timeSinceUpdate > 0) {
       _freeze();
       _observed = false;
     }
-    _clampVelocity(timing.frameStep);
-    motionModel.apply(kf, timing.frameStep, frameRate: timing.frameRate);
-    kf.predict();
+    _predictState(timing.frameStep, frameRate: timing.frameRate);
     age++;
     if (timeSinceUpdate > 0) {
       numberOfSuccessfulConsecutiveUpdates = 0;
@@ -332,15 +360,20 @@ class OCSORTTracklet {
     } else {
       timeSinceUpdateSeconds = 0.0;
     }
+    return getStateBbox();
   }
 
-  void update(List<double> bbox) {
+  /// Updates the track with a matched observation.
+  ///
+  /// If the track was lost, ORU first replays a virtual trajectory from the
+  /// last observation to [bbox], stepping the filter by [timing]'s frame step.
+  void update(List<double> bbox, [PredictTiming timing = fixedRateTiming]) {
     final previousBox = getKPreviousObs();
     if (previousBox != null) {
       velocity = _computeVelocity(previousBox, bbox);
     }
     if (!_observed && _frozenState != null) {
-      _unfreeze(bbox);
+      _unfreeze(bbox, timing);
     }
     kf.update(xyxyToXcycsr(bbox));
     _observed = true;
@@ -350,6 +383,9 @@ class OCSORTTracklet {
     previousToLastObservation = lastObservation;
     lastObservation = List<double>.from(bbox);
     observations[age] = List<double>.from(bbox);
+    // Keep only the deltaT lookback window.
+    final cutoff = age - deltaT;
+    observations.removeWhere((key, _) => key < cutoff);
   }
 
   List<double> getStateBbox() =>
@@ -364,11 +400,7 @@ class OCSORTTracklet {
         return observation;
       }
     }
-    var maxAge = observations.keys.first;
-    for (final key in observations.keys.skip(1)) {
-      maxAge = math.max(maxAge, key).toInt();
-    }
-    return observations[maxAge];
+    return observations[observations.keys.reduce(math.max)];
   }
 
   void _freeze() {
@@ -382,7 +414,7 @@ class OCSORTTracklet {
     );
   }
 
-  void _unfreeze(List<double> newBbox) {
+  void _unfreeze(List<double> newBbox, PredictTiming timing) {
     final frozen = _frozenState;
     if (frozen == null) return;
     kf.x = frozen.x.copy();
@@ -391,7 +423,8 @@ class OCSORTTracklet {
     kf.h = frozen.h.copy();
     kf.q = frozen.q.copy();
     kf.r = frozen.r.copy();
-    motionModel.calibrate(kf.q);
+    // The frozen Q may be gap-scaled; the motion model keeps its configured
+    // one-frame baseline and rebuilds Q on the next step.
     motionModel.resetCache();
 
     final timeGap = timeSinceUpdate;
@@ -400,11 +433,11 @@ class OCSORTTracklet {
     final x1 = last[0];
     final y1 = last[1];
     final w1 = math.sqrt(last[2] * last[3]);
-    final h1 = math.sqrt(last[2] / last[3]);
+    final h1 = last[3] != 0.0 ? math.sqrt(last[2] / last[3]) : 0.0;
     final x2 = next[0];
     final y2 = next[1];
     final w2 = math.sqrt(next[2] * next[3]);
-    final h2 = math.sqrt(next[2] / next[3]);
+    final h2 = next[3] != 0.0 ? math.sqrt(next[2] / next[3]) : 0.0;
     final dx = (x2 - x1) / timeGap;
     final dy = (y2 - y1) / timeGap;
     final dw = (w2 - w1) / timeGap;
@@ -417,8 +450,9 @@ class OCSORTTracklet {
       final h = h1 + (i + 1) * dh;
       kf.update([x, y, w * h, w / h]);
       if (i < timeGap - 1) {
-        motionModel.apply(kf, 1.0);
-        kf.predict();
+        // Each replay step uses the current frame step (upstream passes no
+        // frame rate here, so the fixed near-nominal band applies).
+        _predictState(timing.frameStep);
       }
     }
     _frozenState = null;
@@ -435,6 +469,12 @@ class OCSORTTracklet {
     for (var i = 4; i < 7; i++) {
       kf.q[i][i] *= 0.01;
     }
+  }
+
+  void _predictState(double frameStep, {double? frameRate}) {
+    _clampVelocity(frameStep);
+    motionModel.apply(kf, frameStep, frameRate: frameRate);
+    kf.predict();
   }
 
   void _clampVelocity(double frameStep) {

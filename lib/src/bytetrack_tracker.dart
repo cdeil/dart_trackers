@@ -47,10 +47,11 @@ class ByteTrackTracker implements Tracker {
        iou = iou ?? const IoU(),
        _clock = TrackerClock(frameRate, onWarning: onWarning),
        _onWarning = onWarning {
-    if (minimumConsecutiveFrames < 1) {
+    if (minimumConsecutiveFrames < 0) {
       throw ArgumentError.value(
         minimumConsecutiveFrames,
         'minimumConsecutiveFrames',
+        'Must be non-negative',
       );
     }
   }
@@ -58,7 +59,9 @@ class ByteTrackTracker implements Tracker {
   @override
   Detections update(Detections detections, {Object? frame, double? timestamp}) {
     if (frame != null) {
-      _onWarning?.call('ByteTrackTracker ignores frame input.');
+      _onWarning?.call(
+        'ByteTrackTracker.update() received a frame argument but does not use it.',
+      );
     }
     final timing = _clock.timing(timestamp);
     if (timing.skipUpdate) {

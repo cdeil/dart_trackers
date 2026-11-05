@@ -3,23 +3,28 @@ import 'dart:convert';
 import 'package:dart_trackers/dart_trackers.dart';
 import 'package:test/test.dart';
 
+import 'conformance_harness.dart';
 import 'fixtures.dart';
 
 void main() {
-  group('linearSumAssignment', () {
-    final cases = _loadJsonList('assignment_cases.json');
+  group('linearSumAssignment matches SciPy', () {
+    final cases =
+        jsonDecode(fixtureJson('assignment_cases.json')) as List<dynamic>;
     for (final rawCase in cases) {
       final testCase = rawCase as Map<String, dynamic>;
       test(testCase['name'] as String, () {
         final matrix = Matrix.fromRows(
-          (testCase['cost_matrix'] as List<dynamic>)
-              .map((row) => (row as List<dynamic>).cast<num>())
-              .toList(),
+          parseRows(testCase['cost_matrix'] as List<dynamic>),
         );
-        final result = linearSumAssignment(
-          matrix,
-          maximize: testCase['maximize'] as bool? ?? false,
-        );
+        final maximize = testCase['maximize'] as bool? ?? false;
+        if (testCase.containsKey('error')) {
+          expect(
+            () => linearSumAssignment(matrix, maximize: maximize),
+            throwsArgumentError,
+          );
+          return;
+        }
+        final result = linearSumAssignment(matrix, maximize: maximize);
         expect(
           result.rowIndices,
           equals((testCase['row_indices'] as List<dynamic>).cast<int>()),
@@ -31,8 +36,4 @@ void main() {
       });
     }
   });
-}
-
-List<dynamic> _loadJsonList(String path) {
-  return jsonDecode(fixtureJson(path)) as List<dynamic>;
 }

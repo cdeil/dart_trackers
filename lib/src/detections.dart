@@ -5,6 +5,11 @@ import 'dart:typed_data';
 /// The data model intentionally mirrors the small surface of
 /// `supervision.Detections` used by trackers. Bounding boxes are stored as a
 /// flat row-major `Float64List` with shape `[length, 4]`.
+///
+/// The constructor copies every list, so a `Detections` never shares storage
+/// with its inputs or with tracker output. Missing [confidence] counts as 1.0
+/// for trackers; confidences are compared in float64 (a Python pipeline fed
+/// float32 scores compares in float32). Class and tracker IDs are 32-bit.
 class Detections {
   final Float64List xyxy;
   final Float64List? confidence;
@@ -13,10 +18,15 @@ class Detections {
 
   new({
     required Float64List xyxy,
-    this.confidence,
-    this.classId,
-    this.trackerId,
-  }) : xyxy = Float64List.fromList(xyxy) {
+    Float64List? confidence,
+    Int32List? classId,
+    Int32List? trackerId,
+  }) : xyxy = Float64List.fromList(xyxy),
+       confidence = confidence == null
+           ? null
+           : Float64List.fromList(confidence),
+       classId = classId == null ? null : Int32List.fromList(classId),
+       trackerId = trackerId == null ? null : Int32List.fromList(trackerId) {
     if (xyxy.length % 4 != 0) {
       throw ArgumentError.value(
         xyxy.length,
@@ -25,29 +35,30 @@ class Detections {
       );
     }
     final n = xyxy.length ~/ 4;
-    if (confidence != null && confidence!.length != n) {
+    if (confidence != null && confidence.length != n) {
       throw ArgumentError.value(
-        confidence!.length,
+        confidence.length,
         'confidence.length',
         'Expected $n',
       );
     }
-    if (classId != null && classId!.length != n) {
+    if (classId != null && classId.length != n) {
       throw ArgumentError.value(
-        classId!.length,
+        classId.length,
         'classId.length',
         'Expected $n',
       );
     }
-    if (trackerId != null && trackerId!.length != n) {
+    if (trackerId != null && trackerId.length != n) {
       throw ArgumentError.value(
-        trackerId!.length,
+        trackerId.length,
         'trackerId.length',
         'Expected $n',
       );
     }
   }
 
+  /// An empty batch with no confidence, class, or tracker IDs.
   factory empty() => Detections(xyxy: Float64List(0));
 
   factory fromRows(
@@ -127,6 +138,7 @@ class Detections {
     );
   }
 
+  /// Returns a copy with [ids] as tracker IDs.
   Detections copyWithTrackerId(Int32List ids) {
     if (ids.length != length) {
       throw ArgumentError.value(ids.length, 'ids.length', 'Expected $length');

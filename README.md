@@ -21,14 +21,15 @@ this package mirrors the tracker APIs and notes Dart-specific differences.
     `CBIoUTracker`.
 - IoU, BIoU, GIoU, DIoU, and CIoU association metrics.
 - Timestamp-aware Kalman prediction and wall-clock lost-track pruning.
-- Python-generated conformance fixtures against `trackers==2.6.0`.
+- Python-generated conformance fixtures against Roboflow `trackers` develop
+    (post-2.6.0, including the 2.6.1 fixes).
 - Benchmark and validation docs for comparing Dart and Python behavior.
 
 ## Install
 
 ```yaml
 dependencies:
-  dart_trackers: ^0.2.0
+  dart_trackers: ^0.3.0
 ```
 
 For local development in this repository:
@@ -154,7 +155,8 @@ environment:
 
 ```bash
 cd conformance/python
-uv run python generate_fixtures.py
+uv run python generate_fixtures.py          # regenerate
+uv run python generate_fixtures.py --check  # verify, as CI does
 uv run ruff format --check .
 uv run ruff check .
 uv run pyright

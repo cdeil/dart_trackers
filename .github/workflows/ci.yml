@@ -94,12 +94,10 @@ jobs:
       - name: Type check Python with Pyrefly
         run: uv run pyrefly check --output-format min-text --summarize-errors
 
-      - name: Regenerate fixtures
-        run: uv run python generate_fixtures.py
-
-      - name: Ensure generated fixtures are checked in
-        working-directory: .
-        run: git diff --exit-code -- conformance/fixtures test/fixtures.g.dart
+      - name: Check fixtures against the oracle
+        # Numeric comparison: libm results can differ in the last bit between
+        # the platform that generated the fixtures and the CI runner.
+        run: uv run python generate_fixtures.py --check
 
       - name: Python benchmark smoke test
         run: uv run python benchmark_reference.py --frames 50 --objects 10 --repeats 2
